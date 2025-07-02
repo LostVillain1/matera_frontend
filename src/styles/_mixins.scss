@@ -1,0 +1,20 @@
+// Breakpoints (можно настроить далее)
+
+$mobile: 576px;
+$tablet: 768px;
+$desktop: 1024px;
+$desktop_large: 1920px;
+
+// Mobile First (стили применяются от мобильных к десктопу)
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == tablet {
+    @media (min-width: $tablet) { @content; }
+  }
+  @else if $breakpoint == desktop {
+    @media (min-width: $desktop) { @content; }
+  }
+  @else if $breakpoint == desktop_large {
+    @media (min-width: $desktop_large) { @content; }
+  }
+}
+

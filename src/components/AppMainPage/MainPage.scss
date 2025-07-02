@@ -1,0 +1,19 @@
+.mp__wrapper {
+    position: relative;
+    // width: 100%;
+    // height: 100%;
+    // background-image: url('@/assets/mat_bg_mob.png');
+}
+
+.mp__wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Обрежет края, но заполнит контейнер */
+}
+
+.logo-text__wrapper {
+    position: absolute;
+    left: 50%; /* Сдвигает левый край в центр */
+    transform: translateX(-50%); /* Возвращает назад на половину своей ширины */
+    bottom: 15%;
+}

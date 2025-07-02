@@ -1,0 +1,81 @@
+.header__wrapper {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    // padding-top: 10px;
+    font-family: Serif;
+    font-size: 26px;    
+    // padding-left: 50px; В МЕДИА ЗАПРОСАХ СДЕЛАТЬ ДЛЯ НОУТБУКА И ПЛАНШЕТА!!
+    // padding-right: 50px;
+
+    // background-color: rgba(57, 33, 61, 1)
+}
+
+
+///////Анимацияи и стили для появления меню
+
+.burger-menu {
+    position: relative;
+}
+
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+.burger-icon {
+    &.open {
+        transform: rotate(90deg);;
+    }
+}
+
+.bg-menu_options {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    position: absolute;
+    // left: 0;
+    background-color: yellow;
+}
+
+//////////// 
+
+
+.mat__logo {
+    padding-top: 5px;
+}
+
+////Выравнивание элементов хедера по бокам и центру
+.left,  
+    .right {
+        flex: 0 0 auto
+}
+
+.center {
+    position: absolute;
+    left: 50%; /* Сдвигает левый край в центр */
+    transform: translateX(-50%); /* Возвращает назад на половину своей ширины */
+}
+
+
+////////
+
+.header__options {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+    color: rgba(239, 239, 236, 1);
+}
+
