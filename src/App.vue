@@ -5,7 +5,7 @@ import MainPage from './components/AppMainPage/MainPage.vue';
 </script>
 
 <template>
-  <AppHeader></AppHeader>
+  <!-- <AppHeader></AppHeader> -->
   <MainPage></MainPage>
 </template>
 
