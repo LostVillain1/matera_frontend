@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import AppHeader from '../AppHeader/AppHeader.vue';
+import AppHeader from '@/components/AppHeader/AppHeader.vue';
 import { useBreakpoints } from '@/composables/useBreakpoints';
-import MainPageMobile from '../icons/MainPageMobile.vue';
-import MainPageTablet from '../icons/MainPageTablet.vue';
+import MainPageMobile from '@/components/icons/MainPageMobile.vue';
+import MainPageTablet from '@/components/icons/MainPageTablet.vue';
 
 //Работа с брейкпонйтами из композаблы
 const breakpoints = useBreakpoints();
@@ -29,5 +29,5 @@ const isDesktop = breakpoints.isDesktop
 </script>
 
 <style lang="scss" scoped>
-@import './MainPage.scss'
+@import '@/views/MainPage.scss'
 </style>
