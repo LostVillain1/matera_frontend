@@ -1,0 +1,53 @@
+.bout__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(243, 241, 226, 1);
+}
+
+.bout__wrapper {
+    width: 100%;
+}
+
+.boutique {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bout__info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 20px;
+    
+}
+
+.soon {
+    margin-top: 50px;
+    font-family: 'PT Serif', serif;
+    font-size: 26px;
+    font-style: italic;
+    text-align: center;
+    color: rgba(57, 33, 61, 1);
+
+}
+
+.bout__img {
+    margin: 30px 20px 0 20px;
+}
+
+.bout__img img {
+    height: 134px;
+    width: 335px;
+ }
+
+ .info {
+    font-size: 20px;
+}
+
+.adress.soon {
+    margin-top: 20px;
+} 
+    

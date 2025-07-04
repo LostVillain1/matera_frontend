@@ -91,6 +91,11 @@ a:visited {
     gap: 40px
 }
 
+@media (min-width : 768px) {
+    .header__wrapper {
+        background-image: url('@/assets/velur_tablet.png');
+    }
+}
 
 @media (min-width : 1024px) {
     .header__wrapper {
