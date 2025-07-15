@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '@/views/MainPage.vue'
 import Boutique from '@/views/Boutique.vue'
+import Footer from '@/components/AppFooter/AppFooter.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +16,11 @@ const router = createRouter({
       name: 'boutique',
       component: Boutique,
     },
+    // {
+    //   path: '/footer',
+    //   name: 'boutique',
+    //   component: Footer,
+    // },
     // {
     //   path: '/about',
     //   name: 'about',

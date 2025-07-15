@@ -28,17 +28,18 @@
             </div>
             <div class="adress soon">
                 <p class="">
-                    329229, Вологодская область,<br />
-                    город Ступино, наб. Сталина, 17
+                    Raddisson, Zavidovo<br />
                 </p>
             </div>            
         </div> 
-    </div>           
+    </div>
+    <app-footer></app-footer>           
 </template>
 
 <script setup>
 
 import AppHeader from '@/components/AppHeader/AppHeader.vue';
+import AppFooter from '@/components/AppFooter/AppFooter.vue'; 
 
 </script>
 

@@ -1,0 +1,46 @@
+.footer {
+  background: #2d2235; /* тёмно-фиолетовый текстурный фон */
+  background-image: url('@/assets/bg_velur.png');
+  color: #f6e7b8;
+  padding: 40px 20px;
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.footer-top {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.footer-text {
+  margin-bottom: 12px;
+}
+
+.footer-link {
+  color: #FFF7A8;
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
+}
+
+.footer-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-bottom {
+  font-size: 16px;
+  text-align: center;
+  color: #FFF7A8;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.footer-design a {
+  color: #a78aff;
+  text-decoration: underline;
+}
