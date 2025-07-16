@@ -39,6 +39,8 @@
 
 .bout__img {
     margin: 30px 20px 0 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .bout__img img {
@@ -57,4 +59,11 @@
 
 .footer {
     flex-shrink: 0;
+}
+
+
+@media (min-width : 1024px) {
+    .soon {
+        font-size: 30px;
+    }
 }

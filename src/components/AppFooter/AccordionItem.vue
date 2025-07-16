@@ -62,4 +62,18 @@ const toggle = () => {
   font-size: 14px;
   color: #FFF7A8;
 }
+
+@media (min-width : 768px) {
+  
+  .accordion-header {
+    font-size: 20px;
+  } 
+
+  .accordion-content {
+    font-size: 18px;    
+  }
+
+
+}
+
 </style>
