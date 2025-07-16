@@ -57,7 +57,7 @@ a:visited {
     background-image: url('@/assets/bg_velur.png');
 }
 
-.bg-menu_options a {
+.bg-menu_options div {
     padding-left: 20px;
     padding-top: 10px;
 }
@@ -88,7 +88,8 @@ a:visited {
     display: flex;
     justify-content: space-between;
     width: 30%;
-    color: rgba(239, 239, 236, 1);
+    color: rgba(255, 247, 168, 1);
+    
 }
 
 .right-side_wrapper {
@@ -107,7 +108,7 @@ a:visited {
 @media (min-width : 1024px) {
     .header__wrapper {
         font-size: 22px;    
-        padding: 0 60px 0 60px;
+        padding: 0 30px 0 30px;
     }
 }
 
