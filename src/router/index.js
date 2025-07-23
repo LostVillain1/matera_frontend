@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '@/views/MainPage.vue'
 import Boutique from '@/views/Boutique.vue'
-import Footer from '@/components/AppFooter/AppFooter.vue'
+import About from '@/views/About.vue'
+import Catalog from '@/views/Catalog.vue'
+import ProductPage from '@/views/ProductPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,26 +11,28 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Boutique,
+      component: MainPage,
     },
     {
       path: '/boutique',
       name: 'boutique',
       component: Boutique,
     },
-    // {
-    //   path: '/footer',
-    //   name: 'boutique',
-    //   component: Footer,
-    // },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   route level code-splitting
-    //   this generates a separate chunk (About.[hash].js) for this route
-    //   which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
+    {
+      path: '/about',
+      name: 'about',
+      component: About,
+    },
+    {
+      path: '/catalog',
+      name: 'catalog',
+      component: Catalog,
+    },
+    { path: '/product/:id',
+      name: 'product',
+      component: ProductPage,
+      props: true // Позволяет передавать :id как пропс 
+    }
   ],
 })
 

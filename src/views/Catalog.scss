@@ -1,0 +1,82 @@
+/* Основной контейнер */
+.catalog {
+  padding: 1rem;
+  background-color: #F3F1E2; /* Цвет фона, как в макете */
+  min-height: 100vh;
+}
+
+/* Заголовок Каталога */
+.catalog__title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #39213D;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: 'PT Serif', serif;
+}
+
+/* Табы выбора категорий */
+.catalog__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #b3a99c;
+  padding-bottom: 0.5rem;
+}
+
+/* Кнопка таба */
+.catalog__tab {
+  font-size: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3a2e25;
+  padding: 0.3rem 0.6rem;
+  font-family: 'Georgia', serif;
+  position: relative;
+}
+
+/* Активная кнопка таба */
+.catalog__tab.active {
+  font-weight: bold;
+}
+
+.catalog__tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #3a2e25;
+}
+
+/* Сетка товаров */
+.catalog__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr); /* по 2 на мобилке */
+}
+
+/* Медиа-запросы для адаптивности */
+@media (min-width: 768px) {
+  .catalog__grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 колонки на планшете */
+  }
+}
+
+@media (min-width: 1024px) {
+  .catalog {
+    padding: 2rem 4rem;
+  }
+
+  .catalog__title {
+    font-size: 2.2rem;
+  }
+
+  .catalog__grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки на десктопе */
+    gap: 2rem;
+  }
+}

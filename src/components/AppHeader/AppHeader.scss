@@ -57,7 +57,7 @@ a:visited {
     background-image: url('@/assets/bg_velur.png');
 }
 
-.bg-menu_options div {
+.bg-menu_options .option {
     padding-left: 20px;
     padding-top: 10px;
 }
@@ -107,14 +107,14 @@ a:visited {
 
 @media (min-width : 1024px) {
     .header__wrapper {
-        font-size: 22px;    
+        font-size: 18px;    
         padding: 0 30px 0 30px;
     }
 }
 
 @media (min-width : 1920px) {
     .header__wrapper {
-        font-size: 26px;    
+        font-size: 22px;    
         padding: 0 100px 0 100px;
     }
 }

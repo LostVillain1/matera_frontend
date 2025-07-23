@@ -4,16 +4,11 @@
             <BurgerMenuIcon @click="toggleMenu" class="burger-icon" :class="{ 'open': isMenuOpen }"></BurgerMenuIcon>
             <transition name="fade">
                 <div v-if="isMenuOpen" class="bg-menu_options">
-                    <div>Каталог</div>
-                    <div>Корзина</div>
-                    <div>Избранное</div>
-                    <div>О Бренде</div>
-                    <div>Бутики</div> 
-                    <!-- <a href="#" @click="closeMenu">Каталог</a>
-                    <a href="#" @click="closeMenu">Корзина</a>
-                    <a href="#" @click="closeMenu">Избранное</a>
-                    <a href="#" @click="closeMenu">Бутики</a>
-                    <a href="#" @click="closeMenu">О бренде</a> -->
+                    <div class="option">Каталог</div>
+                    <div class="option">Корзина</div>
+                    <div class="option">Избранное</div>
+                    <div class="option">О Бренде</div>
+                    <router-link to="/boutique" class="option">Бутики</router-link>
                 </div>
             </transition>
         </div>
