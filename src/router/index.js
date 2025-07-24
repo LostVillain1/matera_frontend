@@ -4,6 +4,7 @@ import Boutique from '@/views/Boutique.vue'
 import About from '@/views/About.vue'
 import Catalog from '@/views/Catalog.vue'
 import ProductPage from '@/views/ProductPage.vue'
+import Favourites from '@/views/Favourites.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,7 +33,11 @@ const router = createRouter({
       name: 'product',
       component: ProductPage,
       props: true // Позволяет передавать :id как пропс 
-    }
+    },
+    { path: '/favourites',
+      name: 'favourites',
+      component: Favourites,
+    },
   ],
 })
 

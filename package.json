@@ -13,6 +13,7 @@
     "@vueuse/core": "^13.5.0",
     "axios": "^1.10.0",
     "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.4.1",
     "sass": "^1.89.2",
     "sass-loader": "^16.0.5",
     "vue": "^3.5.17",

@@ -1,0 +1,85 @@
+.favorite-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  background: #f8f5ea;
+}
+
+.image-wrapper img {
+  width: 70px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.price {
+  margin: 4px 0;
+  font-size: 1.1em;
+}
+
+.colors {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.color {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+
+.color.active {
+  border: 2px solid #000;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quantity-control button {
+  width: 24px;
+  height: 24px;
+  font-weight: bold;
+}
+
+.icons {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}

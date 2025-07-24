@@ -1,21 +1,51 @@
 <template>
   <!-- Ссылка на страницу товара с его ID -->
-  <router-link :to="`/product/${product.id}`" class="item">
-    <img :src="product.image" :alt="product.name" />
-    <p>{{ product.name }}</p>
-    <p>{{ product.code }}</p>
-    <p>{{ product.price }} ₽</p>
-  </router-link>
+   <div class="product-item__wrapper">
+    <router-link :to="`/product/${product.id}`" class="item">
+        <img :src="product.image" :alt="product.name" />
+        <p>{{ product.name }}</p>
+        <p>{{ product.code }}</p>
+        <p>{{ product.price }} ₽</p>        
+    </router-link>
+    <fav-monogram class="monogramm" @click="toggleFavourite(product)"></fav-monogram>
+     <!-- <button @click="toggleFavourite(product)">Test</button> -->
+  </div>   
 </template>
     
 <script setup>
-// Пропс: товар из каталога
-defineProps({
-  product: Object
+import { useFavouriteStore } from '@/stores/useFavouriteStore'
+import FavMonogram from './icons/FavMonogram.vue'
+import { onMounted, defineProps } from 'vue';
+
+// Пропс - товар из каталога
+const { product } = defineProps({
+  product: Object,
 });
+
+const favouriteStore = useFavouriteStore()
+
+function toggleFavourite(product) {
+  if (favouriteStore.isFavourite(product.id)) {
+    favouriteStore.removeFromFavourites(product.id)
+  } else {
+    console.log('TEST')
+    favouriteStore.addToFavourites(product)
+  }
+  // console.log(product)
+}
+
+onMounted( () => console.log(product))
+
+
 </script>
 
-<style scoped>  
+<style scoped> 
+
+.product-item__wrapper {
+position: relative;
+}
+
+
 .item {
   display: flex;
   flex-direction: column;
@@ -37,6 +67,13 @@ defineProps({
   height: auto;
   margin-bottom: 8px;
 }
+
+.monogramm{
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+} 
 
 /* Медиа-запросы для адаптивности */
 @media (min-width: 768px) {

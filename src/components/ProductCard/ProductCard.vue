@@ -121,6 +121,23 @@ import { useWindowSize } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '../../stores/useProductStore';
 import AccordionProduct from './AccordionProduct.vue';
+import { useFavouriteStore } from '../../stores/useFavouriteStore'
+
+
+
+//Добавить или убрать из стора с Избранным
+const favouriteStore = useFavouriteStore()
+
+function toggleFavorite(product) {
+  if (favouriteStore.isFavorite(product.id)) {
+    favouriteStore.removeFromFavorites(product.id)
+  } else {
+    favouriteStore.addToFavorites(product)
+  }
+}
+
+/////////////////////////
+
 
 // Получаем данные из хранилища и маршрута
 const store = useProductStore();
