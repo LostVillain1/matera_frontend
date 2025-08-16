@@ -1,0 +1,32 @@
+.cart-page {
+  padding: 16px;
+  min-height: 100vh;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .cart-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .cart-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-summary-wrap {
+      flex: 0 0 300px;
+    }
+  }
+}

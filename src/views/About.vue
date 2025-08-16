@@ -1,65 +1,89 @@
 <template>
-    <AppHeader></AppHeader>
-    <div class="about-page">
-    <section class="logo">
-      <div class="overlay">
-        <h2>О бренде</h2>
-        <h1>MATERA</h1>
-        <p class="locations">MILANO&nbsp;|&nbsp;MOSCOW</p>
+  <AppHeader></AppHeader>
+  <div class="about-page">
+    <section class="about-brand">
+
+      <!-- БЛОК 1 -->
+      <div class="brand-block">      
+        <div class="brand-text">
+          <h2 class="brand-title">О бренде</h2>
+          <p>
+            <span class="key">MATERA</span> — это союз итальянских дизайнеров и русских мастеров.
+            Эскизы для наших коллекций создаются в Италии и обретают
+            материальную форму в московском ателье.
+          </p>
+        </div>
+        <img class="brand-image" src="@/assets/brand/milmos.png" alt="Италия - Россия">
       </div>
-    </section>
+      <!-- БЛОК 2 -->
+      <div class="brand-block reverse">            
+        <div class="brand-text">
+          <h3 class="brand-subtitle">«Придумано в Италии — <br> сделано в России»</h3>
+          <p>
+            — это не только наш слоган, но и суть бренда.<br><br>
+            Название MATERA отсылает к итальянскому городу, где наследие
+            древней культуры гармонично соседствует с современной жизнью.
+          </p>
+        </div>
+        <img class="brand-image" src="@/assets/brand/handsabout.png" alt="процесc">
+      </div>
 
-    <nav class="breadcrumbs">
-      <span>Главная //</span>
-      <span class="current"> О бренде /</span>
-    </nav>
+      <!-- БЛОК 3 -->
+      <div class="brand-block">      
+        <div class="brand-text">
+          <p>
+            Эти контрасты вдохновляют нас на создание образов, в основе которых лежит
+            идея бесконечных сочетаний каноничной классики и актуальных уличных трендов.
+          </p>
+        </div>
+        <img class="brand-image" src="@/assets/brand/aboutcoffee.png" alt="Девушка">
+      </div>
+      <div class="brand-block reverse center">            
+        <div class="brand-text">
+          <h3 class="brand-subtitle">Неважно, где вы и сколько вам лет, любите ли вы простоту или яркие акценты — мы найдём баланс.</h3>
+        </div>
+      </div>
+      <div class="brand-block center">
+        <img class="brand-image" src="@/assets/brand/img1.png" alt="Девушка">
+      </div>
+      <div class="brand-block">      
+        <div class="brand-text way">
+          <h3 class="brand-subtitle">О стиле</h3>
+          <div>
+            <p>
+              <span class="key">Наше направление</span> — это эклектика как вечный творческий эксперимент. Каждое изделие объединяет в себе, казалось бы, противоположные стили.         
+            </p>
+          </div>
+          <div>
+            <p><span class="key">Наша миссия</span> — создавать универсальные образы вне времени путём сочетания несочетаемых деталей и идей.</p>
+          </div>          
+        </div>
+      </div>
+      <div class="brand-block">      
+        <div class="brand-text">
+          <h2 class="brand-title">Мастерская в Москве</h2>
+          <p>
+            Здесь итальянские идеи воплощаются руками российских мастеров.<br><br> 
 
-    <section class="text-section">
-      <p>
-        Наши эскизы создаются в&nbsp;Милане, вдохновлённые итальянской
-        элегантностью и&nbsp;страстью к&nbsp;дизайну. Каждый штрих — это
-        отражение утончённого стиля, который мы привносим в мир моды.
-      </p>
-      <!-- <img src="@/assets/milan.jpg" alt="Миланская студия" /> -->
-    </section>
-
-    <!-- Блок 2 -->
-    <section class="text-section">
-      <p>
-        Каждая деталь оживает в&nbsp;московском ателье, где наши мастера
-        превращают идеи в&nbsp;реальность. Мы&nbsp;сочетаем традиции и
-        современность, чтобы создать одежду, которая говорит сама за себя.
-      </p>
-      <!-- <img src="@/assets/moscow.jpg" alt="Работа в ателье" /> -->
-
-      <p class="quote">
-        Неважно, где вы и&nbsp;сколько вам лет,<br />
-        любите ли&nbsp;вы простоту или яркие акценты —<br />
-        мы&nbsp;найдём баланс.
-      </p>
-      <p class="instagram">@matera_couture</p>
-    </section>
-
-    <div class="title">
-        Искусство создания:<br />
-        <span>от вдохновения к шедевру</span>
-    </div>
-
-    <section class="text-section">
-      <p>
-        Каждая деталь оживает в&nbsp;московском ателье, где наши мастера
-        превращают идеи в&nbsp;реальность. Мы&nbsp;сочетаем традиции и
-        современность, чтобы создать одежду, которая говорит сама за себя.
-      </p>
-      <!-- <img src="@/assets/moscow.jpg" alt="Работа в ателье" /> -->
-
-      <p class="quote">
-        Неважно, где вы и&nbsp;сколько вам лет,<br />
-        любите ли&nbsp;вы простоту или яркие акценты —<br />
-        мы&nbsp;найдём баланс.
-      </p>
-      <p class="instagram">@matera_couture</p>
-    </section>    
+            Каждое изделие выпускается лимитированным тиражом и создается вручную в экспериментальном цехе. 
+          </p>
+        </div>
+        <img class="brand-image" src="@/assets/brand/img2.png" alt="Италия - Россия">
+      </div>
+      <div class="brand-block">      
+        <div class="brand-text">
+          <p>
+            Мы используем сертифицированные ткани мирового уровня, а качество гарантируется ручной проверкой всех материалов и их сочетаний на предмет устойчивости к стирке, тепловой обработке и носке.  
+          </p>
+        </div>
+        <img class="brand-image" src="@/assets/brand/img3.png" alt="Италия - Россия">
+      </div>
+      <div class="brand-block">      
+        <div class="brand-text way">
+          <p>Уход от массовости позволяет нам полностью контролировать процесс производства, лично проверяя каждое сшитое изделие.</p>
+        </div>
+      </div>  
+    </section>  
   </div>
   <AppFooter></AppFooter>
 </template>

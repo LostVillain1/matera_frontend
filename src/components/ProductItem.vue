@@ -2,7 +2,7 @@
   <!-- Ссылка на страницу товара с его ID -->
    <div class="product-item__wrapper">
     <router-link :to="`/product/${product.id}`" class="item">
-        <img :src="product.image" :alt="product.name" />
+        <img :src="product.images[0]" :alt="product.name" />
         <p>{{ product.name }}</p>
         <p>{{ product.code }}</p>
         <p>{{ product.price }} ₽</p>        

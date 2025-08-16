@@ -33,14 +33,16 @@ const toggle = () => {
 .accordion-item {
   border-top: 1px solid #8d8375;
   padding-top: 10px;
+  color: #FFFCDC;
 }
 
 .accordion-header {
-  color: #FFF7A8;
+  color: #FFFCDC;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: none;
+   
   border: none;
   color: inherit;
   font-size: 16px;
@@ -60,7 +62,7 @@ const toggle = () => {
 .accordion-content {
   padding: 10px 0;
   font-size: 14px;
-  color: #FFF7A8;
+  color: #FFFCDC;
 }
 
 @media (min-width : 768px) {

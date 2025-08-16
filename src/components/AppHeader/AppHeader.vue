@@ -4,28 +4,38 @@
             <BurgerMenuIcon @click="toggleMenu" class="burger-icon" :class="{ 'open': isMenuOpen }"></BurgerMenuIcon>
             <transition name="fade">
                 <div v-if="isMenuOpen" class="bg-menu_options">
-                    <div class="option">Каталог</div>
-                    <div class="option">Корзина</div>
-                    <div class="option">Избранное</div>
-                    <div class="option">О Бренде</div>
-                    <router-link to="/boutique" class="option">Бутики</router-link>
+                    <router-link to="/catalog">Каталог</router-link>
+                    <router-link to="/about">О бренде</router-link>
+                    <router-link to="/boutique">Бутики</router-link>
+                    <router-link to="/cart">Корзина</router-link>
+                    <router-link to="/favourites">Избранное</router-link>                  
+                    
                 </div>
             </transition>
         </div>
         <div class="header__options left" v-if="!isMobile && !isTablet">
-            <div>Каталог</div>
-            <div>Бутики</div>
+            <router-link to="/catalog">Каталог</router-link>
+            <router-link to="/about">О бренде</router-link>
+            <router-link to="/boutique">Бутики</router-link>
+            <!-- <div>Каталог</div>
             <div>О бренде</div>
+            <div>Бутики</div> -->
         </div>
         <div class="mat__logo center">
-           <LogoHeader></LogoHeader>
+            <router-link to="/">
+                <LogoHeader></LogoHeader>
+            </router-link>           
         </div>
         <div class="right-side_wrapper right">            
             <div class="favourites" v-if="!isMobile && !isTablet">
-                <FavouritesHeader></FavouritesHeader>
+                <router-link to="/favourites">
+                    <FavouritesHeader></FavouritesHeader>
+                </router-link>                
             </div>
             <div class="cart" v-if="!isMobile && !isTablet">
-                <CartHeader></CartHeader>
+                <router-link :to="{ name: 'cart' }">
+                    <CartHeader></CartHeader>
+                </router-link>                
             </div>
             <div class="langs__logo">
                 <LangsIcon></LangsIcon>
@@ -64,8 +74,8 @@ const closeMenu = () => {
 
 
 //Управление размерами SVG -- Попробовать с CSS
-const dynamicSvgWidth = computed(() => isLaptop.value ? 200 : 100);
-const dynamicSvgHeight = computed(() => isLaptop.value ? 150 : 75);
+// const dynamicSvgWidth = computed(() => isLaptop.value ? 200 : 100);
+// const dynamicSvgHeight = computed(() => isLaptop.value ? 150 : 75);
 
 
 </script>

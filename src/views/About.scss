@@ -1,87 +1,103 @@
-.about-page {
-  font-family: 'PT Serif', serif;
-  color: #3a3a3a;
-  background-color: #F3F1E2;
+.about-page {  
   padding: 0 30px;
+  background-color: #FFFDF2;
 }
 
-.logo {
-  background-image: url('@/assets/hero-bg.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 400px;
-  position: relative;
+.about-brand {
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay {
-  text-align: center;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 20px;
-  width: 100%;
-}
-
-.overlay h2 {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-}
-
-.overlay h1 {
-  font-size: 2.4rem;
-  letter-spacing: 0.2rem;
-}
-
-.locations {
-  font-size: 0.9rem;
-  margin-top: 4px;
-}
-
-.breadcrumbs {
-  margin: 16px 0;
-  font-size: 0.9rem;
-  border-bottom: 1px solid #39213D;
-  padding-bottom: 8px;
-}
-
-.breadcrumbs .current {
-  color: #a7a7a7;
-}
-
-.text-section {
-  text-align: center;
-//   margin-bottom: 32px;
-  padding-bottom: 32px;
-}
-
-.text-section p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.text-section img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin: 16px 0;
-}
-
-.quote {
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem 1rem;
+  // background-color: #FFFDF2;
+  color: #39213D;
+  font-family: 'PT Serif', serif;
   font-style: italic;
-  font-size: 0.95rem;
-  color: #39213D;
 }
 
-.instagram {
-  font-size: 0.85rem;
-  color: #39213D;
-  margin-top: 8px;
+.brand-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.title {
-    color: #39213D; 
-    font-size: 24px;
-    border-bottom: 1px solid #39213D;
+.brand-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
+
+.brand-text {
+  text-align: left;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.brand-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.brand-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.way {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  // text-align: center;
+}
+
+.key {
+  font-weight: 600;
+}
+
+/* ----- Desktop (min-width: 768px) ----- */
+@media (min-width: 768px) {
+  .brand-block {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .brand-block.reverse {
+    flex-direction: row-reverse;
+  }
+
+  .brand-image {
+    width: 50%;
+    max-height: 100%;
+  }
+
+  .brand-text {
+    width: 50%;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  .brand-title {
+    font-size: 26px;
+  }
+
+  .brand-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .center .brand-text {
+    width: 100%;
+  }
+
+  .way {
+    display: flex;
+    width: 100%;
+  }
+}
+

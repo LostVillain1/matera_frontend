@@ -15,9 +15,9 @@ a:active {
 }
 
 .footer {
-  background: #2d2235; /* тёмно-фиолетовый текстурный фон */
-  background-image: url('@/assets/bg_velur.png');
-  color: #f6e7b8;
+  background-color: #18101F; /* тёмно-фиолетовый текстурный фон */
+  // background-image: url('@/assets/bg_velur.png');
+  color: #FFFCDC;
   padding: 40px 20px;
   font-family: 'PT Serif', serif;
   font-size: 20px;
@@ -38,7 +38,7 @@ a:active {
 }
 
 .footer-link {
-  color: #FFF7A8;
+  color: #FFFCDC;;
   font-family: 'PT Serif', serif;
   font-size: 20px;
 }
@@ -52,7 +52,7 @@ a:active {
 .footer-bottom {
   font-size: 16px;
   text-align: center;
-  color: #FFF7A8;
+  color: #FFFCDC;
   margin-top: 20px;
   text-align: left;
 }

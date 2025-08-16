@@ -5,6 +5,7 @@ import About from '@/views/About.vue'
 import Catalog from '@/views/Catalog.vue'
 import ProductPage from '@/views/ProductPage.vue'
 import Favourites from '@/views/Favourites.vue'
+import Cart from '@/components/Cart/Cart.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,7 +39,15 @@ const router = createRouter({
       name: 'favourites',
       component: Favourites,
     },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: Cart,
+    }
   ],
 })
+
+console.log('ROUTER getRoutes:', router.getRoutes().map(r => ({ name: r.name, path: r.path })));
+window.__MY_APP_ROUTER__ = router; // чтобы иметь доступ из консоли
 
 export default router

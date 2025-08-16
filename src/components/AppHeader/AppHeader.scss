@@ -1,12 +1,12 @@
 a:visited {
-    color: rgba(255, 247, 168, 1);
+    color: #FFFCDC;
     // color:black
 }
 
 
 .header__wrapper {
     width: 100%;
-    padding: 0 20px 0 20px;
+    padding: 10px 20px 10px 20px;
     display: flex;
     position: relative;
     justify-content: space-between;
@@ -14,12 +14,27 @@ a:visited {
     font-family: 'PT Serif', serif;
     // font-style: italic;
     font-size: 22px;        
-    // background-color: rgba(57, 33, 61, 1)
-    background-image: url('@/assets/velur.png');
+    background-color: #18101F
+    // background-image: url('@/assets/velur.png');
+}
+
+.header__options {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+    color: #FFFCDC;
+    text-decoration: none
+}
+
+.right-side_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px
 }
 
 
-///////Анимацияи и стили для появления меню
+///////Анимация и стили для появления меню
 
 .burger-menu {
     position: relative;
@@ -38,6 +53,9 @@ a:visited {
   transform: translateY(-10px);
 }
 
+///////
+
+
 
 .burger-icon {
     &.open {
@@ -46,15 +64,16 @@ a:visited {
 }
 
 .bg-menu_options {
-    z-index: 1;
+    z-index: 10;
     display: flex;
     flex-direction: column;
     width: 100vw;
+    padding-left: 20px;
     position: absolute;
     left: 0;
-    color: rgba(255, 247, 168, 1);
-    // background-color: rgba(255, 247, 168, 1);
-    background-image: url('@/assets/bg_velur.png');
+    color: #FFFCDC;
+    background-color: #18101F;
+    // background-image: url('@/assets/bg_velur.png');
 }
 
 .bg-menu_options .option {
@@ -84,37 +103,23 @@ a:visited {
 
 ////////
 
-.header__options {
-    display: flex;
-    justify-content: space-between;
-    width: 30%;
-    color: rgba(255, 247, 168, 1);
-    
-}
-
-.right-side_wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 40px
-}
 
 @media (min-width : 768px) {
     .header__wrapper {
-        background-image: url('@/assets/velur_tablet.png');
+        // background-image: url('@/assets/velur_tablet.png');
     }
 }
 
 @media (min-width : 1024px) {
     .header__wrapper {
         font-size: 18px;    
-        padding: 0 30px 0 30px;
+        padding: 10px 30px 10px 30px;
     }
 }
 
 @media (min-width : 1920px) {
     .header__wrapper {
         font-size: 22px;    
-        padding: 0 100px 0 100px;
+        padding: 20px 100px 20px 100px;
     }
 }

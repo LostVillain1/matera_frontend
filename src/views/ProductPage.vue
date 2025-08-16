@@ -1,9 +1,13 @@
 <template>
   <AppHeader></AppHeader>
   <!-- Проверка, если товар найден, рендер карточки товара -->
-  <ProductCard v-if="product" :product="product" />
+  <ProductCard v-if="product"  /> 
+  <!-- // :product="product" --- Пропс для компонента ProductCard оставить ??  -->
   <div v-else>Товар не найден</div>
-  <AppFooter></AppFooter>
+  <AppFooter></AppFooter> 
+   
+
+    
 </template>
 
 <script setup>
