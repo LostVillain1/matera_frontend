@@ -177,6 +177,7 @@ const quantity = ref(1)           // количество
 const { width } = useWindowSize()
 const isDesktop = computed(() => width.value >= 1024) // брейкпоинт для десктопа — подстрой под свой
 
+
 // --- ДОСТУПНОСТЬ ДОБАВЛЕНИЯ В КОРЗИНУ
 const canAddToCart = computed(() => {
   if (!product.value) return false

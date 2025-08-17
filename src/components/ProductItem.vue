@@ -7,7 +7,17 @@
         <p>{{ product.code }}</p>
         <p>{{ product.price }} ₽</p>        
     </router-link>
-    <fav-monogram class="monogramm" @click="toggleFavourite(product)"></fav-monogram>
+    <fav-monogram 
+    v-if="!isDesktop" 
+    class="monogramm" 
+    @click="toggleFavourite(product)"
+    />
+    <fav-desc
+      v-else 
+      class="monogramm"
+      @click="toggleFavourite(product)"
+    />
+    <!-- <fav-monogram class="monogramm" @click="toggleFavourite(product)"></fav-monogram> -->
      <!-- <button @click="toggleFavourite(product)">Test</button> -->
   </div>   
 </template>
@@ -15,7 +25,9 @@
 <script setup>
 import { useFavouriteStore } from '@/stores/useFavouriteStore'
 import FavMonogram from './icons/FavMonogram.vue'
-import { onMounted, defineProps } from 'vue';
+import { useWindowSize } from '@vueuse/core'
+import  FavDesc from './icons/FavDesc.vue'
+import { onMounted, defineProps, computed } from 'vue';
 
 // Пропс - товар из каталога
 const { product } = defineProps({
@@ -33,6 +45,9 @@ function toggleFavourite(product) {
   }
   // console.log(product)
 }
+
+const { width } = useWindowSize();
+const isDesktop = computed(() => width.value >= 1024);
 
 onMounted( () => console.log(product))
 
@@ -73,6 +88,7 @@ position: relative;
   position: absolute;
   top: 0;
   right: 0;
+  transform: translate(-10px, 10px);
 } 
 
 /* Медиа-запросы для адаптивности */

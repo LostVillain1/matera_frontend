@@ -6,7 +6,7 @@
 // ============================================
 
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   // --------------------------------------------
@@ -21,7 +21,10 @@ export const useCartStore = defineStore('cart', () => {
   //   selectedSize: "M",
   //   quantity: 1
   // }
-  const cartItems = ref([])
+
+  // Загружаем сохранённую корзину из localStorage
+  const savedCart = localStorage.getItem('cart')
+  const cartItems = ref(savedCart ? JSON.parse(savedCart) : [])
 
   // --------------------------------------------
   // Вспомогательные внутренние функции (private)
@@ -54,10 +57,8 @@ export const useCartStore = defineStore('cart', () => {
   // --------------------------------------------
 
   /**
-   * Добавляет товар в корзину.
-   * @param {Object} product - объект товара
-   * @param {Object} options - { selectedColor, selectedSize, quantity }
-   */
+   * Добавляет товар в корзину.*/
+   
   function addToCart(product, options = {}) {
     const { selectedColor = null, selectedSize = null, quantity = 1 } = options
 
@@ -147,6 +148,7 @@ export const useCartStore = defineStore('cart', () => {
    */
   function clearCart() {
     cartItems.value = []
+     localStorage.removeItem('cart')
   }
 
   /**
@@ -173,6 +175,24 @@ export const useCartStore = defineStore('cart', () => {
 
   const totalPrice = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+  )
+
+
+  // --------------------------------------------
+  // Синхронизация с localStorage
+  // --------------------------------------------
+
+  watch(
+    cartItems,
+    (newCart) => {
+      // если корзина пустая — удаляем ключ
+      if (newCart.length === 0) {
+        localStorage.removeItem('cart')
+      } else {
+        localStorage.setItem('cart', JSON.stringify(newCart))
+      }
+    },
+    { deep: true }
   )
 
   // --------------------------------------------
