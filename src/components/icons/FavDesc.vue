@@ -18,7 +18,7 @@ import { ref, computed} from 'vue'
 
 </script>
 
-<style>
+<style scoped>
 svg path {
   transform: scale(2); 
   transform-origin: 0 0;

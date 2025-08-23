@@ -16,9 +16,9 @@ import { ref, computed} from 'vue'
 
 </script>
 
-<style>
+<style scoped>
 
-svg {
+/* svg {
     width: 30px;
     height: 39px;
 }
@@ -28,6 +28,6 @@ svg {
     width: 45px;
     height: 58.5px 
   }
-}
+} */
 
 </style>
