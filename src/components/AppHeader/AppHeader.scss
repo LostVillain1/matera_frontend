@@ -12,6 +12,7 @@ a:visited {
 .header__wrapper {
     width: 100%;
     padding: 10px 20px 10px 20px;
+    z-index: 5;
     display: flex;
     position: relative;
     justify-content: space-between;

@@ -39,6 +39,7 @@ const favouriteStore = useFavouriteStore()
 function toggleFavourite(product) {
   if (favouriteStore.isFavourite(product.id)) {
     favouriteStore.removeFromFavourites(product.id)
+    console.log('TEST')
   } else {
     console.log('TEST')
     favouriteStore.addToFavourites(product)

@@ -12,11 +12,18 @@
         :alt="currentSlide.alt"
         loading="lazy" />
     </picture>
+
+    <div class="btn-container">
+      <SliderButton />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import SliderButton from './SliderButton.vue'
+
+
 
 const props = defineProps({
   slides: {
@@ -84,6 +91,18 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.btn-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 10%; /* Отступ от нижнего края */
 }
 
 @media (max-width: 768px) {

@@ -55,6 +55,15 @@
   font-weight: 600;
 }
 
+.end {
+  display: flex;
+  justify-content: center;
+}
+
+.end .brand-text {
+  text-align: center;
+}
+
 /* ----- Desktop (min-width: 768px) ----- */
 @media (min-width: 768px) {
   .brand-block {
@@ -99,5 +108,11 @@
     display: flex;
     width: 100%;
   }
+
+  .end .brand-text {
+    text-align: center;
+    font-size: 24px;
+  }
+
 }
 

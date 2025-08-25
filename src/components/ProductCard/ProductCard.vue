@@ -71,18 +71,19 @@
 
         <!-- ====== Правая колонка: инфо и выборы (как было + BaseDropdown) ====== -->
         <div class="product-info">
-          <h1 class="product-name">{{ product.name }}</h1>
-          <p class="product-code">Арт: {{ product.code }}</p>
-          <p class="product-price">{{ formatPrice(product.price) }} ₽</p>
-          <p class="product-installment">4 платежа по {{ formatInstallment(product.price) }} ₽</p>
+          <div class="info">
+            <h1 class="product-name">{{ product.name }}</h1>
+            <p class="product-code">Арт: {{ product.code }}</p>
+            <p class="product-price">{{ formatPrice(product.price) }} ₽</p>
+            <p class="product-installment">4 платежа по {{ formatInstallment(product.price) }} ₽</p>
+          </div>         
 
           <!-- Выбор размера — через кастомный dropdown, без нативного <select> -->
           <div class="product-sizes" v-if="product.sizes?.length">
             <p class="label">Размер</p>
             <BaseDropdown
               v-model="selectedSize"
-              :options="product.sizes"
-              placeholder="Выберите размер"
+              :options="product.sizes" 
             />
           </div>
 
@@ -170,7 +171,7 @@ const currentImage = ref('')      // активная картинка (desktop)
 const currentIndex = ref(0)       // активный индекс (mobile slider)
 const sliderRef = ref(null)       // контейнер слайдера (mobile)
 
-const selectedSize = ref(null)    // выбранный размер
+const selectedSize = ref('')   // выбранный размер
 const quantity = ref(1)           // количество
 
 // --- АДАПТИВ
@@ -204,7 +205,7 @@ async function loadProductByRouteId() {
     currentImage.value = product.value.images?.[0] || ''
 
     // init размер
-    selectedSize.value = product.value.sizes?.[0] ?? null
+    selectedSize.value = product.value.sizes?.[0] ?? '' 
 
     // init qty
     quantity.value = 1
@@ -226,6 +227,7 @@ watch(() => route.params.id, loadProductByRouteId)
 /** Desktop: клик по миниатюре */
 function changeImage(img) {
   currentImage.value = img
+  console.log(product.sizes)
 }
 
 /** Mobile: переход к слайду по индексу */

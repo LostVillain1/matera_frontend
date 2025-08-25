@@ -1,5 +1,7 @@
 <template>
+  <AppHeader></AppHeader>
   <div class="favorites-page">
+    
     <!-- Заголовок страницы -->
     <h1 class="title">Избранное</h1>
 
@@ -14,7 +16,7 @@
         v-for="product in favorites"
         :key="product.id"
         :product="product"
-        @remove="removeFromFavorites"
+        @remove="removeFromFavourites"
         @add-to-cart="addToCart"
       />
     </div>
@@ -28,6 +30,7 @@
       <button class="to-cart-button">Перейти в корзину</button>
     </div>
   </div>
+  <AppFooter></AppFooter>
 </template>
 
 <script setup>
@@ -35,6 +38,8 @@
 import { computed } from 'vue';
 import { useFavouriteStore } from '@/stores/useFavouriteStore';
 import FavoriteItem from '@/components/Favourite/FavouriteItem.vue';
+import AppHeader from '@/components/AppHeader/AppHeader.vue';
+import AppFooter from '@/components/AppFooter/AppFooter.vue';
 
 // Инициализируем хранилище избранного
 const store = useFavouriteStore();
@@ -43,8 +48,9 @@ const store = useFavouriteStore();
 const favorites = computed(() => store.favorites);
 
 // Метод удаления товара из избранного
-function removeFromFavorites(id) {
-  store.removeFromFavorites(id);
+function removeFromFavourites(id) {
+  store.removeFromFavourites(id);
+  console.log('test')
 }
 
 // Метод добавления товара в корзину (заглушка на будущее)
@@ -59,71 +65,5 @@ const totalPrice = computed(() => {
 </script>
 
 <style scoped>
-/* Основной контейнер страницы */
-.favorites-page {
-  padding: 16px;
-  background-color: #f4f0e6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Заголовок страницы */
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 16px;
-  color: #3d1f28;
-}
-
-/* Сообщение о пустом списке */
-.empty-message {
-  text-align: center;
-  font-size: 18px;
-  color: #999;
-  margin-top: 48px;
-}
-
-/* Контейнер со списком товаров */
-.favorites-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex-grow: 1;
-}
-
-/* Блок итоговой стоимости и кнопки */
-.summary {
-  border-top: 1px solid #ccc;
-  padding-top: 16px;
-  margin-top: auto;
-}
-
-/* Строка "Итого" с суммой */
-.total {
-  display: flex;
-  justify-content: space-between;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #3d1f28;
-}
-
-/* Кнопка перехода в корзину */
-.to-cart-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #3d1f28;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.to-cart-button:hover {
-  background-color: #522934;
-}
+@import '@/views/Favourites.scss'
 </style>

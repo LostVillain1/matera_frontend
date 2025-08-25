@@ -1,7 +1,7 @@
 <template>
   <div class="favorite-item">
     <div class="image-wrapper" @click="toggleDetails">
-      <img :src="product.image" :alt="product.name" />
+      <img :src="product.images[0]" :alt="product.name" />
     </div>
 
     <div class="details">
@@ -9,7 +9,7 @@
       <p class="name">{{ product.name }}</p>
       <p class="price">{{ product.price.toLocaleString() }} ₽</p>
 
-      <div class="colors" v-if="!isMobile || showDetails">
+      <!-- <div class="colors" v-if="!isMobile || showDetails">
         <span
           v-for="color in product.colors"
           :key="color.name"
@@ -18,7 +18,7 @@
           :class="{ active: selectedColor === color.name }"
           @click="selectColor(color.name)"
         />
-      </div>
+      </div> -->
 
       <div class="actions" v-if="!isMobile || showDetails">
         <select v-model="selectedSize">
@@ -49,7 +49,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-defineProps({
+const props = defineProps({
   product: Object
 })
 
@@ -63,13 +63,13 @@ const showDetails = ref(false)
 const isMobile = computed(() => window.innerWidth < 768)
 
 onMounted(() => {
-  selectedColor.value = product.colors[0]?.name || ''
-  selectedSize.value = product.sizes[0] || ''
+  // selectedColor.value = props.product.colors[0]?.name || ''
+  selectedSize.value = props.product.sizes[0] || ''
 })
 
-function selectColor(colorName) {
-  selectedColor.value = colorName
-}
+// function selectColor(colorName) {
+//   selectedColor.value = colorName
+// }
 
 function increase() {
   quantity.value++

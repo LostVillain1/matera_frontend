@@ -1,15 +1,7 @@
 <template>
     <div class="mp__wrapper">
         <app-header></app-header>
-        <!-- <div class="bg__wrapper">
-            <img src="@/assets/mat_bg_mob.png" alt="" v-if="isMobile">
-            <img src="@/assets/mat_bg_tablet.png" alt="" v-if="isTablet">
-            <div class="logo-text__wrapper">              
-                <main-page-mobile v-if="isMobile"></main-page-mobile>
-                <main-page-tablet v-if="isTablet"></main-page-tablet>
-            </div>
-        </div> -->
-        <Slider :slides="slides" :interval="4000" />
+        <Slider :slides="slides" :interval="3000" />
     </div>
     <AppFooter></AppFooter>
 </template>

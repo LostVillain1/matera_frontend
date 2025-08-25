@@ -1,10 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Футболка женская",
+    "name": "Худи женское",
     "code": "W-TSHIRT-001",
     "price": 1999,
     "category": "Женщинам",
+    "description": "Удобная базовая футболка из хлопка.",
+    "images": ["/images/hoodie_bordo.jpg", "/images/hoodie_yellow.jpg"],
+    "sizes": ["XS", "S", "M", "L", "XL"]
+  },
+  {
+    "id": 2,
+    "name": "Худи мужское",
+    "code": "W-TSHIRT-001",
+    "price": 1999,
+    "category": "Мужчинам",
+    "description": "Удобная базовая футболка из хлопка.",
+    "images": ["/images/hoodie_yellow.jpg","/images/hoodie_bordo.jpg" ],
+    "sizes": ["XS", "S", "M", "L", "XL"]
+  },
+  {
+    "id": 3,
+    "name": "Худи детское",
+    "code": "W-TSHIRT-001",
+    "price": 1999,
+    "category": "Детям",
     "description": "Удобная базовая футболка из хлопка.",
     "images": ["/images/hoodie_bordo.jpg", "/images/hoodie_yellow.jpg"],
     "sizes": ["XS", "S", "M", "L", "XL"]
