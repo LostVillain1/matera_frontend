@@ -75,6 +75,43 @@ margin-bottom: 15px;
   }
 }
 
+
+///// Выбор размера 
+
+/* Контейнер списка размеров */
+.sizes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* расстояние между кнопками */
+  margin-top: 8px;
+  justify-content: space-between;
+}
+
+/* Базовый стиль кнопки */
+.size-btn {
+  background: none;              /* убираем фон */
+  border: none;                  /* убираем стандартную рамку */
+  border-bottom: 2px solid transparent; /* линия появится только у активного */
+  padding: 6px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #39213d;                /* тёмный фиолетовый текст */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* При наведении — слегка затемняем текст */
+.size-btn:hover {
+  color: #2a182d;
+}
+
+/* Активная кнопка (выбранный размер) */
+.size-btn.active {
+  border-bottom-color: #39213d;  /* подчёркивание снизу */
+  font-weight: 600;
+}
+
+
 /* Desktop gallery */
 .gallery-desktop {
   display: grid;

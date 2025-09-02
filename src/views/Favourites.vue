@@ -12,7 +12,7 @@
 
     <!-- Если есть товары — рендерим список карточек -->
     <div v-else class="favorites-list">
-      <FavoriteItem
+      <FavouriteItem
         v-for="product in favorites"
         :key="product.id"
         :product="product"
@@ -34,36 +34,37 @@
 </template>
 
 <script setup>
-// Импорт API Vue и Pinia store
-import { computed } from 'vue';
-import { useFavouriteStore } from '@/stores/useFavouriteStore';
-import FavoriteItem from '@/components/Favourite/FavouriteItem.vue';
-import AppHeader from '@/components/AppHeader/AppHeader.vue';
-import AppFooter from '@/components/AppFooter/AppFooter.vue';
+// Vue + Pinia
+import { computed } from 'vue'
+import { useFavouriteStore } from '@/stores/useFavouriteStore'
 
-// Инициализируем хранилище избранного
-const store = useFavouriteStore();
+// Компоненты
+import FavouriteItem from '@/components/Favourite/FavouriteItem.vue'
+import AppHeader from '@/components/AppHeader/AppHeader.vue'
+import AppFooter from '@/components/AppFooter/AppFooter.vue'
 
-// Создаём реактивную ссылку на массив избранных товаров
-const favorites = computed(() => store.favorites);
+// Инициализируем стор избранного
+const store = useFavouriteStore()
 
-// Метод удаления товара из избранного
+// Получаем список товаров
+const favorites = computed(() => store.favorites)
+
+// Удаление из избранного
 function removeFromFavourites(id) {
-  store.removeFromFavourites(id);
-  console.log('test')
+  store.removeFromFavourites(id)
 }
 
-// Метод добавления товара в корзину (заглушка на будущее)
+// Добавление в корзину (пока заглушка)
 function addToCart(product) {
-  console.log('Добавить в корзину:', product);
+  console.log('Добавить в корзину:', product)
 }
 
-// Вычисление общей стоимости товаров в избранном
+// Общая сумма
 const totalPrice = computed(() => {
-  return store.favorites.reduce((sum, p) => sum + (p.price * (p.quantity || 1)), 0);
-});
+  return store.favorites.reduce((sum, p) => sum + (p.price * (p.quantity || 1)), 0)
+})
 </script>
 
 <style scoped>
-@import '@/views/Favourites.scss'
+@import '@/views/Favourites.scss';
 </style>

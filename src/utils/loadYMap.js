@@ -1,34 +1,31 @@
 // src/utils/loadYMap.js
-// Минималистичный загрузчик API Яндекс.Карт 2.1.
+// Минималистичный загрузчик API Яндекс.Карт 2.1
 // Грузим скрипт один раз; повторные вызовы получают тот же промис.
 
 let loading = null
 
 export async function loadYMap() {
-  // Уже грузится или загружен — просто ждём.
-  if (loading) return await loading
+  // Если уже загружали скрипт — возвращаем тот же промис
+  if (loading) return loading
 
-  // Если API уже в окне (например, добавлен на другой странице)
-  if (window.ymaps?.ready) {
-    await new Promise(res => window.ymaps.ready(res))
-    return window.ymaps
-  }
+  loading = new Promise((resolve, reject) => {
+    // Проверяем, что window.ymaps уже доступен (например, после повторного вызова)
+    if (window.ymaps) {
+      resolve(window.ymaps)
+      return
+    }
 
-  // Иначе создаём единственный процесс загрузки.
-  loading = (async () => {
-    await new Promise((resolve, reject) => {
-      const s = document.createElement('script')
-      s.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU'
-      s.async = true
-      s.defer = true
-      s.onload = resolve
-      s.onerror = () => reject(new Error('Не удалось загрузить Yandex Maps API'))
-      document.head.appendChild(s)
-    })
-    if (!window.ymaps?.ready) throw new Error('Yandex Maps API не инициализировался')
-    await new Promise(res => window.ymaps.ready(res))
-    return window.ymaps
-  })()
+    // Создаём тег <script> и грузим API
+    const script = document.createElement("script")
+    script.src =
+      "https://api-maps.yandex.ru/2.1/?apikey=2da860d5-4778-4e4e-8824-8d8ac52881dd&lang=ru_RU"
+    script.async = true
+    script.onload = () => {
+      window.ymaps.ready(() => resolve(window.ymaps))
+    }
+    script.onerror = () => reject(new Error("Не удалось загрузить API Яндекс.Карт"))
+    document.head.appendChild(script)
+  })
 
-  return await loading
+  return loading
 }

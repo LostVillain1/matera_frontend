@@ -1,85 +1,74 @@
 .favorite-item {
   display: flex;
   gap: 12px;
-  padding: 16px;
-  border-bottom: 1px solid #ccc;
-  position: relative;
+  padding: 12px;
   background: #f8f5ea;
+  border-radius: 8px;
+  align-items: flex-start;
 }
 
+/* изображение */
 .image-wrapper img {
-  width: 70px;
-  height: auto;
+  width: 72px;
+  height: 72px;
   object-fit: cover;
+  border-radius: 6px;
+}
+
+/* текстовые поля */
+.details { flex: 1; }
+.code { font-size: 12px; color: #8a7d85; margin: 0 0 6px; }
+.name { font-weight: 600; margin: 0 0 6px; }
+.price { margin: 0 0 8px; }
+
+/* --- MOBILE SLIDER --- */
+.mobile-slider {
+  margin-top: 8px;
+  overflow: hidden;
+  position: relative;
+  touch-action: pan-y; /* разрешаем вертикальный скролл страницы */
+}
+
+.slider-track {
+  display: flex;
+  width: 200%; /* 2 слайда */
+  will-change: transform;
+}
+
+.slide {
+  width: 100%;
+  padding: 8px 0;
+  box-sizing: border-box;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* slide с контролами */
+.slide-controls { display: flex; gap: 12px; align-items: center; }
+
+/* основные кнопки */
+.main-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+  background: #F3F1E2;
+  border: 1px solid #39213D;
+  padding: 6px 8px;
   border-radius: 6px;
   cursor: pointer;
 }
 
-.details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+/* подсказка */
+.swipe-hint { font-size: 12px; color: #8a7d85; }
 
-.name {
-  font-weight: 600;
-}
+/* dots */
+.dots { margin-top: 8px; display: flex; justify-content: center; gap: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #d5d5d5; border: none; }
+.dot.active { background: #39213D; }
 
-.price {
-  margin: 4px 0;
-  font-size: 1.1em;
-}
-
-.colors {
-  display: flex;
-  gap: 8px;
-  margin: 8px 0;
-}
-
-.color {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid #aaa;
-  cursor: pointer;
-}
-
-.color.active {
-  border: 2px solid #000;
-}
-
-.actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin: 8px 0;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.quantity-control button {
-  width: 24px;
-  height: 24px;
-  font-weight: bold;
-}
-
-.icons {
-  display: flex;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+/* --- DESKTOP: показываем контролы сразу и скрываем mobile-slider --- */
+@media (min-width: 769px) {
+  .mobile-slider { display: none; }
+  .desktop-controls { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+  .desktop-actions { display: flex; gap: 8px; }
 }

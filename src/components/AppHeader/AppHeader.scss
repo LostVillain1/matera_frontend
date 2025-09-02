@@ -1,4 +1,4 @@
-a {
+    a {
   color: inherit; /* Наследовать цвет текста */
   text-decoration: none; /* Убрать подчеркивание */
 }
@@ -20,8 +20,10 @@ a:visited {
     font-family: 'PT Serif', serif;
     // font-style: italic;
     font-size: 22px;        
-    background-color: #18101F
-    // background-image: url('@/assets/velur.png');
+    // background-color: #18101F;
+    // background-clip: padding-box;
+    // border-bottom: 2px dashed white;
+    background-image: url('@/assets/velur.png');
 }
 
 .header__options {
@@ -46,18 +48,55 @@ a:visited {
     position: relative;
 }
 
+/////// Анимация 
 
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+.menu-enter-active,
+.menu-leave-active {
+  transition: 
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    backdrop-filter 0.7s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.menu-enter-from,
+.menu-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-20px) scale(0.95);
+  backdrop-filter: blur(0px);
 }
+
+.menu-enter-to,
+.menu-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  backdrop-filter: blur(10px);
+}
+
+.bg-menu_options.menu-enter-active a,
+.bg-menu_options.menu-leave-active a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Задержка для каждой ссылки */
+.bg-menu_options a:nth-child(1) { transition-delay: 0.1s; }
+.bg-menu_options a:nth-child(2) { transition-delay: 0.2s; }
+.bg-menu_options a:nth-child(3) { transition-delay: 0.3s; }
+.bg-menu_options a:nth-child(4) { transition-delay: 0.4s; }
+.bg-menu_options a:nth-child(5) { transition-delay: 0.5s; }
+
+/* Для плавного скрытия меню при закрытии - обратная последовательность задержек */
+.bg-menu_options.menu-leave-active a {
+  transition-delay: 0s;
+}
+
+.bg-menu_options.menu-leave-active a:nth-child(1) { transition-delay: 0.05s; }
+.bg-menu_options.menu-leave-active a:nth-child(2) { transition-delay: 0.1s; }
+.bg-menu_options.menu-leave-active a:nth-child(3) { transition-delay: 0.15s; }
+.bg-menu_options.menu-leave-active a:nth-child(4) { transition-delay: 0.2s; }
+.bg-menu_options.menu-leave-active a:nth-child(5) { transition-delay: 0.25s; }
+
+
 
 ///////
 
@@ -73,14 +112,31 @@ a:visited {
     z-index: 10;
     display: flex;
     flex-direction: column;
+    gap: 20px;
     width: 100vw;
     padding-left: 20px;
     position: absolute;
     left: 0;
     color: #FFFCDC;
-    background-color: #18101F;
-    // background-image: url('@/assets/bg_velur.png');
+    // background-color: #18101F;
+    background-image: url('@/assets/bg_velur.png');
+    border-top: 1px solid white
 }
+
+.bg-menu_options a:nth-child(1){
+    padding-top: 30px;
+}
+
+.bg-menu_options a:nth-child(5){
+    padding-bottom: 40px;
+}
+
+.bg-menu_options a {
+    // text-align: center;
+    padding-bottom: 10px;
+}
+
+
 
 .bg-menu_options .option {
     padding-left: 20px;

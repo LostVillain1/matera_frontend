@@ -7,18 +7,21 @@
         <p>{{ product.code }}</p>
         <p>{{ product.price }} ₽</p>        
     </router-link>
-    <fav-monogram 
-    v-if="!isDesktop" 
-    class="monogramm" 
-    @click="toggleFavourite(product)"
-    />
-    <fav-desc
-      v-else 
+    <!-- Мобильная версия -->
+    <component
+      v-if="!isDesktop"
+      :is="isFavourite ? FavMobFilled : FavMonogram"
       class="monogramm"
-      @click="toggleFavourite(product)"
+      @click="toggleFavourite"
     />
-    <!-- <fav-monogram class="monogramm" @click="toggleFavourite(product)"></fav-monogram> -->
-     <!-- <button @click="toggleFavourite(product)">Test</button> -->
+    
+    <!-- Десктопная версия -->
+    <component
+      v-else
+      :is="isFavourite ? FavDescFilled : FavDesc"
+      class="monogramm"
+      @click="toggleFavourite"
+    />
   </div>   
 </template>
     
@@ -26,8 +29,10 @@
 import { useFavouriteStore } from '@/stores/useFavouriteStore'
 import FavMonogram from './icons/FavMonogram.vue'
 import { useWindowSize } from '@vueuse/core'
-import  FavDesc from './icons/FavDesc.vue'
-import { onMounted, defineProps, computed } from 'vue';
+import FavDesc from './icons/FavDesc.vue'
+import { onMounted, defineProps, computed, ref } from 'vue';
+import FavMobFilled from './icons/FavMobFilled.vue';
+import FavDescFilled from './icons/FavDescFilled.vue';
 
 // Пропс - товар из каталога
 const { product } = defineProps({
@@ -35,24 +40,35 @@ const { product } = defineProps({
 });
 
 const favouriteStore = useFavouriteStore()
+const { width } = useWindowSize();
 
-function toggleFavourite(product) {
-  if (favouriteStore.isFavourite(product.id)) {
-    favouriteStore.removeFromFavourites(product.id)
-    console.log('TEST')
+// Используем ref для принудительного обновления компонента
+const forceUpdate = ref(0);
+
+const isFavourite = computed(() => {
+  // Добавляем forceUpdate.value в зависимость, чтобы принудительно обновлять computed
+  return favouriteStore.isFavourite(product.id);
+});
+
+function toggleFavourite() {
+  if (isFavourite.value) {
+    favouriteStore.removeFromFavourites(product.id);
+    console.log('Removed from favorites');
   } else {
-    console.log('TEST')
-    favouriteStore.addToFavourites(product)
+    favouriteStore.addToFavourites(product);
+    console.log('Added to favorites');
   }
-  // console.log(product)
+  
+  // Принудительно обновляем компонент
+  forceUpdate.value++;
 }
 
-const { width } = useWindowSize();
 const isDesktop = computed(() => width.value >= 1024);
 
-onMounted( () => console.log(product))
-
-
+onMounted(() => {
+  console.log('Product:', product);
+  console.log('Is favourite:', favouriteStore.isFavourite(product.id));
+});
 </script>
 
 <style scoped> 
@@ -91,6 +107,10 @@ position: relative;
   right: 0;
   transform: translate(-10px, 10px);
 } 
+
+.monogramm svg {
+  pointer-events: all;
+}
 
 /* Медиа-запросы для адаптивности */
 @media (min-width: 768px) {

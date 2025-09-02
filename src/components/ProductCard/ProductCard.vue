@@ -79,12 +79,26 @@
           </div>         
 
           <!-- Выбор размера — через кастомный dropdown, без нативного <select> -->
-          <div class="product-sizes" v-if="product.sizes?.length">
+          <!-- <div class="product-sizes" v-if="product.sizes?.length">
             <p class="label">Размер</p>
             <BaseDropdown
               v-model="selectedSize"
               :options="product.sizes" 
             />
+          </div> -->
+
+          <div class="product-sizes" v-if="product.sizes?.length">
+            <p class="label">Размер</p>
+            <div class="sizes-list">
+              <button
+                v-for="(size, index) in product.sizes"
+                :key="index"
+                :class="['size-btn', { active: selectedSize === size }]"
+                @click="selectedSize = size"
+              >
+                {{ size }}
+              </button>
+            </div>
           </div>
 
           <!-- Количество (по макету — на десктопе, как было) -->
@@ -129,6 +143,20 @@
 
     <!-- Фолбэк, если товар не найден -->
     <div v-else class="not-found">Товар не найден</div>
+
+    <!-- === MODAL: вставка модального окна (добавлено) ===
+         Компонент рендерится через v-if, родитель управляет showAddToCartModal.
+         Модалка сама эмитит 'close' и 'confirm'. -->
+    <AddToCartModal
+      v-if="showAddToCartModal"
+      :product="product"
+      @close="closeAddToCartModal"
+      @confirm="() => { 
+        /* родитель: при confirm — закрываем модалку и переходим в корзину */ 
+        closeAddToCartModal(); 
+        router.push({ name: 'cart' }) 
+      }"
+    />
   </section>
 </template>
 
@@ -143,6 +171,11 @@
  * - Совместимость со стором корзины:
  *   addToCart(product, { selectedSize, quantity }) — image НЕ передаём,
  *   в CartItem показывается product.images[0].
+ *
+ * Внесены минимальные правки для интеграции AddToCartModal:
+ *  - при нажатии «В корзину» товар добавляется в корзину (как было) и затем открывается модалка.
+ *  - при нажатии «Быстрая покупка» — добавление + переход в корзину без показa модалки
+ *    (чтобы избежать мерцания модалки при немедленной навигации).
  */
 
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
@@ -156,6 +189,7 @@ import { useCartStore } from '@/stores/useCartStore'
 // компоненты
 import AccordionProduct from './AccordionProduct.vue' // используется как <accordion-product>
 import BaseDropdown from '@/components/ProductCard/BaseDropdown.vue' // поправь путь под свой проект
+import AddToCartModal from '@/components/ProductCard/AddToCartModal.vue'
 
 // --- РОУТИНГ
 const route = useRoute()
@@ -174,9 +208,15 @@ const sliderRef = ref(null)       // контейнер слайдера (mobile
 const selectedSize = ref('')   // выбранный размер
 const quantity = ref(1)           // количество
 
+
+// === MODAL STATE: показывает/скрывает модалку ===
+const showAddToCartModal = ref(false) 
+
 // --- АДАПТИВ
 const { width } = useWindowSize()
 const isDesktop = computed(() => width.value >= 1024) // брейкпоинт для десктопа — подстрой под свой
+
+
 
 
 // --- ДОСТУПНОСТЬ ДОБАВЛЕНИЯ В КОРЗИНУ
@@ -269,10 +309,11 @@ function formatInstallment(price) {
 
 /**
  * «В корзину»:
-
- *   а превью в корзине берётся как product.images[0] в CartItem.  **/
-
-
+ *
+ * Я **не меняю** существующую логику добавления — оставляю вызов cartStore.addToCart,
+ * но после успешного добавления открываю модалку (чтобы показать пользователю подтверждение).
+ * Это минимальное вмешательство в существующее поведение.
+ */
 function onAddToCart() {
   if (!product.value) return
   if (!canAddToCart.value) {
@@ -280,15 +321,49 @@ function onAddToCart() {
     return
   }
 
+  // --- Существующая логика (оставлена как есть) ---
   cartStore.addToCart(product.value, {
     selectedSize: selectedSize.value,  // строка или null
     quantity: quantity.value           // число
   })
+
+  // === MODAL INTEGRATION: открываем модалку после добавления ===
+  // Это добавление только связано с UI (открыть уведомляющую модалку),
+  // бизнес-логика добавления в корзину не изменилась.
+  openAddToCartModal()
 }
 
-/** «Быстрая покупка» = добавить + перейти в корзину */
+// ------------------------------ Работа с модалкой ------------------------------
+
+function openAddToCartModal() { 
+  showAddToCartModal.value = true
+}
+
+function closeAddToCartModal() {
+  showAddToCartModal.value = false
+}
+
+
+/** «Быстрая покупка» = добавить + перейти в корзину
+ *
+ * Изменение: чтобы избежать показа модалки если пользователь сразу переходит в корзину,
+ * здесь выполняем addToCart + router.push напрямую (не вызывая onAddToCart),
+ * т.е. поведение добавления и навигации сохраняется, но мы предотвращаем мерцание модалки.
+ */
 function onBuyNow() {
-  onAddToCart()
+  if (!product.value) return
+  if (!canAddToCart.value) {
+    alert('Выберите размер')
+    return
+  }
+
+  // добавляем в корзину (как раньше)
+  cartStore.addToCart(product.value, {
+    selectedSize: selectedSize.value,
+    quantity: quantity.value
+  })
+
+  // сразу переходим в корзину (как и раньше)
   router.push({ name: 'cart' })
 }
 </script>

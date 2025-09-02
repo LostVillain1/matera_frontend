@@ -45,6 +45,7 @@
     </div>
 
     <!-- Карта -->
+    <div id="yandex-map" class="map-container"></div>
     <div>
       <h2>Выберите пункт выдачи заказа (ПВЗ)</h2>
       <div id="map" style="width: 100%; height: 400px;"></div>
@@ -76,8 +77,8 @@ import CartSummary from './CartSummary.vue'
 
 import { useCartStore } from '@/stores/useCartStore'
 import { storeToRefs } from 'pinia'
-import { ref, onMounted } from 'vue'
-// import { loadYmap } from '@/utils/loadYMap'
+import { ref, onMounted,onBeforeUnmount } from 'vue'
+import { loadYMap } from '@/utils/loadYMap'
 
 
 
@@ -94,43 +95,41 @@ let mapInstance = null                // Сюда запишем объект к
 let placemark = null                  // Для отметки выбранного ПВЗ
 
 // --- Функция инициализации карты ---
-async function initMap() {
+onMounted(async () => {
   try {
-    // Ждем загрузки API Яндекс.Карт (из утилиты loadYmap.js)
-    const ymaps = await loadYmap()
+    // Загружаем API
+    const ymaps = await loadYMap()
 
-    // Создаем карту и помещаем её в контейнер с id="map"
-    mapInstance = new ymaps.Map('map', {
-      center: [55.751574, 37.573856], // Москва по умолчанию
-      zoom: 9
+    // Создаём карту внутри контейнера с id="yandex-map"
+    mapInstance = new ymaps.Map("yandex-map", {
+      center: [55.751244, 37.618423], // Москва (по умолчанию)
+      zoom: 10,
+      controls: ["zoomControl", "fullscreenControl"],
     })
 
-    // Пример: добавим клик по карте для выбора ПВЗ
-    mapInstance.events.add('click', function (e) {
-      const coords = e.get('coords')
-
-      // Если метка уже есть → переносим её
-      if (placemark) {
-        placemark.geometry.setCoordinates(coords)
-      } else {
-        // Иначе создаем новую метку
-        placemark = new ymaps.Placemark(coords, {
-          balloonContent: 'Выбранный ПВЗ'
-        }, {
-          draggable: true
-        })
-        mapInstance.geoObjects.add(placemark)
+    // Для проверки добавим тестовую метку (можно удалить потом)
+    const testPlacemark = new ymaps.Placemark(
+      [55.751244, 37.618423], // Координаты
+      {
+        balloonContent: "Тестовая точка", // Что будет в попапе
+      },
+      {
+        preset: "islands#redDotIcon", // Иконка метки
       }
-
-      // Здесь обычно мы бы вызывали API СДЭК для получения кода ПВЗ по координатам.
-      // Пока сохраняем координаты как выбранный ПВЗ.
-      selectedPickupPoint.value = coords
-    })
+    )
+    mapInstance.geoObjects.add(testPlacemark)
   } catch (error) {
-    console.error('Ошибка инициализации карты:', error)
+    console.error("Ошибка при инициализации карты:", error)
   }
-}
+})
 
+onBeforeUnmount(() => {
+  // При удалении компонента очищаем карту, чтобы не было утечек памяти
+  if (mapInstance) {
+    mapInstance.destroy()
+    mapInstance = null
+  }
+})
 
 
 // Логика работы с корзиной

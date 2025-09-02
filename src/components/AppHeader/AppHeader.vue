@@ -2,14 +2,13 @@
     <div class="header__wrapper">
         <div class="burger__menu" v-if="isMobile || isTablet">
             <BurgerMenuIcon @click="toggleMenu" class="burger-icon" :class="{ 'open': isMenuOpen }"></BurgerMenuIcon>
-            <transition name="fade">
+            <transition name="menu">
                 <div v-if="isMenuOpen" class="bg-menu_options">
                     <router-link to="/catalog">Каталог</router-link>
                     <router-link to="/about">О бренде</router-link>
                     <router-link to="/boutique">Бутики</router-link>
                     <router-link to="/cart">Корзина</router-link>
                     <router-link to="/favourites">Избранное</router-link>                  
-                    
                 </div>
             </transition>
         </div>
@@ -23,7 +22,8 @@
         </div>
         <div class="mat__logo center">
             <router-link to="/">
-                <LogoHeader></LogoHeader>
+                <!-- <LogoHeader></LogoHeader> -->
+                 <MateraMob></MateraMob>
             </router-link>           
         </div>
         <div class="right-side_wrapper right">            
@@ -52,6 +52,8 @@ import LogoHeader from '../icons/LogoHeader.vue';
 import FavouritesHeader from '../icons/FavouritesHeader.vue';
 import CartHeader from '../icons/CartHeader.vue';
 import { useBreakpoints } from '@/composables/useBreakpoints';
+import MateraMob from '../icons/MateraMob.vue';
+
 
 //Работа с брейкпонйтами из композаблы
 const breakpoints = useBreakpoints();
