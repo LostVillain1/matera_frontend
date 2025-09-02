@@ -3,10 +3,12 @@
     <!-- Рендерим только когда product найден -->
     <div v-if="product">
       <!-- Хлебные крошки (как было) -->
-      <nav class="nav">
-        <span>Главная // </span>
-        <span>Каталог </span>
-      </nav>
+      <router-link to="/catalog">
+        <nav class="nav">
+          <span class="text">Главная // </span>
+          <span class="text">Каталог </span>
+        </nav>
+      </router-link>
 
       <!-- Заголовок товара (как было) -->
       <div class="product-title">

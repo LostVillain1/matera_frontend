@@ -13,6 +13,7 @@
   text-align: center;
   margin-bottom: 1rem;
   font-family: 'PT Serif', serif;
+  letter-spacing: 4px;
 }
 
 /* Табы выбора категорий */
@@ -35,6 +36,8 @@
   padding: 0.3rem 0.6rem;
   font-family: 'Georgia', serif;
   position: relative;
+  letter-spacing: 2px;
+  font-size: 16px;
 }
 
 /* Активная кнопка таба */
@@ -73,6 +76,16 @@
 
   .catalog__title {
     font-size: 2.2rem;
+    letter-spacing: 8px;
+  }
+  
+  .catalog__tabs {
+    gap: 80px;
+  }
+
+  .catalog__tab {
+    letter-spacing: 6px;
+    font-size: 18px;
   }
 
   .catalog__grid {

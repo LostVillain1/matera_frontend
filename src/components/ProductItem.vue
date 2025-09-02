@@ -3,9 +3,9 @@
    <div class="product-item__wrapper">
     <router-link :to="`/product/${product.id}`" class="item">
         <img :src="product.images[0]" :alt="product.name" />
-        <p>{{ product.name }}</p>
-        <p>{{ product.code }}</p>
-        <p>{{ product.price }} ₽</p>        
+        <p class="text">{{ product.name }}</p>
+        <p class="text">{{ product.code }}</p>
+        <p class="text">{{ product.price }} ₽</p>        
     </router-link>
     <!-- Мобильная версия -->
     <component
@@ -100,6 +100,10 @@ position: relative;
   margin-bottom: 8px;
 }
 
+.text {
+  letter-spacing: 2px;
+}
+
 .monogramm{
   z-index: 1;
   position: absolute;
@@ -118,7 +122,10 @@ position: relative;
 }
 
 @media (min-width: 1024px) {
-  
+  .text {
+    font-size: 20px;
+    letter-spacing: 6px;
+  }
 }
 
 
