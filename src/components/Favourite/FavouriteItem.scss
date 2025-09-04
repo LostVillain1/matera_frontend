@@ -7,6 +7,11 @@
   align-items: flex-start;
 }
 
+.right
+.name {
+  color: #39213D
+}
+
 /* изображение */
 .image-wrapper img {
   width: 72px;
@@ -18,8 +23,8 @@
 /* текстовые поля */
 .details { flex: 1; }
 .code { font-size: 12px; color: #8a7d85; margin: 0 0 6px; }
-.name { font-weight: 600; margin: 0 0 6px; }
-.price { margin: 0 0 8px; }
+.name { font-weight: 600; margin: 0 0 6px; color: #39213D }
+.price { margin: 0 0 8px; color: #39213D}
 
 /* --- MOBILE SLIDER --- */
 .mobile-slider {

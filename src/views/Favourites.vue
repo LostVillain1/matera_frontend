@@ -8,8 +8,6 @@
       Вы пока ничего не добавили
     </p>
 
-    <!-- ✦ ПРАВКА: общий layout-контейнер.
-         На мобиле он «плоский», на десктопе превращается в 2 колонки -->
     <div v-else class="favs-layout">
       <!-- левая колонка: список товаров -->
       <div class="favorites-list">
@@ -17,13 +15,11 @@
           v-for="product in favorites"
           :key="product.id"
           :product="product"
-          @add-to-cart="addToCart"
         />
       </div>
 
-      <!-- ✦ ПРАВКА: правая колонка – инфо-блоки (десктоп) + итоги -->
+      <!-- правая колонка: инфо + итоги -->
       <aside class="sidebar">
-        <!-- инфо-аккордеон скрыт на мобильном/планшете, показывается на десктопе -->
         <div class="info-accordion">
           <details>
             <summary>Информация о доставке</summary>
@@ -45,13 +41,19 @@
           </details>
         </div>
 
-        <!-- итоги (на мобиле — под списком; на десктопе — карточка справа) -->
         <div class="summary">
           <div class="total">
             <span>Итого</span>
             <span>{{ totalPrice }} ₽</span>
           </div>
-          <button class="to-cart-button">Перейти в корзину</button>
+          <!-- одна общая кнопка -->
+          <button
+            class="to-cart-button"
+            :disabled="favorites.length === 0"
+            @click="addAllToCart"
+          >
+            Перейти в корзину
+          </button>
         </div>
       </aside>
     </div>
@@ -64,6 +66,7 @@
 import { computed } from 'vue'
 import { useFavouriteStore } from '@/stores/useFavouriteStore'
 import { useCartStore } from '@/stores/useCartStore'
+import { useRouter } from 'vue-router' // ✦ ПРАВКА: для перехода в корзину
 
 import FavouriteItem from '@/components/Favourite/FavouriteItem.vue'
 import AppHeader from '@/components/AppHeader/AppHeader.vue'
@@ -71,30 +74,36 @@ import AppFooter from '@/components/AppFooter/AppFooter.vue'
 
 const favouritesStore = useFavouriteStore()
 const cartStore = useCartStore()
+const router = useRouter() // ✦ ПРАВКА
 
 const favorites = computed(() => favouritesStore.favorites)
 
-function addToCart(favouriteItem) {
-  const product = {
-    id: favouriteItem.id,
-    name: favouriteItem.name,
-    price: favouriteItem.price,
-    code: favouriteItem.code,
-    image: favouriteItem.image || favouriteItem.images?.[0] || '',
-    images: favouriteItem.images || (favouriteItem.image ? [favouriteItem.image] : []),
-    category: favouriteItem.category,
-    description: favouriteItem.description,
-    sizes: favouriteItem.sizes,
-    colors: favouriteItem.colors
+function addAllToCart() {
+  for (const fav of favorites.value) {
+    const product = {
+      id: fav.id,
+      name: fav.name,
+      price: fav.price,
+      code: fav.code,
+      image: fav.image || fav.images?.[0] || '',
+      images: fav.images || (fav.image ? [fav.image] : []),
+      category: fav.category,
+      description: fav.description,
+      sizes: fav.sizes,
+      colors: fav.colors
+    }
+
+    const options = {
+      selectedColor: fav.selectedColor ?? null,
+      selectedSize: fav.selectedSize ?? fav.sizes?.[0] ?? null,
+      quantity: Number(fav.quantity ?? 1) || 1
+    }
+
+    cartStore.addToCart(product, options)
   }
 
-  const options = {
-    selectedColor: favouriteItem.selectedColor ?? null,
-    selectedSize: favouriteItem.selectedSize ?? favouriteItem.sizes?.[0] ?? null,
-    quantity: Number(favouriteItem.quantity ?? 1) || 1
-  }
-
-  cartStore.addToCart(product, options)
+  // ✦ ПРАВКА: после добавления — редирект в корзину
+  router.push('/cart')
 }
 
 const totalPrice = computed(() =>

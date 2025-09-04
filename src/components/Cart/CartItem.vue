@@ -1,150 +1,158 @@
 <template>
-  <div class="cart-item">
-    <!-- Изображение товара -->
-    <!-- Сохранён класс cart-item__image как в твоей версии,
-         но src теперь берётся из computed productImage (см. скрипт) -->
-    <img :src="productImage" :alt="item.product.name" class="cart-item__image" />
-
-    <!-- Информация о товаре -->
-    <div class="cart-item__info">
-      <h3 class="cart-item__name">{{ item.product.name }}</h3>
-      <p class="cart-item__code">Код: {{ item.product.code }}</p>
-
-      <!-- Выбор размера -->
-      <!-- ВАЖНО: v-for теперь ссылается на item.product.sizes (как в шаблоне) -->
-      <div class="cart-item__option">
-        <label for="size-select">Размер:</label>
-        <select
-          id="size-select"
-          v-model="localOptions.size"
-          @change="onOptionsChange"
-        >
-          <option
-            v-for="size in item.product.sizes"
-            :key="size"
-            :value="size"
-          >
-            {{ size }}
-          </option>
-        </select>
+  <article
+    class="cart-item"
+    :class="{ 'is-mobile': isMobile }"
+    @touchstart.passive="onTouchStart"   
+    @touchend.passive="onTouchEnd"       
+  >
+    <!-- ===== МОБИЛЬНЫЙ СЛАЙДЕР (2 слайда) ===== -->
+    <div v-if="isMobile" class="mobile-wrapper"><!-- NEW -->
+      <!-- СЛАЙД 1: фото + инфо + цена -->
+      <div v-show="activeSlide === 0" class="slide slide-info"><!-- NEW -->
+        <div class="left">
+          <img :src="productImage" :alt="item.product.name" class="product-image" />
+        </div>
+        <div class="right">
+          <p class="code">Арт: {{ codeText }}</p>
+          <h3 class="name">{{ item.product.name }}</h3>
+          <p class="price">{{ formatPrice(item.product.price * localQty) }} ₽</p>
+        </div>
       </div>
 
-      <!-- Количество -->
-      <div class="cart-item__quantity">
-        <label for="quantity-select">Кол-во:</label>
-        <select
-          id="quantity-select"
-          v-model.number="localQuantity"
-          @change="onQuantityChange"
-        >
-          <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
-        </select>
+      <!-- СЛАЙД 2: размер + количество + удалить -->
+      <div v-show="activeSlide === 1" class="slide slide-controls"><!-- NEW -->
+        <div class="controls-row">
+          <div class="field compact">
+            <label class="label">Размер</label>
+            <!-- CHANGED: только размер, как в FavouritesItem -->
+            <BaseDropdown class="dd" :options="sizeOptions" v-model="localSize" />
+          </div>
+
+          <div class="field compact">
+            <label class="label">Количество</label>
+            <QuantitySelect class="qty" v-model="localQty" :min="1" :max="10" />
+          </div>
+
+          <div class="field compact no-label">
+            <label class="label label--spacer" aria-hidden="true"> </label>
+            <button type="button" class="btn-remove" aria-label="Удалить из корзины" @click="emit('remove')">
+              <svg viewBox="0 0 24 24" class="trash-ic" aria-hidden="true">
+                <path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M7 7l1 13a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-13"
+                      fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <!-- Цена -->
-      <p class="cart-item__price">{{ (item.product.price * localQuantity) | price }} ₽</p>
+      <!-- точки -->
+      <div class="dots">
+        <span v-for="i in 2" :key="i" :class="['dot', { active: activeSlide === i - 1 }]" @click="activeSlide = i - 1"/>
+      </div>
     </div>
 
-    <!-- Кнопка удаления -->
-    <!-- Событие remove оставлено как в исходной версии (emit inline) -->
-    <button class="cart-item__remove" @click="emit('remove')">
-      ✕
-    </button>
-  </div>
+    <!-- ===== ПЛАНШЕТ/ДЕСКТОП ===== -->
+    <div v-else class="desktop-row"><!-- NEW -->
+      <div class="col col-image">
+        <img :src="productImage" :alt="item.product.name" class="product-image" />
+      </div>
+
+      <div class="col col-info">
+        <p class="code">Артикул: {{ codeText }}</p>
+        <h3 class="name">{{ item.product.name }}</h3>
+      </div>
+
+      <div class="col col-controls">
+        <BaseDropdown class="dd" :options="sizeOptions" v-model="localSize" />
+        <QuantitySelect class="qty" v-model="localQty" :min="1" :max="10" />
+      </div>
+
+      <div class="col col-price">
+        <div class="price">{{ formatPrice(item.product.price * localQty) }} ₽</div>
+      </div>
+
+      <div class="col col-actions">
+        <button class="icon-btn remove" @click="emit('remove')" aria-label="Удалить">🗑</button>
+      </div>
+    </div>
+  </article>
 </template>
 
 <script setup>
-/*
-  Обновлённый CartItem.vue — сохранены классы/шаблон и сигнатуры событий,
-  добавлены корректные источники картинок и синхронизация локального состояния.
-*/
+/**
+ * CHANGED: полностью убран выбор/эмит цвета.
+ * NEW: мобильный слайдер по паттерну FavouritesItem (2 слайда, свайпы, точки).
+ * CHANGED: эмит 'update-options' => { selectedSize } только.
+ */
 
-import { ref, reactive, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import BaseDropdown from '@/components/Favourite/BaseDropDown.vue'       // NEW
+import QuantitySelect from '@/components/Favourite/QuantitySelector.vue' // NEW
 
-// ---------- props / emits (как в оригинале) ----------
 const props = defineProps({
-  item: {
-    type: Object,
-    required: true
-  }
+  item: { type: Object, required: true },
+  index: { type: Number, required: true }
 })
+const emit = defineEmits(['remove', 'update-quantity', 'update-options'])
 
-// События — оставлены точные имена, которые были в твоей версии
-const emit = defineEmits(["remove", "updateQuantity", "updateOptions"])
+/* локальное состояние */
+const localQty = ref(props.item.quantity || 1)                                // CHANGED
+const localSize = ref(props.item.selectedSize || props.item.product?.sizes?.[0] || null)
 
-// ---------- Локальные реактивные переменные (как в твоём файле) ----------
-// localQuantity: управляет текущим выбранным количеством в UI
-const localQuantity = ref(props.item.quantity || 1)
-
-// localOptions: объект с color/size — в исходнике color закомментирован,
-// но оставляем структуру совместимой с тем, что было.
-// Важно: исправлена и унифицирована точка доступа на sizes -> item.product.sizes
-const localOptions = reactive({
-  // color опционален — если в структуре есть item.product.colors, возьмём первый
-  color: props.item.options?.color ?? props.item.product?.colors?.[0]?.name ?? "",
-  // РАНЕЕ в присланном файле использовалось props.item.sizes — это было неточно.
-  // Правильно: sizes находятся в product (item.product.sizes).
-  size: props.item.options?.size ?? props.item.product?.sizes?.[0] ?? ""
-})
-
-// ---------- Вычисление изображения (фоллбэк) ----------
-// Требование: не менять сигнатуру стора. Поэтому не передаём image при addToCart.
-// В корзине отображать первую картинку из массива images (если есть).
-// Здесь аккуратно вычисляем источник картинки:
-// 1) если в item.product.images есть массив — берём [0]
-// 2) иначе если есть item.product.image — берём его
-// 3) иначе если есть item.image — берём его (на случай старых данных)
-// 4) иначе — пустая строка (можно заменить на путь к плейсхолдеру)
-const productImage = computed(() => {
-  const prod = props.item.product || {}
-  if (Array.isArray(prod.images) && prod.images.length > 0) return prod.images[0]
-  if (prod.image) return prod.image
-  if (props.item.image) return props.item.image
-  return "" // или '/images/placeholder.png'
-})
-
-// ---------- Поддержка реактивности: если внешний prop item изменится, синхронизируем локалку ----------
 watch(
   () => props.item,
-  (newItem) => {
-    // quantity
-    localQuantity.value = newItem.quantity || 1
-
-    // options: если пришли опции извне — оставляем их, иначе инициализируем по продукту
-    localOptions.color = newItem.options?.color ?? newItem.product?.colors?.[0]?.name ?? ""
-    localOptions.size = newItem.options?.size ?? newItem.product?.sizes?.[0] ?? ""
+  (it) => {
+    localQty.value = it.quantity || 1
+    localSize.value = it.selectedSize || it.product?.sizes?.[0] || null
   },
-  { deep: true, immediate: true }
+  { deep: true }
 )
 
-// ---------- Хелпер форматирования цены (не ломаем шаблон) ----------
-function formatPrice(v) {
-  return (Number(v) || 0).toLocaleString('ru-RU')
+/* CHANGED: реакция на изменения и эмиты в стор */
+watch(localQty, (val) => {
+  const n = Math.max(1, Number(val) || 1)
+  if (n !== val) localQty.value = n
+  emit('update-quantity', n)
+})
+watch(localSize, (val) => {
+  emit('update-options', { selectedSize: val ?? null }) // CHANGED: без selectedColor
+})
+
+/* вычислимое изображение и код */
+const productImage = computed(() => {
+  const p = props.item.product || {}
+  if (Array.isArray(p.images) && p.images.length) return p.images[0]
+  return p.image || props.item.image || ''
+})
+const codeText = computed(() => props.item.product?.code || props.item.product?.id || '')
+
+/* список размеров для BaseDropdown */
+const sizeOptions = computed(() =>
+  (props.item.product?.sizes || []).map(s => ({ label: s, value: s }))
+)
+
+/* NEW: адаптив и свайпы под мобильный слайдер */
+const isMobile = ref(window.innerWidth < 768)
+const onResize = () => { isMobile.value = window.innerWidth < 768 }
+onMounted(() => window.addEventListener('resize', onResize))
+onBeforeUnmount(() => window.removeEventListener('resize', onResize))
+
+const activeSlide = ref(0)
+let touchStartX = 0
+const SWIPE_THRESHOLD = 40
+function onTouchStart(e){ touchStartX = e.changedTouches?.[0]?.clientX ?? 0 }
+function onTouchEnd(e){
+  const x = e.changedTouches?.[0]?.clientX ?? 0
+  const dx = touchStartX - x
+  if (Math.abs(dx) < SWIPE_THRESHOLD) return
+  if (dx > 0 && activeSlide.value < 1) activeSlide.value = 1
+  if (dx < 0 && activeSlide.value > 0) activeSlide.value = 0
 }
 
-// ---------- Handlers: те же имена, те же сигнатуры событий как в твоём файле ----------
-function onQuantityChange() {
-  // эмитируем текущее количество (как было)
-  emit("updateQuantity", localQuantity.value)
-}
-
-function onOptionsChange() {
-  // эмитируем объект опций (как было)
-  // NOTE: в родителе ожидается структура { color?, size? } — оставляем её
-  emit("updateOptions", { ...localOptions })
-}
-
-// Для совместимости с исходной версией у тебя была inline-emit для удаления:
-// <button ... @click="emit('remove')"> — это осталось в шаблоне.
-// Если хочешь, можно заменить на явную функцию:
-function removeItem() {
-  emit("remove")
-}
-
+/* утилита */
+function formatPrice(v) { return (Number(v) || 0).toLocaleString('ru-RU') }
 </script>
 
 <style lang="scss" scoped>
 @import "./CartItem.scss";
-
-
 </style>

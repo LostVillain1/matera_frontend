@@ -1,4 +1,6 @@
 <template>
+     <!-- Видео-оверлей -->
+    <PreVideo v-if="showIntro" @finished="hideIntro" />
     <div class="mp__wrapper">
         <app-header></app-header>
         <Slider :slides="slides" :interval="3000" />
@@ -14,6 +16,8 @@ import { useBreakpoints } from '@/composables/useBreakpoints';
 import MainPageMobile from '@/components/icons/MainPageMobile.vue';
 import MainPageTablet from '@/components/icons/MainPageTablet.vue';
 import Slider from '@/components/AppHeader/Slider.vue';
+import PreVideo from '@/components/PreVideo.vue';
+
 
 //Работа с брейкпонйтами из композаблы
 const breakpoints = useBreakpoints();

@@ -1,184 +1,224 @@
 <template>
-  <!-- Шапка сайта -->
   <AppHeader />
 
   <main class="cart-page">
-    <!-- Заголовок страницы -->
     <h1 class="title">Корзина</h1>
 
-    <!-- Если корзина пустая — показываем заглушку -->
     <EmptyCart v-if="!cartItems.length" />
 
-    <!-- Если есть товары -->
     <div v-else class="cart-grid">
-      <!-- Левая колонка (список товаров) -->
-      <section class="cart-list">
-        <!-- Перебираем товары из стора -->
+      <!-- ЛЕВАЯ КОЛОНКА: список товаров -->
+      <section class="cart-list" aria-label="Список товаров в корзине" >
         <CartItem
           v-for="(item, idx) in cartItems"
           :key="itemKey(item, idx)"
           :item="item"
           :index="idx"
-          @remove="removeByIndex"
-          @update-quantity="updateQuantityByIndex"
-          @update-options="updateOptionsByIndex"
+          @remove="() => removeByIndex(idx)"                         
+          @update-quantity="(val) => updateQuantityByIndex(idx, val)"
+          @update-options="(opts) => updateOptionsByIndex(idx, opts)"
         />
       </section>
 
-      <!-- Правая колонка (итоги заказа) -->
+      <!-- ПРАВАЯ КОЛОНКА: сайдбар-итоги (БЕЗ карты) -->
       <aside class="cart-summary-wrap">
-        <CartSummary
-          :totalItems="totalItems"
-          :totalPrice="totalPrice"
-          @clear="clearCart"
-          @checkout="checkout"
-        />
-      </aside>      
-    </div>
-     <!-- Форма оформления заказа -->
-    <div class="checkout-form">
-      <h2>Оформление заказа</h2>
-      <input v-model="customerName" type="text" placeholder="Ваше имя" />
-      <input v-model="customerPhone" type="tel" placeholder="Телефон" />
-      <input v-model="customerEmail" type="email" placeholder="Email" />
-      <textarea v-model="customerComment" placeholder="Комментарий"></textarea>
-    </div>
+        <div class="summary-card">
+          <div class="summary-accordion">
+            <button
+              class="acc-row"
+              :aria-expanded="opened.deliveryInfo.toString()"
+              @click="opened.deliveryInfo = !opened.deliveryInfo"
+            >
+              <span>Информация о доставке</span>
+              <span>+</span>
+            </button>
+            <transition name="slide">
+              <div v-if="opened.deliveryInfo" class="acc-panel">
+                <p>Доставка осуществляется службой СДЕК.</p>
+              </div>
+            </transition>
 
-    <!-- Карта -->
-    <div id="yandex-map" class="map-container"></div>
-    <div>
-      <h2>Выберите пункт выдачи заказа (ПВЗ)</h2>
-      <div id="map" style="width: 100%; height: 400px;"></div>
-      <p v-if="selectedPickupPoint">Вы выбрали ПВЗ: {{ selectedPickupPoint }}</p>
-    </div>
+            <button
+              class="acc-row"
+              :aria-expanded="opened.returns.toString()"
+              @click="opened.returns = !opened.returns"
+            >
+              <span>Обмен и возврат</span>
+              <span>+</span>
+            </button>
+            <transition name="slide">
+              <div v-if="opened.returns" class="acc-panel">
+                <p>Условия обмена и возврата уточняйте у оператора.</p>
+              </div>
+            </transition>
 
-    <!-- Кнопка оформления -->
-    <button @click="checkout" class="checkout-btn">Подтвердить заказ</button>
+            <button
+              class="acc-row"
+              :aria-expanded="opened.payment.toString()"
+              @click="opened.payment = !opened.payment"
+            >
+              <span>Об оплате</span>
+              <span>+</span>
+            </button>
+            <transition name="slide">
+              <div v-if="opened.payment" class="acc-panel">
+                <p>Оплата картой онлайн.</p>
+              </div>
+            </transition>
+          </div>
+
+          <div class="summary-split"></div>
+
+          <div class="summary-line">
+            <span>Доставка</span>
+            <span>0 ₽</span>
+          </div>
+          <div class="summary-total">
+            <span>Итого</span>
+            <span>{{ formatPrice(totalPrice) }} ₽</span>
+          </div>
+
+          <button class="pay-btn" @click="checkout">Оплатить</button>
+
+          <p class="policy">
+            Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности и офертой
+          </p>
+
+          <label class="agree">
+            <input type="checkbox" v-model="agree" />
+            <span>Согласие на обработку персональных данных</span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- ФОРМА ПЕРСОНАЛЬНЫХ ДАННЫХ -->
+      <section v-if="cartItems.length" class="checkout-form"> <!-- CHANGED: grid-area см. SCSS -->
+        <h2 class="form-title">Персональные данные</h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Имя</label>
+            <input v-model="customerName" type="text" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Фамилия</label>
+            <input v-model="customerSurname" type="text" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Телефон</label>
+            <input v-model="customerPhone" type="tel" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Почта</label>
+            <input v-model="customerEmail" type="email" class="line-input" />
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW: СЕКЦИЯ "Информация о доставке" с картой ПОСЛЕ формы -->
+      <section class="delivery-section"> <!-- NEW -->
+        <h2 class="delivery-title">Информация о доставке</h2>
+
+        <div class="delivery-method">
+          <span class="label">Способ доставки</span>
+          <label class="radio">
+            <input type="radio" checked disabled />
+            <span>СДЕК</span>
+          </label>
+        </div>
+
+        <!-- карта Яндекс -->
+        <div id="yandex-map" class="delivery-map"></div>
+        <p v-if="selectedPickupPoint" class="pvz">ПВЗ: {{ selectedPickupPoint }}</p>
+      </section>
+    </div>
   </main>
 
-  <!-- Подвал сайта -->
   <AppFooter />
 </template>
 
 <script setup>
-/**
- * Cart.vue — главный контейнер страницы корзины.
- * - Берёт данные из cartStore
- * - Передаёт события в store (remove/update/clear)
- */
-
-
 import AppHeader from '@/components/AppHeader/AppHeader.vue'
 import AppFooter from '@/components/AppFooter/AppFooter.vue'
 import EmptyCart from './EmptyCart.vue'
 import CartItem from './CartItem.vue'
-import CartSummary from './CartSummary.vue'
-
 
 import { useCartStore } from '@/stores/useCartStore'
 import { storeToRefs } from 'pinia'
-import { ref, onMounted,onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { loadYMap } from '@/utils/loadYMap'
 
+const cartStore = useCartStore()
+const { items: cartItems, totalPrice } = storeToRefs(cartStore)
+const { removeByIndex, updateQuantityByIndex, updateOptionsByIndex } = cartStore
 
+// форма
+const customerName = ref('')
+const customerSurname = ref('')
+const customerPhone = ref('')
+const customerEmail = ref('')
+const agree = ref(false)
 
-// --- Поля для формы оформления заказа ---
-const customerName = ref('')     
-const customerPhone = ref('')   
-const customerEmail = ref('')    
-const customerComment = ref('')  // Комментарий к заказу
+// карта
+const selectedPickupPoint = ref(null)
+let mapInstance = null
 
-
-// --- Данные для работы с картой ---
-const selectedPickupPoint = ref(null) // Храним выбранный ПВЗ (его код или адрес)
-let mapInstance = null                // Сюда запишем объект карты после инициализации
-let placemark = null                  // Для отметки выбранного ПВЗ
-
-// --- Функция инициализации карты ---
 onMounted(async () => {
   try {
-    // Загружаем API
     const ymaps = await loadYMap()
-
-    // Создаём карту внутри контейнера с id="yandex-map"
-    mapInstance = new ymaps.Map("yandex-map", {
-      center: [55.751244, 37.618423], // Москва (по умолчанию)
+    // CHANGED: встраиваем карту в секцию delivery-section (id: yandex-map)
+    mapInstance = new ymaps.Map('yandex-map', {
+      center: [55.751244, 37.618423],
       zoom: 10,
-      controls: ["zoomControl", "fullscreenControl"],
+      controls: ['zoomControl', 'fullscreenControl']
     })
-
-    // Для проверки добавим тестовую метку (можно удалить потом)
-    const testPlacemark = new ymaps.Placemark(
-      [55.751244, 37.618423], // Координаты
-      {
-        balloonContent: "Тестовая точка", // Что будет в попапе
-      },
-      {
-        preset: "islands#redDotIcon", // Иконка метки
-      }
-    )
-    mapInstance.geoObjects.add(testPlacemark)
-  } catch (error) {
-    console.error("Ошибка при инициализации карты:", error)
+    const test = new ymaps.Placemark([55.751244, 37.618423], { balloonContent: 'Тестовая точка' })
+    test.events.add('click', () => (selectedPickupPoint.value = 'Москва, центр (тест)'))
+    mapInstance.geoObjects.add(test)
+  } catch (e) {
+    console.error('YMap init error', e)
   }
 })
 
 onBeforeUnmount(() => {
-  // При удалении компонента очищаем карту, чтобы не было утечек памяти
   if (mapInstance) {
     mapInstance.destroy()
     mapInstance = null
   }
 })
 
+const opened = ref({
+  deliveryInfo: true,  // CHANGED: аккордеоны только для текста
+  returns: false,
+  payment: false
+})
 
-// Логика работы с корзиной
+const itemKey = (item, idx) => `${item.product?.id || item.id}-${idx}`
 
-const cartStore = useCartStore()
+function formatPrice(v) {
+  return (Number(v) || 0).toLocaleString('ru-RU')
+}
 
-// Достаём реактивные данные (геттеры)
-const { items: cartItems, totalItems, totalPrice } = storeToRefs(cartStore)
-
-// Методы стора
-const { removeByIndex, updateQuantityByIndex, updateOptionsByIndex, clearCart } = cartStore
-
-// Генерация ключа для стабильного рендера элементов
-const itemKey = (item, idx) => `${item.id}-${idx}`
-
-// Действие оформления заказа
-// --- Функция оформления заказа ---
 function checkout() {
-  if (!customerName.value || !customerPhone.value || !selectedPickupPoint.value) {
-    alert('Заполните все обязательные поля и выберите пункт выдачи заказа!')
+  if (!agree.value) {
+    alert('Подтвердите согласие на обработку персональных данных')
     return
   }
-
-  const orderData = {
-    customer: {
-      name: customerName.value,
-      phone: customerPhone.value,
-      email: customerEmail.value,
-      comment: customerComment.value
-    },
-    items: cartStore.items,
-    pickupPoint: selectedPickupPoint.value
+  if (!customerName.value || !customerPhone.value) {
+    alert('Заполните имя и телефон')
+    return
   }
-
-  // Отправляем заказ на сервер (пока имитация console.log)
-  console.log('Заказ отправлен:', orderData)
-
-  // Очищаем корзину и форму
-  cartStore.clearCart()
-  customerName.value = ''
-  customerPhone.value = ''
-  customerEmail.value = ''
-  customerComment.value = ''
-  selectedPickupPoint.value = null
+  console.log('submit order', {
+    customerName: customerName.value,
+    customerSurname: customerSurname.value,
+    customerPhone: customerPhone.value,
+    customerEmail: customerEmail.value,
+    items: cartItems.value,
+    pvz: selectedPickupPoint.value
+  })
+  cartStore.checkout()
 }
-</script> 
+</script>
 
 <style lang="scss" scoped>
-
-@import "./Cart.scss";  
-
+@import "./Cart.scss";
 </style>

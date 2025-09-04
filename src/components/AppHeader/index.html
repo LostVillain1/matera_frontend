@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Парам-пам-пам</title>
+    <style>
+        /* Сброс отступов */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Основной контент сайта */
+        .site-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Видео с молнией */
+        #lightning-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2; /* Поверх контента */
+            pointer-events: none; /* Позволяет взаимодействовать с элементами под видео */
+        }
+
+        /* Скрытие видео после завершения */
+        .video-ended {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        /* Элементы интерфейса */
+        .content {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Основной контент сайта
+    <div class="site-content">
+        <div class="content">
+            <h1>Добро пожаловать в ад</h1>
+            <p>Here we go, here we go</p>
+            <button id="action-btn">Нажми меня</button>
+        </div>
+    </div> -->
+
+    <!-- Видео с эффектом молнии -->
+    <video id="lightning-video" autoplay muted playsinline>
+        <source src="output.webm" type="video/webm">
+        Ваш браузер не поддерживает видео с прозрачностью.
+    </video>
+
+    <script>
+        const video = document.getElementById('lightning-video');
+        
+        // После завершения видео плавно скрываем его
+        video.addEventListener('ended', function() {
+            video.classList.add('video-ended');
+        });
+
+        // Если видео не загрузилось, сразу скрываем его
+        video.addEventListener('error', function() {
+            video.classList.add('video-ended');
+        });
+
+        // Пример взаимодействия с кнопкой
+        document.getElementById('action-btn').addEventListener('click', function() {
+            alert('Ну, типо работает');
+        });
+    </script>
+</body>
+</html>
