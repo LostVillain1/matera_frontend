@@ -5,10 +5,13 @@ import { RouterLink, RouterView } from 'vue-router'
 
 
 <template>
-  <RouterView :key="$route.fullPath"/>
+  <RouterView  :key="$route.fullPath"></RouterView>
 </template>
 
 <style scoped>
+
+
+
 header {
   line-height: 1.5;
   max-height: 100vh;
