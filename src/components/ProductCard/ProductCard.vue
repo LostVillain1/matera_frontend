@@ -1,8 +1,7 @@
 <template>
   <section class="product-card">
-    <!-- Рендерим только когда product найден -->
     <div v-if="product">
-      <!-- Хлебные крошки (как было) -->
+      <!-- Хлебные крошки -->
       <router-link to="/catalog">
         <nav class="nav">
           <span class="text">Главная // </span>
@@ -10,31 +9,21 @@
         </nav>
       </router-link>
 
-      <!-- Заголовок товара (как было) -->
+      <!-- Заголовок товара -->
       <div class="product-title">
         <span>{{ product.name }}</span>
       </div>
 
-      <!-- Обёртка контента: на десктопе — в 2 колонки -->
       <div class="product-wrapper">
-        <!-- ====== ГАЛЕРЕЯ: MOBILE слайдер / DESKTOP миниатюры + большое изображение ====== -->
+        <!-- ===== Галерея ===== -->
         <div class="gallery">
-          <!-- MOBILE: горизонтальный слайдер -->
-          <div
-            v-if="!isDesktop && product.images?.length"
-            class="gallery-mobile"
-          >
+          <!-- MOBILE: слайдер -->
+          <div v-if="!isDesktop && product.images?.length" class="gallery-mobile">
             <div class="slides" ref="sliderRef" @scroll.passive="onSliderScroll">
-              <div
-                class="slide"
-                v-for="(img, idx) in product.images"
-                :key="`m-${idx}`"
-              >
+              <div class="slide" v-for="(img, idx) in product.images" :key="`m-${idx}`">
                 <img :src="img" :alt="`${product.name} ${idx + 1}`" />
               </div>
             </div>
-
-            <!-- точки для быстрого перехода к кадрам -->
             <div v-if="product.images.length > 1" class="dots">
               <button
                 v-for="(img, idx) in product.images"
@@ -47,13 +36,9 @@
             </div>
           </div>
 
-          <!-- DESKTOP: миниатюры слева, большое изображение справа -->
+          <!-- DESKTOP: превью слева + большое фото -->
           <div v-else class="gallery-desktop">
-            <!-- Миниатюры (их столько же, сколько элементов в images) -->
-            <div
-              class="gallery-thumbnails"
-              v-if="product.images?.length"
-            >
+            <div class="gallery-thumbnails" v-if="product.images?.length">
               <img
                 v-for="(img, index) in product.images"
                 :key="`t-${index}`"
@@ -63,32 +48,26 @@
                 @click="changeImage(img)"
               />
             </div>
-
-            <!-- Большое изображение -->
             <div class="product-image">
               <img :src="currentImage" :alt="product.name" />
             </div>
           </div>
         </div>
 
-        <!-- ====== Правая колонка: инфо и выборы (как было + BaseDropdown) ====== -->
+        <!-- ===== Правая колонка ===== -->
         <div class="product-info">
           <div class="info">
             <h1 class="product-name">{{ product.name }}</h1>
             <p class="product-code">Арт: {{ product.code }}</p>
-            <p class="product-price">{{ formatPrice(product.price) }} ₽</p>
-            <p class="product-installment">4 платежа по {{ formatInstallment(product.price) }} ₽</p>
-          </div>         
 
-          <!-- Выбор размера — через кастомный dropdown, без нативного <select> -->
-          <!-- <div class="product-sizes" v-if="product.sizes?.length">
-            <p class="label">Размер</p>
-            <BaseDropdown
-              v-model="selectedSize"
-              :options="product.sizes" 
-            />
-          </div> -->
+            <!-- ✦ ПРАВКА: форматирование из computed -->
+            <p class="product-price">{{ productPrice }} ₽</p>
+            <!-- <p class="product-installment">4 платежа по {{ productInstallment }} ₽</p> -->
+          </div>
 
+          <!-- ✦ ПРАВКА: выбор цвета временно отключён -->
+
+          <!-- Размеры -->
           <div class="product-sizes" v-if="product.sizes?.length">
             <p class="label">Размер</p>
             <div class="sizes-list">
@@ -103,15 +82,12 @@
             </div>
           </div>
 
-          <!-- Количество (по макету — на десктопе, как было) -->
-          <div class="product-quantity" v-if="isDesktop">
-            <button @click="decrementQty" type="button" :disabled="quantity <= 1">-</button>
-            <span>{{ quantity }}</span>
-            <button @click="incrementQty" type="button">+</button>
-          </div>
+          <!-- ✦ ПРАВКА: CTA-блоки под макет -->
+          <div class="cta-row">
+            <div class="product-qty-row">
+              <QuantitySelector v-model="quantity" :min="1" />
+            </div>
 
-          <!-- Кнопки действий (как было) -->
-          <div class="product-actions">
             <button
               class="add-to-cart"
               :disabled="!canAddToCart"
@@ -121,20 +97,19 @@
             >
               В корзину
             </button>
-
-            <button
-              class="buy-now"
-              :disabled="!canAddToCart"
-              @click="onBuyNow"
-              type="button"
-              title="Купить сейчас"
-            >
-              Быстрая покупка
-            </button>
           </div>
 
-          <!-- Ссылки/аккордеоны (как было) -->
-          <a href="#" class="size-table">Таблица размеров</a>
+          <button
+            class="buy-now"
+            :disabled="!canAddToCart"
+            @click="onBuyNow"
+            type="button"
+            title="Купить сейчас"
+          >
+            Быстрая покупка
+          </button>
+
+          <p>Таблица размеров</p>
 
           <accordion-product title="Состав" />
           <accordion-product title="Характеристики" />
@@ -143,136 +118,96 @@
       </div>
     </div>
 
-    <!-- Фолбэк, если товар не найден -->
     <div v-else class="not-found">Товар не найден</div>
 
-    <!-- === MODAL: вставка модального окна (добавлено) ===
-         Компонент рендерится через v-if, родитель управляет showAddToCartModal.
-         Модалка сама эмитит 'close' и 'confirm'. -->
+    <!-- Модальное подтверждение добавления -->
     <AddToCartModal
       v-if="showAddToCartModal"
       :product="product"
       @close="closeAddToCartModal"
-      @confirm="() => { 
-        /* родитель: при confirm — закрываем модалку и переходим в корзину */ 
-        closeAddToCartModal(); 
-        router.push({ name: 'cart' }) 
-      }"
+      @confirm="() => { closeAddToCartModal(); router.push({ name: 'cart' }) }"
     />
   </section>
 </template>
 
 <script setup>
 /**
- * ProductCard.vue (обновлён)
- * - Данные товара берём из productStore по :id (как раньше).
- * - Галерея:
- *   - Mobile: горизонтальный слайдер с точками.
- *   - Desktop: миниатюры слева (их столько же, сколько в product.images), большое фото справа.
- * - Выбор размера — через кастомный BaseDropdown (div-ы, не <select>).
- * - Совместимость со стором корзины:
- *   addToCart(product, { selectedSize, quantity }) — image НЕ передаём,
- *   в CartItem показывается product.images[0].
- *
- * Внесены минимальные правки для интеграции AddToCartModal:
- *  - при нажатии «В корзину» товар добавляется в корзину (как было) и затем открывается модалка.
- *  - при нажатии «Быстрая покупка» — добавление + переход в корзину без показa модалки
- *    (чтобы избежать мерцания модалки при немедленной навигации).
+ * ProductCard.vue (итог)
+ * ✦ Mobile-first.
+ * ✦ Без выбора цвета.
+ * ✦ Количество — кастомный QuantitySelector.
+ * ✦ CTA для десктопа: количество + "Добавить" в ряд, "Быстрая покупка" на всю ширину ниже.
+ * ✦ Исправлена ошибка _ctx.formatPrice через computed.
  */
-
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 
-// сторы проекта
 import { useProductStore } from '@/stores/useProductStore'
 import { useCartStore } from '@/stores/useCartStore'
 
-// компоненты
-import AccordionProduct from './AccordionProduct.vue' // используется как <accordion-product>
-import BaseDropdown from '@/components/ProductCard/BaseDropdown.vue' // поправь путь под свой проект
+import AccordionProduct from './AccordionProduct.vue'
 import AddToCartModal from '@/components/ProductCard/AddToCartModal.vue'
+import QuantitySelector from '@/components/ProductCard/QuantitySelector.vue'
 
-// --- РОУТИНГ
 const route = useRoute()
 const router = useRouter()
 
-// --- СТОРЫ
 const productStore = useProductStore()
 const cartStore = useCartStore()
 
-// --- СОСТОЯНИЯ
-const product = ref(null)         // текущий товар
-const currentImage = ref('')      // активная картинка (desktop)
-const currentIndex = ref(0)       // активный индекс (mobile slider)
-const sliderRef = ref(null)       // контейнер слайдера (mobile)
+const product = ref(null)
+const currentImage = ref('')
+const currentIndex = ref(0)
+const sliderRef = ref(null)
 
-const selectedSize = ref('')   // выбранный размер
-const quantity = ref(1)           // количество
+const selectedSize = ref('')
+const quantity = ref(1)
 
+const showAddToCartModal = ref(false)
 
-// === MODAL STATE: показывает/скрывает модалку ===
-const showAddToCartModal = ref(false) 
-
-// --- АДАПТИВ
 const { width } = useWindowSize()
-const isDesktop = computed(() => width.value >= 1024) // брейкпоинт для десктопа — подстрой под свой
+const isDesktop = computed(() => width.value >= 1024)
 
-
-
-
-// --- ДОСТУПНОСТЬ ДОБАВЛЕНИЯ В КОРЗИНУ
 const canAddToCart = computed(() => {
   if (!product.value) return false
-  // если у товара есть размеры — требуем выбор размера; если нет размеров — можно добавлять так
   return Array.isArray(product.value.sizes) && product.value.sizes.length > 0
     ? !!selectedSize.value
     : true
 })
 
-// ------------------------------- ИНИЦИАЛИЗАЦИЯ -------------------------------
+/* ✦ ПРАВКА: форматирование цены — через computed */
+function formatCurrency(n) {
+  return new Intl.NumberFormat('ru-RU').format(Number(n ?? 0))
+}
+const productPrice = computed(() => formatCurrency(product.value?.price))
+const productInstallment = computed(() =>
+  formatCurrency(Math.floor(Number(product.value?.price ?? 0) / 4))
+)
 
+/* Инициализация */
 async function loadProductByRouteId() {
-  // подгрузим товары, если нужно
   if (!productStore.products?.length && typeof productStore.fetchProducts === 'function') {
     await productStore.fetchProducts()
   }
-
   const id = Number(route.params.id)
   product.value = productStore.products.find(p => p.id === id) || null
 
   if (product.value) {
-    // init изображения
     currentIndex.value = 0
     currentImage.value = product.value.images?.[0] || ''
-
-    // init размер
-    selectedSize.value = product.value.sizes?.[0] ?? '' 
-
-    // init qty
+    selectedSize.value = product.value.sizes?.[0] ?? ''
     quantity.value = 1
 
     await nextTick()
-    // прокрутим мобильный слайдер к первому слайду
-    if (sliderRef.value) {
-      sliderRef.value.scrollTo({ left: 0, behavior: 'auto' })
-    }
+    sliderRef.value?.scrollTo?.({ left: 0, behavior: 'auto' })
   }
 }
-
-// при монтировании и при смене :id подтягиваем товар
 onMounted(loadProductByRouteId)
 watch(() => route.params.id, loadProductByRouteId)
 
-// ------------------------- ГАЛЕРЕЯ: handlers -------------------------
-
-/** Desktop: клик по миниатюре */
-function changeImage(img) {
-  currentImage.value = img
-  console.log(product.sizes)
-}
-
-/** Mobile: переход к слайду по индексу */
+/* Галерея */
+function changeImage(img) { currentImage.value = img }
 function goTo(idx) {
   if (!sliderRef.value) return
   const w = sliderRef.value.clientWidth
@@ -280,8 +215,6 @@ function goTo(idx) {
   sliderRef.value.scrollTo({ left: w * idx, behavior: 'smooth' })
   currentImage.value = product.value?.images?.[idx] || currentImage.value
 }
-
-/** Mobile: синхронизируем активный индекс при прокрутке */
 function onSliderScroll() {
   if (!sliderRef.value) return
   const w = sliderRef.value.clientWidth || 1
@@ -292,84 +225,33 @@ function onSliderScroll() {
   }
 }
 
-// ------------------------------ РАЗМЕР/КОЛ-ВО ------------------------------
+/* Модалка */
+function openAddToCartModal(){ showAddToCartModal.value = true }
+function closeAddToCartModal(){ showAddToCartModal.value = false }
 
-function incrementQty() { quantity.value++ }
-function decrementQty() { if (quantity.value > 1) quantity.value-- }
-
-// ------------------------------ ФОРМАТИРОВАНИЕ ------------------------------
-
-function formatPrice(price) {
-  return Number(price ?? 0).toLocaleString('ru-RU')
-}
-function formatInstallment(price) {
-  const part = Math.floor(Number(price ?? 0) / 4)
-  return part.toLocaleString('ru-RU')
-}
-
-// ------------------------------ ДОБАВЛЕНИЕ В КОРЗИНУ ------------------------------
-
-/**
- * «В корзину»:
- *
- * Я **не меняю** существующую логику добавления — оставляю вызов cartStore.addToCart,
- * но после успешного добавления открываю модалку (чтобы показать пользователю подтверждение).
- * Это минимальное вмешательство в существующее поведение.
- */
+/* Действия */
 function onAddToCart() {
   if (!product.value) return
-  if (!canAddToCart.value) {
-    alert('Выберите размер')
-    return
-  }
+  if (!canAddToCart.value) { alert('Выберите размер'); return }
 
-  // --- Существующая логика (оставлена как есть) ---
-  cartStore.addToCart(product.value, {
-    selectedSize: selectedSize.value,  // строка или null
-    quantity: quantity.value           // число
-  })
-
-  // === MODAL INTEGRATION: открываем модалку после добавления ===
-  // Это добавление только связано с UI (открыть уведомляющую модалку),
-  // бизнес-логика добавления в корзину не изменилась.
-  openAddToCartModal()
-}
-
-// ------------------------------ Работа с модалкой ------------------------------
-
-function openAddToCartModal() { 
-  showAddToCartModal.value = true
-}
-
-function closeAddToCartModal() {
-  showAddToCartModal.value = false
-}
-
-
-/** «Быстрая покупка» = добавить + перейти в корзину
- *
- * Изменение: чтобы избежать показа модалки если пользователь сразу переходит в корзину,
- * здесь выполняем addToCart + router.push напрямую (не вызывая onAddToCart),
- * т.е. поведение добавления и навигации сохраняется, но мы предотвращаем мерцание модалки.
- */
-function onBuyNow() {
-  if (!product.value) return
-  if (!canAddToCart.value) {
-    alert('Выберите размер')
-    return
-  }
-
-  // добавляем в корзину (как раньше)
   cartStore.addToCart(product.value, {
     selectedSize: selectedSize.value,
     quantity: quantity.value
   })
+  openAddToCartModal()
+}
+function onBuyNow() {
+  if (!product.value) return
+  if (!canAddToCart.value) { alert('Выберите размер'); return }
 
-  // сразу переходим в корзину (как и раньше)
+  cartStore.addToCart(product.value, {
+    selectedSize: selectedSize.value,
+    quantity: quantity.value
+  })
   router.push({ name: 'cart' })
 }
 </script>
 
 <style>
-@import './ProductCard.scss'
+@import './ProductCard.scss';
 </style>

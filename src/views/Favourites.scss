@@ -22,7 +22,7 @@
   margin-bottom:16px; color:#3d1f28;
 }
 
-.empty-message{ text-align:center; font-size:18px; color:#999; margin-top:48px; }
+.empty-message{ text-align:center; font-size:22px; color:#999; margin-top:48px; }
 
 .favs-layout{ display:block; }
 
@@ -31,9 +31,9 @@
 }
 
 .summary{ border-top:1px solid #ccc; padding-top:16px; margin-top:16px; }
-.total{ display:flex; justify-content:space-between; font-size:18px; font-weight:bold; margin-bottom:12px; color:#3d1f28; }
+.total{ display:flex; justify-content:space-between; font-size:24px; font-weight:bold; margin-bottom:12px; color:#3d1f28; }
 .to-cart-button{
-  width:100%; padding:12px; background:#39213D; color:#FFFCDC; font-size:16px; border:none; border-radius:4px; cursor:pointer; transition:background-color .2s;
+  width:100%; padding:12px; background:#39213D; color:#FFFCDC; font-size:18px; border:none; border-radius:4px; cursor:pointer; transition:background-color .2s;
 }
 .to-cart-button:hover{ background:#39213D; }
 

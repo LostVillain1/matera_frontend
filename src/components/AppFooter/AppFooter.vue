@@ -18,7 +18,7 @@
     <div class="footer-bottom">
       <p class="footer-copy">© 2025 MATERA. Все права защищены.</p>
       <p class="footer-design">
-        Design by <a href="#" target="_blank">Lapaev Nikolay</a>
+        Design by Lapaev Nikolay
       </p>
     </div>
   </footer>

@@ -45,7 +45,8 @@ const toggle = () => {
    
   border: none;
   color: inherit;
-  font-size: 16px;
+  font-size: 18px;
+  /* letter-spacing: 1px; */
   padding: 10px 0;
   width: 100%;
   cursor: pointer;
@@ -61,7 +62,7 @@ const toggle = () => {
 
 .accordion-content {
   padding: 10px 0;
-  font-size: 14px;
+  font-size: 16px;
   color: #FFFCDC;
 }
 

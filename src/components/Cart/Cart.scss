@@ -1,7 +1,7 @@
 .cart-page {
   padding: 16px;
   min-height: 100vh;
-  background: #f5f2e8;
+  background: #F3F1E2;
 
   .title {
     font-size: 26px;
@@ -11,15 +11,18 @@
     margin: 8px 0 16px;
   }
 
-  /* GRID-AREAS: управляем порядком элементов на мобиле и десктопе */
+  /* ===== GRID ===== */
   .cart-grid {
     display: grid;
     grid-template-columns: 1fr;
+
+    /* MOBILE-FIRST: список → итог → форма → доставка */
     grid-template-areas:
       "list"
+      "summary"
       "form"
-      "delivery"
-      "summary";                 /* NEW: на мобиле сайдбар внизу */
+      "delivery";
+
     gap: 20px;
 
     @media (min-width: 768px) {
@@ -27,7 +30,7 @@
       grid-template-areas:
         "list    summary"
         "form    summary"
-        "delivery summary";      /* NEW: как на макете — карта под формой слева */
+        "delivery summary";
       align-items: start;
       column-gap: 28px;
     }
@@ -40,131 +43,144 @@
 
   .cart-list { grid-area: list; display: flex; flex-direction: column; gap: 12px; }
   .cart-summary-wrap { grid-area: summary; position: relative; }
-  .checkout-form { grid-area: form; }
-  .delivery-section { grid-area: delivery; } /* NEW */
+  .checkout-form   { grid-area: form; }
+  .delivery-section{ grid-area: delivery; }
 
-  /* ===== Сайдбар ===== */
+  /* ===== Сайдбар (карточка) ===== */
   .summary-card {
-    position: sticky;
-    top: 16px;
+    position: static; /* на мобилке не липкий */
     background: #fff;
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 2px 10px rgba(0,0,0,.06);
+
+    @media (min-width: 768px) {
+      position: sticky;
+      top: 16px;
+    }
   }
 
-  .summary-accordion { /* NEW: простые строки-аккордеоны */
+  /* ===== МОБИЛЬНЫЙ компактный блок «Итого» =====
+     Требования: тот же фон, что у страницы; без рамок/тени/скруглений;
+     одна разделительная линия СВЕРХУ; только строки «Доставка» и «Итого». */
+  .summary-card--compact {
+    background: #f5f2e8;   /* тот же фон, что у .cart-page */
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 14px 0;       /* без боковых паддингов, чтобы ровно к краям */
+
+    /* единственная линия сверху, отделяющая товары и итог */
+    border-top: 1px solid #d8d3c5;
+
+    /* прячем «лишнее» на мобилке */
+    .summary-accordion,
+    .pay-btn,
+    .policy,
+    .agree,
+    .summary-split {
+      display: none !important;
+    }
+
+    .summary-line{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:13px;
+      color:#9a94a2;
+      margin-bottom:8px;
+      padding: 0 16px;    /* небольшой внутренний отступ по бокам */
+    }
+
+    .summary-total{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-weight:700;
+      color:#2c1632;
+      padding: 0 16px;
+    }
+
+    .summary-total--mobile{
+      font-size:18px;
+      @media (min-width: 380px){ font-size:20px; }
+    }
+  }
+
+  /* ===== Полный сайдбар (≥768px) ===== */
+  .summary-accordion {
     .acc-row{
-      width: 100%;
-      display: flex; justify-content: space-between; align-items: center;
-      background: transparent; border: 0; padding: 10px 0; cursor: pointer;
-      color: #3a203e; font-weight: 600;
+      width:100%;
+      display:flex; justify-content:space-between; align-items:center;
+      background:transparent; border:0; padding:10px 0; cursor:pointer;
+      color:#3a203e; font-weight:600;
     }
-    .acc-panel{ padding: 6px 0 4px; color: #6b6570; font-size: 14px; }
+    .acc-panel{ padding:6px 0 4px; color:#6b6570; font-size:14px; }
   }
 
-  .summary-split { height: 1px; background: #e9e2d2; margin: 12px 0 12px; }
+  .summary-split{ height:1px; background:#e9e2d2; margin:12px 0; }
 
-  .summary-line {
-    display: flex; justify-content: space-between; font-size: 14px; color: #6b6570;
-    & + .summary-line { margin-top: 6px; }
-  }
-  .summary-total {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-top: 12px; padding-top: 8px; border-top: 1px solid #e9e2d2;
-    font-size: 16px; font-weight: 700; color: #2c1632;
+  .summary-line{
+    display:flex; justify-content:space-between; font-size:14px; color:#6b6570;
+    & + .summary-line{ margin-top:6px; }
   }
 
-  .pay-btn {
-    margin-top: 16px; width: 100%; height: 44px; border-radius: 10px; border: 0;
-    background: #2c1632; color: #fff; font-weight: 600; cursor: pointer;
-    &:hover { opacity: .92; }
+  .summary-total{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:12px; padding-top:8px; border-top:1px solid #e9e2d2;
+    font-size:16px; font-weight:700; color:#2c1632;
   }
-  .policy { margin-top: 10px; font-size: 12px; color: #7f7883; }
-  .agree  { display:flex; align-items:center; gap:8px; margin-top:8px; font-size:12px; color:#4a4050;
-    input { accent-color: #2c1632; } }
 
-  /* ===== Форма персональных данных ===== */
-  .checkout-form {
-    background: transparent;
-    border-radius: 0;
-    padding: 0;
-    margin-top: 8px;
+  .pay-btn{
+    margin-top:16px; width:100%; height:44px; border-radius:10px; border:0;
+    background:#2c1632; color:#fff; font-weight:600; cursor:pointer;
+    &:hover{ opacity:.92; }
+  }
+  .policy{ margin-top:10px; font-size:12px; color:#7f7883; }
+  .agree{ display:flex; align-items:center; gap:8px; margin-top:8px; font-size:12px; color:#4a4050;
+    input{ accent-color:#2c1632; } }
 
-    .form-title {
-      font-size: 28px;
-      line-height: 1.2;
-      font-weight: 700;
-      color: #2c1632;
-      margin: 0 0 20px;
+  /* ===== Форма ===== */
+  .checkout-form{
+    background:transparent; border-radius:0; padding:0; margin-top:8px;
+
+    .form-title{
+      font-size:28px; line-height:1.2; font-weight:700; color:#2c1632; margin:0 0 20px;
     }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      column-gap: 40px;
-      row-gap: 22px;
-
-      @media (min-width: 900px) {
-        grid-template-columns: 1fr 1fr;
-      }
+    .form-grid{
+      display:grid; grid-template-columns:1fr; column-gap:40px; row-gap:22px;
+      @media (min-width:900px){ grid-template-columns:1fr 1fr; }
     }
 
-    .form-field {
-      display: grid; gap: 6px;
-
-      label { font-size: 16px; color: #3a203e; }
-    }
+    .form-field{ display:grid; gap:6px; label{ font-size:16px; color:#3a203e; } }
   }
 
-  .line-input {
-    height: 38px;
-    padding: 0;
-    border: 0;
-    border-bottom: 1px solid #bfb8a9;
-    border-radius: 0;
-    background: transparent;
-    color: #2c1632;
-    font-size: 16px;
-    outline: none;
-    transition: border-color .18s ease;
-
-    &:focus { border-bottom-color: #2c1632; }
-    &::placeholder { color: transparent; }
-    &.is-error { border-bottom-color: #c0392b; }
+  .line-input{
+    height:38px; padding:0; border:0; border-bottom:1px solid #bfb8a9; border-radius:0;
+    background:transparent; color:#2c1632; font-size:16px; outline:none;
+    transition:border-color .18s ease;
+    &:focus{ border-bottom-color:#2c1632; }
+    &::placeholder{ color:transparent; }
+    &.is-error{ border-bottom-color:#c0392b; }
   }
 
-  @media (min-width: 900px) {
-    .line-input { height: 42px; font-size: 17px; }
-    .checkout-form .form-title { font-size: 34px; margin-bottom: 24px; }
+  @media (min-width:900px){
+    .line-input{ height:42px; font-size:17px; }
+    .checkout-form .form-title{ font-size:34px; margin-bottom:24px; }
   }
 
-  /* ===== Секция доставки (карта под формой) ===== */
-  .delivery-section {
-    margin-top: 24px;
-
-    .delivery-title{
-      font-size: 20px; font-weight: 700; color: #2c1632; margin: 0 0 14px;
-    }
-
+  /* ===== Секция доставки (без изменений) ===== */
+  .delivery-section{
+    margin-top:24px;
+    .delivery-title{ font-size:20px; font-weight:700; color:#2c1632; margin:0 0 14px; }
     .delivery-method{
-      display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
-
+      display:flex; align-items:center; gap:14px; margin-bottom:12px;
       .label{ color:#6b6570; }
-      .radio{ display:inline-flex; align-items:center; gap:8px;
-        input{ accent-color:#2c1632; }
-      }
+      .radio{ display:inline-flex; align-items:center; gap:8px; input{ accent-color:#2c1632; } }
     }
-
-    .delivery-map{
-      width: 100%;
-      height: 240px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #eee;
-    }
-
-    .pvz{ margin-top: 8px; font-size: 13px; color: #666; }
+    .delivery-map{ width:100%; height:240px; border-radius:10px; overflow:hidden; background:#eee; }
+    .pvz{ margin-top:8px; font-size:13px; color:#666; }
   }
 }
 

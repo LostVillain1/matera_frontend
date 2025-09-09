@@ -1,323 +1,222 @@
+/* ==== БАЗА ==== */
 .product-card {
   padding: 16px;
-  background: #F3F1E2;
-  color: #39213D;
-  font-family: 'PT Serif', serif;
+  background:#F3F1E2;
+  color:#39213D;
+  font-family:'PT Serif', serif;
 }
 
-.nav {
-color: #39213D;
-font-family: 'PT Serif', serif;
-font-size: 18px;
-margin-bottom: 20px;
+/* Хлебные крошки — крупнее и «воздушнее» */
+.nav{
+  color:#39213D;
+  font-size:16px;          /* mobile */
+  margin-bottom:14px;
+  letter-spacing: 1em;
+}
+.text{ letter-spacing:.08em; }
+
+/* Верхний заголовок товара */
+.product-title{
+  font-size:24px;          /* компактнее, чтобы не «кричал» */
+  line-height:1.2;
+  border-bottom:1px solid #b3a99c;
+  padding-bottom:8px;
+  margin-bottom:16px;
+  letter-spacing:.10em;
 }
 
-.text {
-  letter-spacing: 2px;
+/* Базовое «воздушное» межбуквье для текста */
+.product-card p,
+.product-card a,
+.product-card button,
+.product-card .size-btn,
+.product-card .product-name{
+  letter-spacing:.02em;
 }
 
-.product-title {
-font-size: 32px;
-border-bottom: 1px solid #b3a99c;
-margin-bottom: 15px;
-letter-spacing: 3px;
-}
+.product-wrapper{ display:flex; flex-direction:column; gap:20px; }
 
-// .breadcrumbs {
-//   font-size: 12px;
-//   margin-bottom: 16px;
-// }
+/* ==== ГАЛЕРЕЯ: mobile slider ==== */
+.gallery{ width:100% }
 
-.product-wrapper {
-  font-family: 'PT Serif', serif;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+.gallery-mobile{
+  .slides{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; }
+  .slide{ flex:0 0 100%; scroll-snap-align:center; padding-right:8px; }
+  img{ width:100%; height:auto; display:block; border-radius:8px; }
 
-/* ===== ГАЛЕРЕЯ ===== */
-.gallery {
-  width: 100%;
-}
-
-/* Mobile slider */
-.gallery-mobile {
-  .slides {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
-  .slide {
-    flex: 0 0 100%;
-    scroll-snap-align: center;
-    padding-right: 8px;
-  }
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-  }
-
-  .dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 8px;
-
-    button {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      border: none;
-      background: #d6d6d6;
-      cursor: pointer;
-      padding: 0;
-    }
-    button.active {
-      background: #111;
-    }
+  .dots{
+    display:flex; justify-content:center; gap:8px; margin-top:8px;
+    button{ width:8px; height:8px; border-radius:50%; border:none; background:#d6d6d6; padding:0; cursor:pointer; }
+    button.active{ background:#111; }
   }
 }
 
+/* ==== ГАЛЕРЕЯ: desktop ==== */
+.gallery-desktop{
+  display:grid; grid-template-columns:88px 1fr; gap:16px;
 
-///// Выбор размера 
-
-/* Контейнер списка размеров */
-.sizes-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px; /* расстояние между кнопками */
-  margin-top: 8px;
-  justify-content: space-between;
-}
-
-/* Базовый стиль кнопки */
-.size-btn {
-  background: none;              /* убираем фон */
-  border: none;                  /* убираем стандартную рамку */
-  border-bottom: 2px solid transparent; /* линия появится только у активного */
-  padding: 6px 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: #39213d;                /* тёмный фиолетовый текст */
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* При наведении — слегка затемняем текст */
-.size-btn:hover {
-  color: #2a182d;
-}
-
-/* Активная кнопка (выбранный размер) */
-.size-btn.active {
-  border-bottom-color: #39213d;  /* подчёркивание снизу */
-  font-weight: 600;
-}
-
-
-/* Desktop gallery */
-.gallery-desktop {
-  display: grid;
-  grid-template-columns: 96px 1fr;
-  gap: 16px;
-
-  .gallery-thumbnails {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 520px;
-    overflow: auto;
-
-    img {
-      width: 96px; height: 96px;
-      object-fit: cover;
-      border: 2px solid transparent;
-      border-radius: 6px;
-      cursor: pointer;
-
-      &.active {
-        border-color: #111;
-      }
+  .gallery-thumbnails{
+    display:flex; flex-direction:column; gap:8px;
+    max-height:520px; overflow:auto;
+    img{
+      width:88px; height:112px; object-fit:cover;
+      border:1px solid #cfc7b8; border-radius:6px; cursor:pointer;
+      &.active{ border:2px solid #39213D; }
     }
   }
 
-  .product-image {
-    img {
-      width: 100%;
-      max-height: 520px;
-      object-fit: contain;
-      border-radius: 8px;
-      display: block;
-    }
+  .product-image img{
+    width:100%; max-height:520px; object-fit:contain; border-radius:8px; display:block;
   }
 }
 
-@media (min-width: 768px) {
-  .product-wrapper {
-    flex-direction: row;
-    align-items: flex-start;
-  }
+/* ==== ПРАВАЯ КОЛОНКА ==== */
+.product-info{ flex:1 }
+
+.product-name{ font-size:22px; font-weight:700; margin-bottom:6px; letter-spacing:.03em; }
+.product-code{ font-size:12px; margin:2px 0 8px }
+.product-price{ font-size:22px; margin:4px 0 }
+.product-installment{ font-size:12px; color:#6b5b62; margin:2px 0 16px }
+
+/* ==== РАЗМЕРЫ ==== */
+/* Mobile — крупнее кегль и больше зазоры */
+.product-sizes .label{
+  font-size:16px;
+  margin-bottom:8px;
+  letter-spacing:.04em;
+}
+.sizes-list{
+  display:flex; flex-wrap:wrap; justify-content:flex-start;
+  gap:26px;                 
+  margin-top:4px;
+}
+.size-btn{
+  background:none; border:none; border-bottom:2px solid transparent;
+  padding:8px 0;            /* было 6px */
+  font-size:18px;           /* было 16px */
+  color:#39213D; cursor:pointer;
+  letter-spacing:.03em;
+  transition:color .2s, border-color .2s;
+}
+.size-btn:hover{ color:#2a182d }
+.size-btn.active{ border-bottom-color:#39213D; font-weight:600 }
+
+/* ==== CTA / кнопки ==== */
+
+/* Контейнер: количество + "В корзину" (на мобиле колонкой) */
+.cta-row{
+  display:flex; flex-direction:column; gap:10px;
+  margin:12px 0 10px;
 }
 
-.gallery-thumbnails {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Кнопка "В корзину" (высота фикс, чтобы совпадать с QuantitySelector) */
+.add-to-cart{
+  background:#39213D;
+  color:#FFFCDC;
+  font-size:16px;
+  font-weight:500;
+  padding:12px 20px;         /* нормальные отступы */
+  min-height:48px;           /* вместо фиксированной height */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;        /* ✦ запрещаем перенос строки */
+  border:1px solid #5e2a68;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-.gallery-thumbnails img {
-  width: 60px;
-  height: 80px;
-  object-fit: cover;
-  border: 1px solid #ccc;
-  cursor: pointer;
+
+/* "Быстрая покупка" — на всю ширину и с отступом вниз */
+.buy-now{
+  background:transparent; color:#39213D;
+  font-size:16px; font-weight:400;
+  padding:10px 14px;
+  border:1px solid #5e2a68; border-radius:8px; cursor:pointer;
+  width:100%;
+  margin-bottom:12px;       /* отступ до "Таблица размеров" */
 }
 
-.gallery-thumbnails img.active {
-  border: 2px solid #5e2a68;
+/* Ссылка "Таблица размеров" — с нижним отступом */
+.size-table{
+  display:block;
+  margin-bottom:12px;
+  font-size:14px;
+  text-decoration:underline;
+  color:#39213D;
+  letter-spacing:.03em;
 }
 
-.product-image img {
-  width: 100%;
-  max-width: 400px;
-  object-fit: contain;
-}
-
-.product-info {
-  flex: 1;
-}
-
-.product-name {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-.product-code,
-.product-price,
-.product-installment {
-  margin: 4px 0;
-}
-
-.product-colors .color-options {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.color-circle {
-  width: 30px;
-  height: 30px;
-  // border-radius: 90%;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.color-circle.selected {
-  border: 2px solid #5e2a68;
-}
-
-.product-sizes .size-options {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.size-options button {
-  padding: 4px 10px;
-  font-size: 18px;
-  color: #39213D;
-  border-color: transparent;
-  background: #F3F1E2;
-  cursor: pointer;
-}
-
-.size-options button.selected {
-  border-color: #5e2a68;
-  font-weight: bold;
-}
-
-.product-quantity {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 12px 0;
-}
-
-.product-quantity button {
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-}
-
-.product-actions {
-  margin: 16px 0;  
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.add-to-cart {
-  background-color: #f3f1e2;
-  font-size: 16px;
-  font-weight: 600;
-  color: #39213D;
-  border: 1px solid #5e2a68;
-  padding: 8px;
-  // border: none;
-  cursor: pointer;
-}
-
-.buy-now {
-  background-color: transparent;
-  border: 1px solid #5e2a68;
-  color: #39213D;;
-  padding: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.size-table {
-  display: block;
-  margin-bottom: 16px;
-  font-size: 14px;
-  text-decoration: underline;
-  color: #333;
-}
-
-.accordion details {
-  font-size: 22px;
-  border-top: 1px solid #ccc;
-  padding: 8px 0;
-}
-
-.accordion-header {
-  text-align: left;
-}
-
-.accordion summary {
-  cursor: pointer;
-  // font-weight: bold;
-}
-
-.accordion p {
-  font-size: 18px;
-}
-
-@media (min-width: 768px) {
-  .info {
-    font-size: 18px;
+/* ====== TABLET ====== */
+@media (min-width:768px){
+  .product-wrapper{
+    flex-direction:row; align-items:flex-start; gap:24px;
   }
 
-  .label {
-    font-size: 18px;
+  /* ✦ ПРАВКА: ограничиваем ширину и даём «воздух» справа,
+     чтобы кнопка "В корзину" не ломала строку */
+  .product-info{
+    flex:1;
+    max-width: 420px;
+    margin-right: 24px;
   }
 
-  .size-table {
-    font-size: 18px; 
+  .product-title{ font-size:32px; letter-spacing:.12em; }
+  .nav{ font-size:15px; letter-spacing:.10em; }
+  .info{ font-size:16px }
+  .size-table{ font-size:16px; letter-spacing:.02em; }
+
+  .sizes-list{ gap:22px; }
+  .size-btn{ font-size:18px; padding:8px 0; }
+}
+
+/* ====== DESKTOP ====== */
+@media (min-width:1024px){
+  .product-title{
+    font-size:48px;          /* меньше прежних 54px */
+    margin-bottom:20px;
+    padding-bottom:10px;
+    letter-spacing:.14em;
+  }
+
+  .nav{ font-size:16px; margin-bottom:16px; letter-spacing:.12em; }
+
+  /* ✦ ПРАВКА: правая колонка чуть шире + больше отступ справа */
+  .product-info{
+    max-width: 460px;
+    margin-right: 32px;
+  }
+
+  .product-name{ font-size:24px }
+  .product-price{ font-size:24px }
+  .product-code, .product-installment{ font-size:13px }
+
+  .sizes-list{ gap:26px; }
+  .size-btn{ font-size:19px; }
+
+  /* Ряд: количество (фикс) + "В корзину" (растягивается) */
+  .cta-row{
+    flex-direction:row; align-items:center; gap:16px; margin:12px 0 12px;
+  }
+  .product-qty-row{ flex:0 0 auto; }
+
+  .add-to-cart{
+    flex:1 1 auto;
+    min-height:48px;           /* вместо height */
+    padding:12px 24px;
+    font-size:16px;
+    border-radius:4px;
+    letter-spacing:.03em;
+    white-space:nowrap;        /* ✦ тоже фиксируем */
+  }
+
+
+  .buy-now{
+    min-height:44px;
+    padding:10px 18px;
+    font-size:15px;
+    border-radius:4px;
+    width:100%;
+    letter-spacing:.02em;
   }
 }
