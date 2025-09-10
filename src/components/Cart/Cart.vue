@@ -36,39 +36,59 @@
 
           <!-- ≥768px: полный сайдбар -->
           <template v-else>
-            <div class="summary-accordion">
-              <button class="acc-row" :aria-expanded="opened.deliveryInfo.toString()" @click="opened.deliveryInfo = !opened.deliveryInfo">
-                <span>Информация о доставке</span><span>+</span>
-              </button>
-              <transition name="slide">
-                <div v-if="opened.deliveryInfo" class="acc-panel">
-                  <p>Доставка осуществляется службой СДЕК.</p>
-                </div>
-              </transition>
+            <!-- КАСТОМНЫЙ АККОРДЕОН (desktop/tablet) -->
+            <div class="exp-list" role="list">
+              <div v-for="sec in sections" :key="sec.key" class="exp-item" role="listitem">
+                <button
+                  class="exp-btn"
+                  type="button"
+                  :aria-expanded="opened[sec.key]"
+                  :aria-controls="`exp-panel-${sec.key}`"
+                  @click="opened[sec.key] = !opened[sec.key]"
+                >
+                  <span class="exp-title">{{ sec.title }}</span>
+                  <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
+                </button>
 
-              <button class="acc-row" :aria-expanded="opened.returns.toString()" @click="opened.returns = !opened.returns">
-                <span>Обмен и возврат</span><span>+</span>
-              </button>
-              <transition name="slide">
-                <div v-if="opened.returns" class="acc-panel"><p>Условия обмена и возврата уточняйте у оператора.</p></div>
-              </transition>
-
-              <button class="acc-row" :aria-expanded="opened.payment.toString()" @click="opened.payment = !opened.payment">
-                <span>Об оплате</span><span>+</span>
-              </button>
-              <transition name="slide">
-                <div v-if="opened.payment" class="acc-panel"><p>Оплата картой онлайн.</p></div>
-              </transition>
+                <transition name="exp">
+                  <div
+                    v-show="opened[sec.key]"
+                    class="exp-panel"
+                    :id="`exp-panel-${sec.key}`"
+                    role="region"
+                    :aria-label="sec.title"
+                  >
+                    <p v-html="sec.html"></p>
+                  </div>
+                </transition>
+              </div>
             </div>
 
             <div class="summary-split"></div>
 
-            <div class="summary-line"><span>Доставка</span><span>0 ₽</span></div>
-            <div class="summary-total"><span>Итого</span><span>{{ formatPrice(totalPrice) }} ₽</span></div>
+            <div class="summary-line">
+              <span>Доставка</span><span>0 ₽</span>
+            </div>
+            <div class="summary-total">
+              <span>Итого</span><span>{{ formatPrice(totalPrice) }} ₽</span>
+            </div>
 
-            <button class="pay-btn" @click="checkout">Оплатить</button>
-            <p class="policy">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности и офертой</p>
-            <label class="agree"><input type="checkbox" v-model="agree" /><span>Согласие на обработку персональных данных</span></label>
+            <button class="pay-btn" :disabled="!agree" @click="checkout">Оплатить</button>
+
+            <p class="policy">
+              Нажимая кнопку, Вы соглашаетесь с
+              <a href="/policy" target="_blank" rel="noopener">политикой конфиденциальности</a>
+              и ознакомились с
+              <a href="/oferta" target="_blank" rel="noopener">офертой</a>
+            </p>
+
+            <label class="agree">
+              <input type="checkbox" v-model="agree" />
+              <span>
+                Согласие на обработку
+                <a href="/personal-data" target="_blank" rel="noopener">персональных данных</a>
+              </span>
+            </label>
           </template>
         </div>
       </aside>
@@ -84,15 +104,65 @@
         </div>
       </section>
 
-      <!-- ДОСТАВКА (карту пока не трогаем) -->
+      <!-- ДОСТАВКА -->
       <section class="delivery-section">
         <h2 class="delivery-title">Информация о доставке</h2>
+
         <div class="delivery-method">
           <span class="label">Способ доставки</span>
           <label class="radio"><input type="radio" checked disabled /><span>СДЕК</span></label>
         </div>
+
         <div id="yandex-map" class="delivery-map"></div>
         <p v-if="selectedPickupPoint" class="pvz">ПВЗ: {{ selectedPickupPoint }}</p>
+
+        <!-- Мобилка: кнопка/текст/чекбокс + АККОРДЕОН под картой -->
+        <template v-if="isMobile">
+          <button class="pay-btn pay-btn--mobile" :disabled="!agree" @click="checkout">Оплатить</button>
+
+          <p class="policy">
+            Нажимая кнопку, Вы соглашаетесь с
+            <a href="/policy" target="_blank" rel="noopener">политикой конфиденциальности</a>
+            и ознакомились с
+            <a href="/oferta" target="_blank" rel="noopener">офертой</a>
+          </p>
+
+          <label class="agree">
+            <input type="checkbox" v-model="agree" />
+            <span>
+              Согласие на обработку
+              <a href="/personal-data" target="_blank" rel="noopener">персональных данных</a>
+            </span>
+          </label>
+
+          <!-- КАСТОМНЫЙ АККОРДЕОН (mobile) -->
+          <div class="exp-list exp-list--mobile" role="list">
+            <div v-for="sec in sections" :key="sec.key" class="exp-item" role="listitem">
+              <button
+                class="exp-btn"
+                type="button"
+                :aria-expanded="opened[sec.key]"
+                :aria-controls="`exp-panel-m-${sec.key}`"
+                @click="opened[sec.key] = !opened[sec.key]"
+              >
+                <span class="exp-title">{{ sec.title }}</span>
+                <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
+              </button>
+
+              <transition name="exp">
+                <div
+                  v-show="opened[sec.key]"
+                  class="exp-panel"
+                  :id="`exp-panel-m-${sec.key}`"
+                  role="region"
+                  :aria-label="sec.title"
+                >
+                  <p v-html="sec.html"></p>
+                </div>
+              </transition>
+            </div>
+          </div>
+        </template>
       </section>
     </div>
   </main>
@@ -122,6 +192,18 @@ const customerPhone = ref('')
 const customerEmail = ref('')
 const agree = ref(false)
 
+// контент выпадающих секций
+const sections = [
+  { key: 'deliveryInfo', title: 'Информация о доставке', html: 'Доставка осуществляется службой СДЕК.' },
+  { key: 'returns',      title: 'Обмен и возврат',        html: 'Условия обмена и возврата уточняйте у оператора.' },
+  { key: 'payment',      title: 'Об оплате',              html: 'Оплата банковской картой онлайн.' }
+]
+const opened = ref({
+  deliveryInfo: false,
+  returns: false,
+  payment: false
+})
+
 // карта
 const selectedPickupPoint = ref(null)
 let mapInstance = null
@@ -142,15 +224,12 @@ onMounted(async () => {
 
 onBeforeUnmount(() => { if (mapInstance) { mapInstance.destroy(); mapInstance = null } })
 
-const opened = ref({ deliveryInfo: true, returns: false, payment: false })
-
 const isMobile = ref(window.innerWidth < 768)
 const onResize = () => { isMobile.value = window.innerWidth < 768 }
 onMounted(() => window.addEventListener('resize', onResize))
 onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 
 const itemKey = (item, idx) => `${item.product?.id || item.id}-${idx}`
-
 function formatPrice(v) { return (Number(v) || 0).toLocaleString('ru-RU') }
 
 function checkout() {
