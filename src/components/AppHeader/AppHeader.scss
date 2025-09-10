@@ -168,7 +168,9 @@ a:visited {
     transform: translateX(-50%); /* Возвращает назад на половину своей ширины */
 }
 
-
+.brand {
+    white-space: nowrap
+}
 ////////
 
 
@@ -176,6 +178,11 @@ a:visited {
     .header__wrapper {
         // background-image: url('@/assets/velur_tablet.png');
     }
+
+    .header__options
+        a {
+            padding-right: 30px;
+        }
 }
 
 @media (min-width : 1024px) {
@@ -183,11 +190,19 @@ a:visited {
         font-size: 18px;    
         padding: 10px 30px 10px 30px;
     }
+
+    .header__options {
+        font-size: 20px
+    }
 }
 
 @media (min-width : 1920px) {
     .header__wrapper {
         font-size: 22px;    
         padding: 20px 100px 20px 100px;
+    }
+
+    .header__options {
+        font-size: 28px
     }
 }

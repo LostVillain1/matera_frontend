@@ -17,9 +17,11 @@
           @update-quantity="(val) => updateQuantityByIndex(idx, val)"
           @update-options="(opts) => updateOptionsByIndex(idx, opts)"
         />
+        <!-- разделительная линия как в макете -->
+        <hr class="cart-divider" />
       </section>
 
-      <!-- БЛОК ИТОГА -->
+      <!-- САЙДБАР: ИТОГО + АККОРДЕОНЫ -->
       <aside class="cart-summary-wrap">
         <div class="summary-card" :class="{ 'summary-card--compact': isMobile }">
           <!-- МОБИЛЬНЫЙ: только доставка и итого -->
@@ -36,7 +38,6 @@
 
           <!-- ≥768px: полный сайдбар -->
           <template v-else>
-            <!-- КАСТОМНЫЙ АККОРДЕОН (desktop/tablet) -->
             <div class="exp-list" role="list">
               <div v-for="sec in sections" :key="sec.key" class="exp-item" role="listitem">
                 <button
@@ -49,7 +50,6 @@
                   <span class="exp-title">{{ sec.title }}</span>
                   <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
                 </button>
-
                 <transition name="exp">
                   <div
                     v-show="opened[sec.key]"
@@ -93,7 +93,7 @@
         </div>
       </aside>
 
-      <!-- ФОРМА ПЕРСОНАЛЬНЫХ ДАННЫХ -->
+      <!-- ПЕРСОНАЛЬНЫЕ ДАННЫЕ -->
       <section v-if="cartItems.length" class="checkout-form">
         <h2 class="form-title">Персональные данные</h2>
         <div class="form-grid">
@@ -113,10 +113,27 @@
           <label class="radio"><input type="radio" checked disabled /><span>СДЕК</span></label>
         </div>
 
+        <!-- ряд из 2 полей (десктоп) -->
+        <div class="delivery-row">
+          <div class="form-field">
+            <label>Город</label>
+            <input v-model="deliveryCity" type="text" class="line-input" placeholder=" " />
+          </div>
+
+          <div class="form-field">
+            <label>Адрес ПВЗ</label>
+            <!-- <select v-model="pvzAddress" class="line-select">
+              <option disabled value="">Выберите ПВЗ</option>
+              <option v-for="o in pvzOptions" :key="o" :value="o">{{ o }}</option>
+            </select> -->
+            <span class="select-caret" aria-hidden="true"></span>
+          </div>
+        </div>
+
         <div id="yandex-map" class="delivery-map"></div>
         <p v-if="selectedPickupPoint" class="pvz">ПВЗ: {{ selectedPickupPoint }}</p>
 
-        <!-- Мобилка: кнопка/текст/чекбокс + АККОРДЕОН под картой -->
+        <!-- МОБИЛА: кнопка/текст/чекбокс + аккордеон под картой -->
         <template v-if="isMobile">
           <button class="pay-btn pay-btn--mobile" :disabled="!agree" @click="checkout">Оплатить</button>
 
@@ -135,9 +152,8 @@
             </span>
           </label>
 
-          <!-- КАСТОМНЫЙ АККОРДЕОН (mobile) -->
           <div class="exp-list exp-list--mobile" role="list">
-            <div v-for="sec in sections" :key="sec.key" class="exp-item" role="listitem">
+            <div v-for="sec in sections" :key="`m-${sec.key}`" class="exp-item" role="listitem">
               <button
                 class="exp-btn"
                 type="button"
@@ -148,7 +164,6 @@
                 <span class="exp-title">{{ sec.title }}</span>
                 <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
               </button>
-
               <transition name="exp">
                 <div
                   v-show="opened[sec.key]"
@@ -192,17 +207,22 @@ const customerPhone = ref('')
 const customerEmail = ref('')
 const agree = ref(false)
 
-// контент выпадающих секций
+// доставка (UI-заглушки)
+const deliveryCity = ref('')
+const pvzAddress = ref('')
+const pvzOptions = [
+  'ул. Пушкина, 10 — ПВЗ 123',
+  'пр-т Мира, 45 — ПВЗ 207',
+  'ул. Лесная, 7 — ПВЗ 331'
+]
+
+// аккордеоны
 const sections = [
   { key: 'deliveryInfo', title: 'Информация о доставке', html: 'Доставка осуществляется службой СДЕК.' },
   { key: 'returns',      title: 'Обмен и возврат',        html: 'Условия обмена и возврата уточняйте у оператора.' },
   { key: 'payment',      title: 'Об оплате',              html: 'Оплата банковской картой онлайн.' }
 ]
-const opened = ref({
-  deliveryInfo: false,
-  returns: false,
-  payment: false
-})
+const opened = ref({ deliveryInfo: false, returns: false, payment: false })
 
 // карта
 const selectedPickupPoint = ref(null)
@@ -212,12 +232,12 @@ onMounted(async () => {
   try {
     const ymaps = await loadYMap()
     mapInstance = new ymaps.Map('yandex-map', {
-      center: [55.751244, 37.618423],
-      zoom: 10,
+      center: [54.1961, 37.6184], // пример: Тула как на скрине
+      zoom: 12,
       controls: ['zoomControl', 'fullscreenControl']
     })
-    const test = new ymaps.Placemark([55.751244, 37.618423], { balloonContent: 'Тестовая точка' })
-    test.events.add('click', () => (selectedPickupPoint.value = 'Москва, центр (тест)'))
+    const test = new ymaps.Placemark([54.1961, 37.6184], { balloonContent: 'Тестовая точка' })
+    test.events.add('click', () => (selectedPickupPoint.value = 'Выбран тестовый ПВЗ'))
     mapInstance.geoObjects.add(test)
   } catch (e) { console.error('YMap init error', e) }
 })
@@ -238,7 +258,8 @@ function checkout() {
   console.log('submit order', {
     customerName: customerName.value, customerSurname: customerSurname.value,
     customerPhone: customerPhone.value, customerEmail: customerEmail.value,
-    items: cartItems.value, pvz: selectedPickupPoint.value
+    items: cartItems.value, pvz: selectedPickupPoint.value,
+    city: deliveryCity.value, pvzAddress: pvzAddress.value
   })
   cartStore.checkout()
 }

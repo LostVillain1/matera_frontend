@@ -14,7 +14,7 @@
         </div>
         <div class="header__options left" v-if="!isMobile && !isTablet">
             <router-link to="/catalog">Каталог</router-link>
-            <router-link to="/about">О бренде</router-link>
+            <router-link to="/about" class="brand">О бренде</router-link>
             <router-link to="/boutique">Бутики</router-link>
             <!-- <div>Каталог</div>
             <div>О бренде</div>
