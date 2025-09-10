@@ -27,4 +27,19 @@ svg path {
 }
 
 
+@media (min-width: 1024px){
+    svg {
+        width: 49px;
+        height: 34px
+    }
+}
+
+@media (min-width: 1920px){
+    svg {
+        width: 59px;
+        height: 44px
+    }
+}
 </style>
+
+
