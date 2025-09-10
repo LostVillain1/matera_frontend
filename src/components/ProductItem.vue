@@ -172,6 +172,10 @@ function finishDrag () {
 }
 .item:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
 
+.name {color : #39213D}
+.code {color : #39213D}
+.price {color : #39213D}
+
 .slider { position: relative; width: 100%; overflow: hidden; outline: none; }
 .track { display: flex; width: 100%; will-change: transform; list-style: none; padding: 0; margin: 0; }
 .slide { flex: 0 0 100%; list-style: none; }
