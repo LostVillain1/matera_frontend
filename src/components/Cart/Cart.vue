@@ -17,14 +17,14 @@
           @update-quantity="(val) => updateQuantityByIndex(idx, val)"
           @update-options="(opts) => updateOptionsByIndex(idx, opts)"
         />
-        <!-- разделительная линия как в макете -->
+        <!-- разделительная линия перед блоком «Итого» -->
         <hr class="cart-divider" />
       </section>
 
-      <!-- САЙДБАР: ИТОГО + АККОРДЕОНЫ -->
+      <!-- ПРАВАЯ КОЛОНКА (сайдбар) -->
       <aside class="cart-summary-wrap">
         <div class="summary-card" :class="{ 'summary-card--compact': isMobile }">
-          <!-- МОБИЛЬНЫЙ: только доставка и итого -->
+          <!-- МОБИЛЬНО: только доставка/итого -->
           <template v-if="isMobile">
             <div class="summary-line">
               <span>Доставка</span>
@@ -36,29 +36,59 @@
             </div>
           </template>
 
-          <!-- ≥768px: полный сайдбар -->
+          <!-- ≥768px: аккордеоны + суммы + кнопка + тексты -->
           <template v-else>
             <div class="exp-list" role="list">
-              <div v-for="sec in sections" :key="sec.key" class="exp-item" role="listitem">
+              <!-- 1. Информация о доставке -->
+              <div class="exp-item" role="listitem">
                 <button
                   class="exp-btn"
                   type="button"
-                  :aria-expanded="opened[sec.key]"
-                  :aria-controls="`exp-panel-${sec.key}`"
-                  @click="opened[sec.key] = !opened[sec.key]"
+                  :aria-expanded="opened.deliveryInfo"
+                  @click="opened.deliveryInfo = !opened.deliveryInfo"
                 >
-                  <span class="exp-title">{{ sec.title }}</span>
-                  <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
+                  <span class="exp-title">Информация о доставке</span>
+                  <span class="acc-plus" :class="{ open: opened.deliveryInfo }" aria-hidden="true"></span>
                 </button>
                 <transition name="exp">
-                  <div
-                    v-show="opened[sec.key]"
-                    class="exp-panel"
-                    :id="`exp-panel-${sec.key}`"
-                    role="region"
-                    :aria-label="sec.title"
-                  >
-                    <p v-html="sec.html"></p>
+                  <div v-show="opened.deliveryInfo" class="exp-panel" role="region" aria-label="Информация о доставке">
+                    <p>Доставка осуществляется службой СДЕК.</p>
+                  </div>
+                </transition>
+              </div>
+
+              <!-- 2. Обмен и возврат -->
+              <div class="exp-item" role="listitem">
+                <button
+                  class="exp-btn"
+                  type="button"
+                  :aria-expanded="opened.returns"
+                  @click="opened.returns = !opened.returns"
+                >
+                  <span class="exp-title">Обмен и возврат</span>
+                  <span class="acc-plus" :class="{ open: opened.returns }" aria-hidden="true"></span>
+                </button>
+                <transition name="exp">
+                  <div v-show="opened.returns" class="exp-panel" role="region" aria-label="Обмен и возврат">
+                    <p>Условия обмена и возврата уточняйте у оператора.</p>
+                  </div>
+                </transition>
+              </div>
+
+              <!-- 3. Об оплате -->
+              <div class="exp-item" role="listitem">
+                <button
+                  class="exp-btn"
+                  type="button"
+                  :aria-expanded="opened.payment"
+                  @click="opened.payment = !opened.payment"
+                >
+                  <span class="exp-title">Об оплате</span>
+                  <span class="acc-plus" :class="{ open: opened.payment }" aria-hidden="true"></span>
+                </button>
+                <transition name="exp">
+                  <div v-show="opened.payment" class="exp-panel" role="region" aria-label="Об оплате">
+                    <p>Оплата банковской картой онлайн.</p>
                   </div>
                 </transition>
               </div>
@@ -94,26 +124,41 @@
       </aside>
 
       <!-- ПЕРСОНАЛЬНЫЕ ДАННЫЕ -->
-      <section v-if="cartItems.length" class="checkout-form">
+      <section class="checkout-form" v-if="cartItems.length">
         <h2 class="form-title">Персональные данные</h2>
         <div class="form-grid">
-          <div class="form-field"><label>Имя</label><input v-model="customerName" type="text" class="line-input" /></div>
-          <div class="form-field"><label>Фамилия</label><input v-model="customerSurname" type="text" class="line-input" /></div>
-          <div class="form-field"><label>Телефон</label><input v-model="customerPhone" type="tel" class="line-input" /></div>
-          <div class="form-field"><label>Почта</label><input v-model="customerEmail" type="email" class="line-input" /></div>
+          <div class="form-field">
+            <label>Имя</label>
+            <input v-model="customerName" type="text" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Фамилия</label>
+            <input v-model="customerSurname" type="text" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Телефон</label>
+            <input v-model="customerPhone" type="tel" class="line-input" />
+          </div>
+          <div class="form-field">
+            <label>Почта</label>
+            <input v-model="customerEmail" type="email" class="line-input" />
+          </div>
         </div>
       </section>
 
-      <!-- ДОСТАВКА -->
+      <!-- ИНФОРМАЦИЯ О ДОСТАВКЕ -->
       <section class="delivery-section">
         <h2 class="delivery-title">Информация о доставке</h2>
 
         <div class="delivery-method">
           <span class="label">Способ доставки</span>
-          <label class="radio"><input type="radio" checked disabled /><span>СДЕК</span></label>
+          <label class="radio">
+            <input type="radio" checked disabled />
+            <span>СДЕК</span>
+          </label>
         </div>
 
-        <!-- ряд из 2 полей (десктоп) -->
+        <!-- два поля в строку ≥900px -->
         <div class="delivery-row">
           <div class="form-field">
             <label>Город</label>
@@ -121,19 +166,20 @@
           </div>
 
           <div class="form-field">
-            <label>Адрес ПВЗ</label>
-            <!-- <select v-model="pvzAddress" class="line-select">
+            <!-- <label>Адрес ПВЗ</label>
+            <select v-model="pvzAddress" class="line-select">
               <option disabled value="">Выберите ПВЗ</option>
               <option v-for="o in pvzOptions" :key="o" :value="o">{{ o }}</option>
-            </select> -->
-            <span class="select-caret" aria-hidden="true"></span>
+            </select>
+            <span class="select-caret" aria-hidden="true"></span> -->
           </div>
         </div>
 
+        <!-- карта -->
         <div id="yandex-map" class="delivery-map"></div>
         <p v-if="selectedPickupPoint" class="pvz">ПВЗ: {{ selectedPickupPoint }}</p>
 
-        <!-- МОБИЛА: кнопка/текст/чекбокс + аккордеон под картой -->
+        <!-- МОБИЛЬНО: кнопка + тексты + те же аккордеоны под картой -->
         <template v-if="isMobile">
           <button class="pay-btn pay-btn--mobile" :disabled="!agree" @click="checkout">Оплатить</button>
 
@@ -153,26 +199,38 @@
           </label>
 
           <div class="exp-list exp-list--mobile" role="list">
-            <div v-for="sec in sections" :key="`m-${sec.key}`" class="exp-item" role="listitem">
-              <button
-                class="exp-btn"
-                type="button"
-                :aria-expanded="opened[sec.key]"
-                :aria-controls="`exp-panel-m-${sec.key}`"
-                @click="opened[sec.key] = !opened[sec.key]"
-              >
-                <span class="exp-title">{{ sec.title }}</span>
-                <span class="acc-plus" :class="{ open: opened[sec.key] }" aria-hidden="true"></span>
+            <div class="exp-item" role="listitem">
+              <button class="exp-btn" type="button" :aria-expanded="opened.deliveryInfo" @click="opened.deliveryInfo = !opened.deliveryInfo">
+                <span class="exp-title">Информация о доставке</span>
+                <span class="acc-plus" :class="{ open: opened.deliveryInfo }" aria-hidden="true"></span>
               </button>
               <transition name="exp">
-                <div
-                  v-show="opened[sec.key]"
-                  class="exp-panel"
-                  :id="`exp-panel-m-${sec.key}`"
-                  role="region"
-                  :aria-label="sec.title"
-                >
-                  <p v-html="sec.html"></p>
+                <div v-show="opened.deliveryInfo" class="exp-panel" role="region" aria-label="Информация о доставке">
+                  <p>Доставка осуществляется службой СДЕК.</p>
+                </div>
+              </transition>
+            </div>
+
+            <div class="exp-item" role="listitem">
+              <button class="exp-btn" type="button" :aria-expanded="opened.returns" @click="opened.returns = !opened.returns">
+                <span class="exp-title">Обмен и возврат</span>
+                <span class="acc-plus" :class="{ open: opened.returns }" aria-hidden="true"></span>
+              </button>
+              <transition name="exp">
+                <div v-show="opened.returns" class="exp-panel" role="region" aria-label="Обмен и возврат">
+                  <p>Условия обмена и возврата уточняйте у оператора.</p>
+                </div>
+              </transition>
+            </div>
+
+            <div class="exp-item" role="listitem">
+              <button class="exp-btn" type="button" :aria-expanded="opened.payment" @click="opened.payment = !opened.payment">
+                <span class="exp-title">Об оплате</span>
+                <span class="acc-plus" :class="{ open: opened.payment }" aria-hidden="true"></span>
+              </button>
+              <transition name="exp">
+                <div v-show="opened.payment" class="exp-panel" role="region" aria-label="Об оплате">
+                  <p>Оплата банковской картой онлайн.</p>
                 </div>
               </transition>
             </div>
@@ -196,18 +254,19 @@ import { storeToRefs } from 'pinia'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { loadYMap } from '@/utils/loadYMap'
 
+/* === STORE === */
 const cartStore = useCartStore()
 const { items: cartItems, totalPrice } = storeToRefs(cartStore)
 const { removeByIndex, updateQuantityByIndex, updateOptionsByIndex } = cartStore
 
-// форма
+/* === ФОРМА === */
 const customerName = ref('')
 const customerSurname = ref('')
 const customerPhone = ref('')
 const customerEmail = ref('')
 const agree = ref(false)
 
-// доставка (UI-заглушки)
+/* === ДОСТАВКА (UI-заглушки) === */
 const deliveryCity = ref('')
 const pvzAddress = ref('')
 const pvzOptions = [
@@ -216,50 +275,62 @@ const pvzOptions = [
   'ул. Лесная, 7 — ПВЗ 331'
 ]
 
-// аккордеоны
-const sections = [
-  { key: 'deliveryInfo', title: 'Информация о доставке', html: 'Доставка осуществляется службой СДЕК.' },
-  { key: 'returns',      title: 'Обмен и возврат',        html: 'Условия обмена и возврата уточняйте у оператора.' },
-  { key: 'payment',      title: 'Об оплате',              html: 'Оплата банковской картой онлайн.' }
-]
-const opened = ref({ deliveryInfo: false, returns: false, payment: false })
+/* === АККОРДЕОНЫ: локальные флаги (без массивов в JS) === */
+const opened = ref({
+  deliveryInfo: false,
+  returns: false,
+  payment: false
+})
 
-// карта
+/* === КАРТА === */
 const selectedPickupPoint = ref(null)
 let mapInstance = null
-
 onMounted(async () => {
   try {
     const ymaps = await loadYMap()
     mapInstance = new ymaps.Map('yandex-map', {
-      center: [54.1961, 37.6184], // пример: Тула как на скрине
+      center: [54.1961, 37.6184],
       zoom: 12,
       controls: ['zoomControl', 'fullscreenControl']
     })
     const test = new ymaps.Placemark([54.1961, 37.6184], { balloonContent: 'Тестовая точка' })
     test.events.add('click', () => (selectedPickupPoint.value = 'Выбран тестовый ПВЗ'))
     mapInstance.geoObjects.add(test)
-  } catch (e) { console.error('YMap init error', e) }
+  } catch (e) {
+    console.error('YMap init error', e)
+  }
 })
-
 onBeforeUnmount(() => { if (mapInstance) { mapInstance.destroy(); mapInstance = null } })
 
+/* === АДАПТИВ === */
 const isMobile = ref(window.innerWidth < 768)
 const onResize = () => { isMobile.value = window.innerWidth < 768 }
 onMounted(() => window.addEventListener('resize', onResize))
 onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 
+/* === УТИЛИТЫ === */
 const itemKey = (item, idx) => `${item.product?.id || item.id}-${idx}`
-function formatPrice(v) { return (Number(v) || 0).toLocaleString('ru-RU') }
+const formatPrice = (v) => (Number(v) || 0).toLocaleString('ru-RU')
 
+/* === ОПЛАТА === */
 function checkout() {
-  if (!agree.value) { alert('Подтвердите согласие на обработку персональных данных'); return }
-  if (!customerName.value || !customerPhone.value) { alert('Заполните имя и телефон'); return }
+  if (!agree.value) {
+    alert('Подтвердите согласие на обработку персональных данных')
+    return
+  }
+  if (!customerName.value || !customerPhone.value) {
+    alert('Заполните имя и телефон')
+    return
+  }
   console.log('submit order', {
-    customerName: customerName.value, customerSurname: customerSurname.value,
-    customerPhone: customerPhone.value, customerEmail: customerEmail.value,
-    items: cartItems.value, pvz: selectedPickupPoint.value,
-    city: deliveryCity.value, pvzAddress: pvzAddress.value
+    customerName: customerName.value,
+    customerSurname: customerSurname.value,
+    customerPhone: customerPhone.value,
+    customerEmail: customerEmail.value,
+    items: cartItems.value,
+    pvz: selectedPickupPoint.value,
+    city: deliveryCity.value,
+    pvzAddress: pvzAddress.value
   })
   cartStore.checkout()
 }
