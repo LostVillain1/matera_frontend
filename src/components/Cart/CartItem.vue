@@ -67,12 +67,8 @@
           aria-label="Удалить из корзины"
           @click="emit('remove')"
         >
-          <svg viewBox="0 0 24 24" class="trash-ic" aria-hidden="true">
-            <path
-              d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M7 7l1 13a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-13"
-              fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round"
-            />
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 3.625H20.5M8.28571 7.5625V18.0625M13.7143 7.5625V18.0625M4.21429 3.625H17.7857V19.375C17.7857 20.0712 17.4997 20.7389 16.9907 21.2312C16.4817 21.7234 15.7913 22 15.0714 22H6.92857C6.2087 22 5.51831 21.7234 5.00928 21.2312C4.50025 20.7389 4.21429 20.0712 4.21429 19.375V3.625ZM11 1C11.6848 0.999791 12.3443 1.24991 12.8465 1.70021C13.3486 2.15052 13.6561 2.76773 13.7075 3.42813L13.7143 3.625H8.28571C8.28571 2.92881 8.57168 2.26113 9.08071 1.76884C9.58974 1.27656 10.2801 1 11 1Z" stroke="#434343" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
@@ -109,7 +105,11 @@
       </div>
 
       <div class="col col-actions">
-        <button class="icon-btn remove" @click="emit('remove')" aria-label="Удалить">🗑</button>
+        <button class="icon-btn remove" @click="emit('remove')" aria-label="Удалить">
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 3.625H20.5M8.28571 7.5625V18.0625M13.7143 7.5625V18.0625M4.21429 3.625H17.7857V19.375C17.7857 20.0712 17.4997 20.7389 16.9907 21.2312C16.4817 21.7234 15.7913 22 15.0714 22H6.92857C6.2087 22 5.51831 21.7234 5.00928 21.2312C4.50025 20.7389 4.21429 20.0712 4.21429 19.375V3.625ZM11 1C11.6848 0.999791 12.3443 1.24991 12.8465 1.70021C13.3486 2.15052 13.6561 2.76773 13.7075 3.42813L13.7143 3.625H8.28571C8.28571 2.92881 8.57168 2.26113 9.08071 1.76884C9.58974 1.27656 10.2801 1 11 1Z" stroke="#434343" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </div>
   </article>

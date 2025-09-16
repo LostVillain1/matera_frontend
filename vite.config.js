@@ -15,4 +15,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://matera-couture.ru',
+        changeOrigin: true,
+        secure: true,
+        // rewrite не нужен, оставляем путь как есть:
+        // /api/cdek/cities -> https://matera-couture.ru/api/cdek/cities
+      }
+    }
+  }
 })

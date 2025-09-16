@@ -36,62 +36,41 @@
             </div>
           </template>
 
-          <!-- ≥768px: аккордеоны + суммы + кнопка + тексты -->
+          <!-- ≥768px: аккордеоны (CSS <details>) + суммы + кнопка + тексты -->
           <template v-else>
             <div class="exp-list" role="list">
               <!-- 1. Информация о доставке -->
-              <div class="exp-item" role="listitem">
-                <button
-                  class="exp-btn"
-                  type="button"
-                  :aria-expanded="opened.deliveryInfo"
-                  @click="opened.deliveryInfo = !opened.deliveryInfo"
-                >
+              <details class="exp" role="listitem">
+                <summary class="exp-btn">
                   <span class="exp-title">Информация о доставке</span>
-                  <span class="acc-plus" :class="{ open: opened.deliveryInfo }" aria-hidden="true"></span>
-                </button>
-                <transition name="exp">
-                  <div v-show="opened.deliveryInfo" class="exp-panel" role="region" aria-label="Информация о доставке">
-                    <p>Доставка осуществляется службой СДЕК.</p>
-                  </div>
-                </transition>
-              </div>
+                  <span class="acc-plus" aria-hidden="true"></span>
+                </summary>
+                <div class="exp-panel" role="region" aria-label="Информация о доставке">
+                  <p>Доставка осуществляется службой СДЕК.</p>
+                </div>
+              </details>
 
               <!-- 2. Обмен и возврат -->
-              <div class="exp-item" role="listitem">
-                <button
-                  class="exp-btn"
-                  type="button"
-                  :aria-expanded="opened.returns"
-                  @click="opened.returns = !opened.returns"
-                >
+              <details class="exp" role="listitem">
+                <summary class="exp-btn">
                   <span class="exp-title">Обмен и возврат</span>
-                  <span class="acc-plus" :class="{ open: opened.returns }" aria-hidden="true"></span>
-                </button>
-                <transition name="exp">
-                  <div v-show="opened.returns" class="exp-panel" role="region" aria-label="Обмен и возврат">
-                    <p>Условия обмена и возврата уточняйте у оператора.</p>
-                  </div>
-                </transition>
-              </div>
+                  <span class="acc-plus" aria-hidden="true"></span>
+                </summary>
+                <div class="exp-panel" role="region" aria-label="Обмен и возврат">
+                  <p>Условия обмена и возврата уточняйте у оператора.</p>
+                </div>
+              </details>
 
               <!-- 3. Об оплате -->
-              <div class="exp-item" role="listitem">
-                <button
-                  class="exp-btn"
-                  type="button"
-                  :aria-expanded="opened.payment"
-                  @click="opened.payment = !opened.payment"
-                >
+              <details class="exp" role="listitem">
+                <summary class="exp-btn">
                   <span class="exp-title">Об оплате</span>
-                  <span class="acc-plus" :class="{ open: opened.payment }" aria-hidden="true"></span>
-                </button>
-                <transition name="exp">
-                  <div v-show="opened.payment" class="exp-panel" role="region" aria-label="Об оплате">
-                    <p>Оплата банковской картой онлайн.</p>
-                  </div>
-                </transition>
-              </div>
+                  <span class="acc-plus" aria-hidden="true"></span>
+                </summary>
+                <div class="exp-panel" role="region" aria-label="Об оплате">
+                  <p>Оплата банковской картой онлайн.</p>
+                </div>
+              </details>
             </div>
 
             <div class="summary-split"></div>
@@ -160,24 +139,65 @@
 
         <!-- два поля в строку ≥900px -->
         <div class="delivery-row">
+          <!-- Город -->
           <div class="form-field">
             <label>Город</label>
-            <input v-model="deliveryCity" type="text" class="line-input" placeholder=" " />
+
+            <div class="city-inline">
+              <input
+                v-model="delivery.cityInput"
+                type="text"
+                class="line-input"
+                placeholder="Например: Тверь"
+                @keyup.enter="findCityThenPvz"
+              />
+              <button class="btn-find" :disabled="delivery.loadingCity" @click="findCityThenPvz">
+                {{ delivery.loadingCity ? '...' : 'Найти' }}
+              </button>
+            </div>
+
+            <p v-if="delivery.cityName" class="hint ok">Выбран город: {{ delivery.cityName }}</p>
+            <p v-if="delivery.errorMsg" class="hint err">{{ delivery.errorMsg }}</p>
           </div>
 
+          <!-- Адрес ПВЗ -->
           <div class="form-field">
-            <!-- <label>Адрес ПВЗ</label>
-            <select v-model="pvzAddress" class="line-select">
-              <option disabled value="">Выберите ПВЗ</option>
-              <option v-for="o in pvzOptions" :key="o" :value="o">{{ o }}</option>
-            </select>
-            <span class="select-caret" aria-hidden="true"></span> -->
+            <label>Адрес ПВЗ</label>
+
+            <div v-if="!delivery.hasCity" class="pvz-placeholder">
+              Сначала укажите город
+            </div>
+
+            <!-- Автооткрывающийся dropdown после поиска города -->
+            <template v-else>
+              <div v-if="delivery.loadingPvz" class="hint">Загружаем пункты…</div>
+
+              <div v-if="delivery.hasPvz" class="pvz-dropdown" :class="{ open: showPvz }">
+                <button type="button" class="pvz-trigger" @click="showPvz = !showPvz">
+                  <span>{{ delivery.selectedPvz?.name || 'Выберите ПВЗ' }}</span>
+                  <i class="caret" aria-hidden="true"></i>
+                </button>
+                <ul v-show="showPvz" class="pvz-menu">
+                  <li
+                    v-for="p in delivery.pvzList"
+                    :key="p.code"
+                    class="pvz-item"
+                    @click="delivery.selectPvz(p.code); showPvz = false"
+                  >
+                    <div class="pvz-title">{{ p.name }}</div>
+                    <div class="pvz-addr">{{ p.address }}</div>
+                  </li>
+                </ul>
+              </div>
+            </template>
           </div>
         </div>
 
         <!-- карта -->
         <div id="yandex-map" class="delivery-map"></div>
-        <p v-if="selectedPickupPoint" class="pvz">ПВЗ: {{ selectedPickupPoint }}</p>
+        <p v-if="selectedPickupPoint" class="pvz">
+          ПВЗ: {{ selectedPickupPoint.name }} — {{ selectedPickupPoint.address }}
+        </p>
 
         <!-- МОБИЛЬНО: кнопка + тексты + те же аккордеоны под картой -->
         <template v-if="isMobile">
@@ -199,41 +219,33 @@
           </label>
 
           <div class="exp-list exp-list--mobile" role="list">
-            <div class="exp-item" role="listitem">
-              <button class="exp-btn" type="button" :aria-expanded="opened.deliveryInfo" @click="opened.deliveryInfo = !opened.deliveryInfo">
+            <details class="exp" role="listitem">
+              <summary class="exp-btn">
                 <span class="exp-title">Информация о доставке</span>
-                <span class="acc-plus" :class="{ open: opened.deliveryInfo }" aria-hidden="true"></span>
-              </button>
-              <transition name="exp">
-                <div v-show="opened.deliveryInfo" class="exp-panel" role="region" aria-label="Информация о доставке">
-                  <p>Доставка осуществляется службой СДЕК.</p>
-                </div>
-              </transition>
-            </div>
-
-            <div class="exp-item" role="listitem">
-              <button class="exp-btn" type="button" :aria-expanded="opened.returns" @click="opened.returns = !opened.returns">
+                <span class="acc-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="exp-panel" role="region" aria-label="Информация о доставке">
+                <p>Доставка осуществляется службой СДЕК.</p>
+              </div>
+            </details>
+            <details class="exp" role="listitem">
+              <summary class="exp-btn">
                 <span class="exp-title">Обмен и возврат</span>
-                <span class="acc-plus" :class="{ open: opened.returns }" aria-hidden="true"></span>
-              </button>
-              <transition name="exp">
-                <div v-show="opened.returns" class="exp-panel" role="region" aria-label="Обмен и возврат">
-                  <p>Условия обмена и возврата уточняйте у оператора.</p>
-                </div>
-              </transition>
-            </div>
-
-            <div class="exp-item" role="listitem">
-              <button class="exp-btn" type="button" :aria-expanded="opened.payment" @click="opened.payment = !opened.payment">
+                <span class="acc-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="exp-panel" role="region" aria-label="Обмен и возврат">
+                <p>Условия обмена и возврата уточняйте у оператора.</p>
+              </div>
+            </details>
+            <details class="exp" role="listitem">
+              <summary class="exp-btn">
                 <span class="exp-title">Об оплате</span>
-                <span class="acc-plus" :class="{ open: opened.payment }" aria-hidden="true"></span>
-              </button>
-              <transition name="exp">
-                <div v-show="opened.payment" class="exp-panel" role="region" aria-label="Об оплате">
-                  <p>Оплата банковской картой онлайн.</p>
-                </div>
-              </transition>
-            </div>
+                <span class="acc-plus" aria-hidden="true"></span>
+              </summary>
+              <div class="exp-panel" role="region" aria-label="Об оплате">
+                <p>Оплата банковской картой онлайн.</p>
+              </div>
+            </details>
           </div>
         </template>
       </section>
@@ -244,20 +256,33 @@
 </template>
 
 <script setup>
+/**
+ * ВАЖНО:
+ * - Аккордеоны построены на <details>/<summary>, никакой JS для них не нужен.
+ * - Выбор города/ПВЗ и карта живут в отдельном Pinia-сторе useDeliveryStore.
+ * - После поиска города ПВЗ подгружаются автоматически и раскрывается dropdown.
+ * - Кнопка "Оплатить" блокируется, пока не выставлен чекбокс согласия.
+ */
+
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { storeToRefs } from 'pinia'
 import AppHeader from '@/components/AppHeader/AppHeader.vue'
 import AppFooter from '@/components/AppFooter/AppFooter.vue'
 import EmptyCart from './EmptyCart.vue'
 import CartItem from './CartItem.vue'
-
 import { useCartStore } from '@/stores/useCartStore'
-import { storeToRefs } from 'pinia'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useDeliveryStore } from '@/stores/useDeliveryStore'
 import { loadYMap } from '@/utils/loadYMap'
 
-/* === STORE === */
+/* === CART STORE === */
 const cartStore = useCartStore()
 const { items: cartItems, totalPrice } = storeToRefs(cartStore)
 const { removeByIndex, updateQuantityByIndex, updateOptionsByIndex } = cartStore
+
+/* === DELIVERY STORE (город/ПВЗ) === */
+const delivery = useDeliveryStore()
+const selectedPickupPoint = computed(() => delivery.selectedPvz)
+const showPvz = ref(false)
 
 /* === ФОРМА === */
 const customerName = ref('')
@@ -266,45 +291,85 @@ const customerPhone = ref('')
 const customerEmail = ref('')
 const agree = ref(false)
 
-/* === ДОСТАВКА (UI-заглушки) === */
-const deliveryCity = ref('')
-const pvzAddress = ref('')
-const pvzOptions = [
-  'ул. Пушкина, 10 — ПВЗ 123',
-  'пр-т Мира, 45 — ПВЗ 207',
-  'ул. Лесная, 7 — ПВЗ 331'
-]
-
-/* === АККОРДЕОНЫ: локальные флаги (без массивов в JS) === */
-const opened = ref({
-  deliveryInfo: false,
-  returns: false,
-  payment: false
-})
-
-/* === КАРТА === */
-const selectedPickupPoint = ref(null)
+/* === КАРТА (Яндекс.Карты JS API) === */
 let mapInstance = null
+let markersCollection = null
+
 onMounted(async () => {
   try {
     const ymaps = await loadYMap()
     mapInstance = new ymaps.Map('yandex-map', {
-      center: [54.1961, 37.6184],
-      zoom: 12,
+      center: [55.751244, 37.618423],
+      zoom: 10,
       controls: ['zoomControl', 'fullscreenControl']
     })
-    const test = new ymaps.Placemark([54.1961, 37.6184], { balloonContent: 'Тестовая точка' })
-    test.events.add('click', () => (selectedPickupPoint.value = 'Выбран тестовый ПВЗ'))
-    mapInstance.geoObjects.add(test)
+    markersCollection = new ymaps.GeoObjectCollection()
+    mapInstance.geoObjects.add(markersCollection)
   } catch (e) {
     console.error('YMap init error', e)
   }
 })
-onBeforeUnmount(() => { if (mapInstance) { mapInstance.destroy(); mapInstance = null } })
+
+onBeforeUnmount(() => {
+  if (mapInstance) {
+    mapInstance.destroy()
+    mapInstance = null
+  }
+})
+
+/* Ставим маркеры при загрузке ПВЗ */
+watch(
+  () => delivery.pvzList,
+  (list) => {
+    if (!mapInstance || !markersCollection) return
+    markersCollection.removeAll()
+    if (!Array.isArray(list) || !list.length) return
+    const bounds = []
+    list.forEach((p) => {
+      const coords = [p.location?.lat, p.location?.lon]
+      if (!coords[0] && !coords[1]) return
+      const pm = new window.ymaps.Placemark(
+        coords,
+        { hintContent: p.name, balloonContent: `<strong>${p.name}</strong><br/>${p.address}` },
+        { preset: 'islands#violetDotIcon' }
+      )
+      pm.events.add('click', () => delivery.selectPvz(p.code))
+      markersCollection.add(pm)
+      bounds.push(coords)
+    })
+    if (bounds.length) mapInstance.setBounds(bounds, { checkZoomRange: true, zoomMargin: 30 })
+  },
+  { deep: true }
+)
+
+/* Центрируем карту на выбранный ПВЗ */
+watch(
+  () => delivery.selectedPvz,
+  (p) => {
+    if (!mapInstance || !p?.location) return
+    mapInstance.setCenter([p.location.lat, p.location.lon], 14, { duration: 300 })
+  }
+)
+
+/* Найти город → загрузить ПВЗ → открыть dropdown */
+const findCityThenPvz = async () => {
+  showPvz.value = false
+  await delivery.findCity()
+  if (delivery.hasCity) {
+    await delivery.loadPvzList()
+    if (delivery.hasPvz) showPvz.value = true
+  }
+}
+
+/* При правке города закрываем dropdown (и при необходимости сбрасываем выбор в сторе) */
+watch(
+  () => delivery.cityInput,
+  () => { showPvz.value = false }
+)
 
 /* === АДАПТИВ === */
 const isMobile = ref(window.innerWidth < 768)
-const onResize = () => { isMobile.value = window.innerWidth < 768 }
+const onResize = () => (isMobile.value = window.innerWidth < 768)
 onMounted(() => window.addEventListener('resize', onResize))
 onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 
@@ -312,7 +377,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize))
 const itemKey = (item, idx) => `${item.product?.id || item.id}-${idx}`
 const formatPrice = (v) => (Number(v) || 0).toLocaleString('ru-RU')
 
-/* === ОПЛАТА === */
+/* === ОФОРМЛЕНИЕ === */
 function checkout() {
   if (!agree.value) {
     alert('Подтвердите согласие на обработку персональных данных')
@@ -328,9 +393,11 @@ function checkout() {
     customerPhone: customerPhone.value,
     customerEmail: customerEmail.value,
     items: cartItems.value,
-    pvz: selectedPickupPoint.value,
-    city: deliveryCity.value,
-    pvzAddress: pvzAddress.value
+    delivery: {
+      cityName: delivery.cityName,
+      cityCode: delivery.cityCode,
+      pvz: delivery.selectedPvz
+    }
   })
   cartStore.checkout()
 }

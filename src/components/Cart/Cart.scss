@@ -46,7 +46,14 @@
   .checkout-form   { grid-area: form; }
   .delivery-section{ grid-area: delivery; }
 
-  /* ===== Сайдбар (карточка, mobile-first) ===== */
+  .cart-divider {
+    height: 1px;
+    border: 0;
+    background: #d8d3c5;
+    margin-top: 6px;
+  }
+
+  /* ===== Сайдбар ===== */
   .summary-card {
     position: static;
     background: #fff;
@@ -55,7 +62,7 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.06);
 
     @media (min-width: 768px) {
-      background: transparent;   /* убираем «карточку» */
+      background: transparent;
       border-radius: 0;
       box-shadow: none;
       padding: 0;
@@ -73,11 +80,11 @@
     padding: 14px 0;
     border-top: 1px solid #d8d3c5;
 
-    .summary-accordion,
     .pay-btn,
     .policy,
     .agree,
-    .summary-split {
+    .summary-split,
+    .exp-list {
       display: none !important;
     }
 
@@ -106,21 +113,37 @@
     }
   }
 
-  /* ===== Аккордеоны/разделители в сайдбаре (десктоп/планшет) ===== */
+  /* ===== Аккордеоны (CSS: details/summary) ===== */
   .exp-list { margin: 0 0 12px; }
-  .exp-item {
+  .exp {
     border-top: 1px solid #dcd5c7;
     &:last-child { border-bottom: 1px solid #dcd5c7; }
   }
+  .exp[open] .acc-plus { transform: rotate(45deg); }
   .exp-btn {
     padding: 14px 0;
     font-weight: 600;
     color: #3a203e;
     width: 100%;
     display: flex; justify-content: space-between; align-items: center;
-    background: transparent; border: 0; cursor: pointer;
+    list-style: none;
+    cursor: pointer;
   }
-  .acc-plus::after, .acc-plus::before { background: #2c1632; }
+  .exp-btn::-webkit-details-marker { display: none; } /* убираем дефолтный маркер */
+  .acc-plus {
+    display: inline-block;
+    width: 16px; height: 16px;
+    position: relative;
+    transition: transform .2s ease;
+  }
+  .acc-plus::before, .acc-plus::after {
+    content: "";
+    position: absolute; left: 50%; top: 50%;
+    width: 14px; height: 2px; transform: translate(-50%, -50%);
+    background: #2c1632;
+    border-radius: 1px;
+  }
+  .acc-plus::after { transform: translate(-50%, -50%) rotate(90deg); }
   .exp-panel {
     padding: 10px 0 14px;
     color: #6b6570;
@@ -171,9 +194,7 @@
     &:hover:not(:disabled){ opacity: .92; }
     &:disabled{ background: #a497a9; cursor: not-allowed; opacity: .7; }
 
-    @media (min-width: 768px) {
-      width: 220px;  /* фикс как в макете */
-    }
+    @media (min-width: 768px) { width: 220px; }
   }
 
   .policy {
@@ -297,8 +318,58 @@
 
     .pvz { margin-top: 8px; font-size: 13px; color: #666; }
   }
+
+  /* --- поле "Город": инлайн-кнопка --- */
+  .city-inline{
+    display:flex; gap:10px; align-items:center;
+    .line-input{ flex:1 }
+  }
+  .btn-find{
+    height:36px; padding:0 12px; border-radius:8px; border:1px solid #2c1632;
+    background:#2c1632; color:#fff; font-weight:600; cursor:pointer;
+    &--ghost{ background:transparent; color:#2c1632 }
+    &:disabled{ opacity:.6; cursor:default }
+  }
+
+  /* подсказки под полем */
+  .hint{ font-size:12px; color:#6b6570; margin-top:6px }
+  .hint.ok{ color:#2c1632 }
+  .hint.err{ color:#c0392b }
+
+  /* --- кастомный dropdown для ПВЗ --- */
+  .pvz-placeholder{ height:38px; display:flex; align-items:center; color:#9a94a2 }
+
+  .pvz-dropdown{ position:relative }
+  .pvz-trigger{
+    width:100%; height:38px; display:flex; align-items:center; justify-content:space-between;
+    border:0; border-bottom:1px solid #bfb8a9; background:transparent; padding:0;
+    font-size:16px; color:#2c1632; cursor:pointer;
+  }
+  .pvz-dropdown.open .pvz-trigger{ border-bottom-color:#2c1632 }
+  .caret{
+    display:inline-block; width:14px; height:14px;
+    background: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%232c1632' stroke-width='2'/%3E%3C/svg%3E") no-repeat center/contain;
+  }
+  .pvz-menu{
+    position:absolute; left:0; right:0; z-index:10; max-height:260px; overflow:auto;
+    background:#fff; border:1px solid #dcd5c7; border-radius:8px; margin-top:8px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+  }
+  .pvz-item{
+    padding:10px 12px; cursor:pointer; border-bottom:1px solid #f0eadb;
+    &:last-child{ border-bottom:0 }
+    &:hover{ background:#f7f3e6 }
+    .pvz-title{ font-weight:600; color:#2c1632; font-size:14px; }
+    .pvz-addr{ color:#6b6570; font-size:13px; margin-top:2px; }
+  }
+
+  /* строка из двух полей на планшете/десктопе */
+  .delivery-row{
+    display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:14px;
+    @media (min-width: 900px){ grid-template-columns:1fr 1fr }
+  }
 }
 
-/* анимация для аккордеонов */
+/* (для старых переходов можно оставить, но аккордеонам уже не нужно) */
 .slide-enter-active, .slide-leave-active { transition: all .2s ease; }
 .slide-enter-from, .slide-leave-to { opacity: 0; transform: translateY(-6px); }
