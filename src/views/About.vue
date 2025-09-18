@@ -1,84 +1,136 @@
 <template>
   <AppHeader></AppHeader>
-  <div class="about-page">
-    <section class="about-brand">
+   <section class="about">
 
-      <!-- БЛОК 1 -->
-      <div class="brand-block">      
-        <div class="brand-text">
-          <h2 class="brand-title">О бренде</h2>
-          <p>
-            <span class="key">MATERA</span> —  это бренд для самых требовательных.
-          </p>
-        </div>
-        <img class="brand-image" src="@/assets/brand/milmos.png" alt="Италия - Россия">
+    <!-- ГЕРОЙ (самое первое фото страницы) -->
+    <figure class="hero" aria-label="Обложка раздела">
+      <img src="@/assets/about/about_1.png" alt="" />
+    </figure>
+
+    <!-- Хлебные крошки -->
+    <nav class="breadcrumbs container" aria-label="Хлебные крошки">
+      <RouterLink to="/">Главная</RouterLink>
+      <span class="sep">//</span>
+      <span aria-current="page">О бренде</span>
+    </nav>
+
+    <!-- Блок О БРЕНДЕ: текст слева, фото справа -->
+    <header class="intro container">
+      <div class="intro__text">
+        <h1 class="h1">О бренде</h1>
+        <p class="lead">
+          MATERA — это союз итальянских дизайнеров и русских мастеров. Эскизы для наших коллекций
+          рождаются в Италии и обретают материальную форму в московском ателье.
+        </p>
       </div>
-      <!-- БЛОК 2 -->
-      <div class="brand-block reverse">            
-        <div class="brand-text">
-          <h3 class="brand-subtitle">«1. Сделано вручную</h3>
-          <p>
-            Созданием каждого изделия занимается команда мастеров в московском ателье.
-            Это искусство, а не производство.
-          </p>
-        </div>
-        <img class="brand-image" src="@/assets/brand/handsabout.png" alt="процесc">
+      <figure class="intro__img">
+        <img src="@/assets/about/about_2.png" alt="" />
+      </figure>
+    </header>
+
+    <!-- СЛОГАН -->
+    <section class="slogan container">
+      <h2 class="slogan__title">
+        <span class="rule" aria-hidden="true"></span>
+        «Придумано в Италии — сделано в России»
+        <span class="rule" aria-hidden="true"></span>
+      </h2>
+    </section>
+
+    <!-- ДИПТИХ: большое фото слева, справа текст + маленькое фото -->
+    <section class="duo container">
+      <figure class="duo__left">
+        <img src="@/assets/about/about_3.png" alt="" />
+      </figure>
+
+      <div class="duo__right">
+        <p class="duo__text">
+          — это не только наш слоган, но и суть бренда.
+          <br></br>
+          <br></br>
+          Название MATERA отсылает к итальянскому
+          городу, где наследие древней культуры гармонично соседствует с современной эстетикой.
+        </p>
+        <figure class="duo__thumb">
+          <img src="@/assets/about/about_4.png" alt="" />
+        </figure>
+      </div>
+    </section>
+
+    <div class="name__history">
+      Эти контрасты вдохновляют нас на создание образов, в основе которых лежит идея бесконечных сочетаний каноничной классики и актуальных уличных трендов.
+    </div>
+
+    
+
+    <!-- ШИРОКИЙ КАДР (как в макете — один общий кадр) -->
+    <section class="wide container">
+      <figure class="wide__frame">
+        <img src="@/assets/about/about_5.png" alt="" />
+      </figure>
+    </section>
+
+    <section class="center-note container">
+      <p>
+        Неважно, где вы и сколько вам лет, любите ли вы простоту или яркие акценты — мы найдём баланс.
+      </p>
+    </section>
+
+    <!-- О СТИЛЕ -->
+    <section class="style container">
+      <h2 class="h2">О стиле</h2>
+      <p class="muted">
+        Наше направление — это эклектика как вечный творческий эксперимент. Каждое изделие объединяет в себе,
+        казалось бы, противоположные стили.
+      </p>
+
+      <div class="style__pair">
+        <figure><img src="@/assets/about/about_6.png" alt="" /></figure>
+        <figure><img src="@/assets/about/about_7.png" alt="" /></figure>
       </div>
 
-      <!-- БЛОК 3 -->
-      <div class="brand-block">      
-        <div class="brand-text">
-          <h3 class="brand-subtitle">«2. Не как у всех</h3>
-          <p>
-            Что, если строгая классика и уличная мода станут гармоничным целым?
-            MATERA объединяет контрасты, уникальность и эклектику: каждое изделие создано на стыке двух противоположных стилей.
+      <p class="mission">
+        Наша миссия — создавать универсальные образы вне времени путём сочетания несочетаемых деталей и идей.
+      </p>
+    </section>
+
+    <!-- МАСТЕРСКАЯ В МОСКВЕ (две строки сетки, как в макете) -->
+    <section class="workshop container">
+      <div class="workshop__row">
+        <div class="workshop__text">
+          <h3 class="h3">Мастерская в Москве</h3>
+          <p class="muted">
+            Здесь итальянские идеи воплощаются руками российских мастеров. Каждое изделие
+            выпускается лимитированным тиражом и создаётся вручную в экспериментальном цехе.
           </p>
         </div>
-        <img class="brand-image" src="@/assets/brand/aboutcoffee.png" alt="Девушка">
+        <figure class="workshop__photo">
+          <img src="@/assets/about/about_8.png" alt="" />
+        </figure>
       </div>
-      <div class="brand-block reverse center">            
-        <div class="brand-text">
-          <h3 class="brand-subtitle">3. Придумано в Италии</h3>
-          <p>
-            Наша одежда - это смешение стилей, воплощённое командой опытных миланских дизайнеров.
-          </p>
-        </div>
-      </div>
-      <div class="brand-block center">
-        <img class="brand-image" src="@/assets/brand/img1.png" alt="Девушка">
-      </div>
-      <div class="brand-block">      
-        <div class="brand-text way">
-          <h3 class="brand-subtitle">4. Ограниченный тираж</h3>
-          <div>
-            <p>
-              Отказ от массовости позволяет нам контролировать процесс работы над каждым изделием.
-            </p>
-          </div>
-          <!-- <div>
-            <p><span class="key">Наша миссия</span> — создавать универсальные образы вне времени путём сочетания несочетаемых деталей и идей.</p>
-          </div>           -->
-        </div>
-      </div>
-      <div class="brand-block">      
-        <div class="brand-text">
-          <h2 class="brand-title">5. Высшее качество</h2>
-          <p>
-            Ткани мирового уровня вкупе с ручной проверкой материалов и их сочетаний на устойчивость к стирке, глажке и носке.
-          </p>
-        </div>
-        <img class="brand-image" src="@/assets/brand/img2.png" alt="Италия - Россия">
-      </div>
-      <div class="brand-block end">      
-        <div class="brand-text">
-          <p>
-            Придумано в Италии.
-            Сделано в России  
+
+      <div class="workshop__row workshop__row--swap">
+        <figure class="workshop__photo">
+          <img src="@/assets/about/about_9.png" alt="" />
+        </figure>
+        <div class="workshop__text">
+          <p class="muted">
+            Мы используем сертифицированные ткани мирового уровня. Качество гарантируется ручной проверкой
+            всех материалов и их свойств на предмет устойчивости к стирке, тепловой обработке и износу.
           </p>
         </div>
       </div>
-    </section>  
-  </div>
+
+      <p class="workshop__note">
+        Уход от массовости позволяет нам полностью контролировать процесс производства, лично проверяя каждое сшитое изделие.
+      </p>
+
+      <div class="workshop__final">
+        <figure><img src="@/assets/about/about_10.png" alt="" /></figure>
+        <figure><img src="@/assets/about/about_11.png" alt="" /></figure>
+      </div>
+    </section>
+  </section>
   <AppFooter></AppFooter>
 </template>
 
