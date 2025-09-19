@@ -39,9 +39,15 @@
 
     <!-- ДИПТИХ: большое фото слева, справа текст + маленькое фото -->
     <section class="duo container">
-      <figure class="duo__left">
-        <img src="@/assets/about/about_3.png" alt="" />
-      </figure>
+      <div class="duo__left">
+        <figure>
+          <img src="@/assets/about/about_3.png" alt="" />
+        </figure>
+        <div class="name__history" v-if="!isMobile">
+           Эти контрасты вдохновляют нас на создание образов, в основе которых лежит идея бесконечных сочетаний каноничной классики и актуальных уличных трендов.
+        </div>      
+      </div>
+      
 
       <div class="duo__right">
         <p class="duo__text">
@@ -57,7 +63,7 @@
       </div>
     </section>
 
-    <div class="name__history">
+    <div class="name__history" v-if="isMobile">
       Эти контрасты вдохновляют нас на создание образов, в основе которых лежит идея бесконечных сочетаний каноничной классики и актуальных уличных трендов.
     </div>
 
@@ -78,11 +84,13 @@
 
     <!-- О СТИЛЕ -->
     <section class="style container">
-      <h2 class="h2">О стиле</h2>
-      <p class="muted">
-        Наше направление — это эклектика как вечный творческий эксперимент. Каждое изделие объединяет в себе,
-        казалось бы, противоположные стили.
-      </p>
+      <div class="about_style">
+        <h2 class="h2">О стиле</h2>
+        <p class="muted">
+          Наше направление — это эклектика как вечный творческий эксперимент. Каждое изделие объединяет в себе,
+          казалось бы, противоположные стили.
+        </p>
+      </div>   
 
       <div class="style__pair">
         <figure><img src="@/assets/about/about_6.png" alt="" /></figure>
@@ -96,23 +104,50 @@
 
     <!-- МАСТЕРСКАЯ В МОСКВЕ (две строки сетки, как в макете) -->
     <section class="workshop container">
-      <div class="workshop__row">
+      <div class="workshop_mobile" v-if="isMobile">
+        <div class="workshop__row">
+          <div class="workshop__text">
+            <h3 class="h3">Мастерская в Москве</h3>
+            <p class="muted">
+              Здесь итальянские идеи воплощаются руками российских мастеров. Каждое изделие
+              выпускается лимитированным тиражом и создаётся вручную в экспериментальном цехе.
+            </p>
+          </div>
+          <figure class="workshop__photo work_first">
+            <img src="@/assets/about/about_8.png" alt="" />
+          </figure>
+        </div>
         <div class="workshop__text">
-          <h3 class="h3">Мастерская в Москве</h3>
           <p class="muted">
-            Здесь итальянские идеи воплощаются руками российских мастеров. Каждое изделие
-            выпускается лимитированным тиражом и создаётся вручную в экспериментальном цехе.
+            Мы используем сертифицированные ткани мирового уровня. Качество гарантируется ручной проверкой
+            всех материалов и их свойств на предмет устойчивости к стирке, тепловой обработке и износу.
           </p>
         </div>
-        <figure class="workshop__photo">
-          <img src="@/assets/about/about_8.png" alt="" />
-        </figure>
+        <div class="workshop__row workshop__row--swap">
+          <figure class="workshop__photo work_second">
+            <img src="@/assets/about/about_9.png" alt="" />
+          </figure>
+        </div>
       </div>
-
-      <div class="workshop__row workshop__row--swap">
-        <figure class="workshop__photo">
+    <div v-else class="workshop__container">
+      <div class="workshop-duo__left">
+        <div class="workshop__text">
+            <h3 class="h3">Мастерская в Москве</h3>
+            <p class="muted">
+              Здесь итальянские идеи воплощаются руками российских мастеров. <br> </br> <br></br>Каждое изделие
+              выпускается лимитированным тиражом и создаётся вручную в экспериментальном цехе.
+            </p>
+        </div>
+        <figure>
           <img src="@/assets/about/about_9.png" alt="" />
-        </figure>
+        </figure>          
+      </div>
+      <div class="workshop-duo__right">
+        <div class="workshop__row workshop__row--swap">
+          <figure class="workshop__photo work_second">
+            <img src="@/assets/about/about_8.png" alt="" />
+          </figure>
+        </div>
         <div class="workshop__text">
           <p class="muted">
             Мы используем сертифицированные ткани мирового уровня. Качество гарантируется ручной проверкой
@@ -120,10 +155,12 @@
           </p>
         </div>
       </div>
-
-      <p class="workshop__note">
-        Уход от массовости позволяет нам полностью контролировать процесс производства, лично проверяя каждое сшитое изделие.
-      </p>
+    </div>
+      <div class="workshop__note">
+        <p class="">
+          Уход от массовости позволяет нам полностью контролировать процесс производства, лично проверяя каждое сшитое изделие.
+        </p>
+      </div>    
 
       <div class="workshop__final">
         <figure><img src="@/assets/about/about_10.png" alt="" /></figure>
@@ -137,6 +174,11 @@
 <script setup>
 import AppHeader from '@/components/AppHeader/AppHeader.vue';
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
+import { ref } from 'vue'
+
+const isMobile = ref(window.innerWidth < 768)
+// console.log(isMobile)
+
 </script>
 
 <style lang="scss" scoped>

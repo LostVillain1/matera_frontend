@@ -117,7 +117,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 .slogan{ margin:18px 0; }
 .slogan__title{
   display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px;
-   text-align:center; font-size:16px;
+  text-align:center; font-size:16px;
 }
 .slogan__title .rule{ height:1px; background:var(--rule); }
 
@@ -178,6 +178,10 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 /* ======= О стиле ======= */
 .style{ margin-bottom:28px; }
 
+.about_style {
+  margin: 0 20px 0 20px
+}
+
 .style__pair{
   display: grid;
   grid-template-columns: 1fr 1fr;  /* рядом */
@@ -191,22 +195,46 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   width:100%; display:block; object-fit:cover; aspect-ratio:4 / 3;
   margin-inline: var(--edge-gap);            /* зазор от краёв */
 }
-.mission{ text-align:center; }
+.mission{ text-align:center; margin: 0 20px 0 20px}
 
 /* ======= Мастерская ======= */
 .workshop__row{ display:grid; gap:12px; align-items:start; margin-bottom:12px; }
 .workshop__photo img{
-  width:100%; display:block; object-fit:cover; aspect-ratio:4 / 3;
+  width:100%; display:block; object-fit:cover;
   margin-inline: var(--edge-gap);
 }
 .workshop__text{
-  background:#FAF8F3; border-left:2px solid var(--rule); border-radius:4px;
-  padding:12px 14px; margin-inline: var(--edge-gap);
+  margin: 20px 20px 20px 20px;
 }
-.workshop__note{ text-align:center; margin:14px 0 18px; }
-.workshop__final{ display:grid; gap:12px; }
+
+.workshop__photo {
+  width: clamp(200px, 62vw, 240px);  
+}
+
+.work_first {
+  justify-self: end;
+  margin-right: 20px;
+}
+
+.work_second {
+  margin-left: 20px;
+}
+
+.workshop__note{ text-align:center; margin:30px 20px 30px; }
+
+
+.workshop__final{
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* рядом */
+    gap: 12px;                       /* небольшой зазор между ними */
+    align-items: start;
+    margin: 40px 10px 40px 10px;
+    padding: 0 var(--edge-gap);
+}
+
+
 .workshop__final img{
-  width:100%; display:block; object-fit:cover; aspect-ratio:4 / 3;
+  width:100%; display:block; object-fit:cover;
   margin-inline: var(--edge-gap);
 }
 
@@ -214,12 +242,17 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 @media (min-width: 768px){
   :root{ --gutter: 24px; }
 
-  .hero img{ aspect-ratio:16 / 5; }
+  // .hero img{ aspect-ratio:16 / 5; }
 
   .about .intro .intro__text .h1,
   .about .intro .intro__text > h1{ font-size:28px; }
 
-  .breadcrumbs{ margin-left:0; }              /* на планшете достаточно padding контейнера */
+  .breadcrumbs{
+   margin: 20px 30px 20px 30px;
+   padding-left: 40px;
+   font-size: 18px;
+  } 
+           
 
   .intro{
     grid-template-columns: 1.05fr 1fr;        /* текст слева, фото справа */
@@ -227,44 +260,219 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
   .intro__text{ max-width:none; }
   .intro__img{
-    width:100%; justify-self:stretch; margin-right:20px;
+    width:100%; margin-right:20px;
   }
   .intro__img img{ aspect-ratio:3 / 2; }
 
-  .slogan{ margin:24px 0; }
+  .slogan{ margin: 40px 0 }
 
-  .duo{ grid-template-columns:1.05fr 0.95fr; gap:22px; }
-  .duo__left{ width:100%; justify-self:stretch; margin-left:0; }
-  .duo__right{ display:grid; grid-template-rows:auto auto; gap:16px; }
+  .slogan__title {
+    font-size: 24px;
+  }
 
-  .style__pair{ grid-template-columns:1fr 1fr; gap:16px; }
 
-  .workshop__row{ grid-template-columns:1fr 1.05fr; gap:16px; }
-  .workshop__row.workshop__row--swap{ grid-template-columns:1.05fr 1fr; }
 
-  .workshop__final{ grid-template-columns:1fr 1fr; gap:16px; }
+  .duo{
+    grid-template-columns: 1fr 1fr;    /* одинаковая ширина колонок */
+    grid-template-rows: auto auto;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .duo__left{ width:100%; justify-self:stretch; margin-left:10px; }
+
+  .duo__right{ display:grid; grid-template-rows:auto auto; gap:16px}
+
+  .duo__thumb {
+    width: auto;
+  }
+
+ .duo__text {
+  font-size: 16px;
+ }
+
+ .name__history {
+  font-size: 16px
+ }
+
+ .center-note {
+  margin: 50px 30px 50px 30px
+ }
+
+ .center-note p{
+  font-size: 24px
+ }
+
+ .about_style {
+  margin: 0 30px 0 30px;
+ }
+
+.about_style h2{
+  font-size: 26px
+}
+
+.about_style p {
+  font-size: 20px
+}
+
+.mission {
+  font-size: 22px;
+  margin: 50px 30px 50px 30px
+}
+
+.workshop__container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;    /* одинаковая ширина колонок */
+  grid-template-rows: auto auto;
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 50px;
+}
+
+.workshop-duo__left {
+  margin-left: 30px;
+}
+
+.workshop-duo__left h3 {
+  font-size: 22px;
+}
+
+.workshop-duo__left p {
+  font-size: 16px;
+}
+
+.workshop-duo__left img {
+  width: clamp(200px, 50vw, 300px);
+}
+
+.workshop-duo__right p {
+  font-size: 16px;
+}
+
+.workshop-duo__right img {
+  width: clamp(200px, 50vw, 300px);
+}
+
+.workshop__note {
+  font-size: 22px;
+  margin: 30px 30px 40px;
+}
+
+.style__pair{ grid-template-columns:1fr 1fr; gap:16px; }
+
+  // .workshop__row{ grid-template-columns:1fr 1.05fr; gap:16px; }
+  // .workshop__row.workshop__row--swap{ grid-template-columns:1.05fr 1fr; }
+
+  // .workshop__final{ grid-template-columns:1fr 1fr; gap:16px; }
 }
 
 /* ======= DESKTOP ≥ 1200px ======= */
 @media (min-width: 1200px){
-  .hero img{ aspect-ratio:16 / 4; }
+  // .hero img{ aspect-ratio:16 / 4; }
 
-  .about .intro .intro__text .h1,
-  .about .intro .intro__text > h1{ font-size:32px; }
-  .h2{ font-size:24px; }
-  .h3{ font-size:20px; }
-  .lead{ font-size:16px; }
-  .muted{ font-size:15px; }
+  // .about .intro .intro__text .h1,
+  // .about .intro .intro__text > h1{ font-size:32px; }
+  // .h2{ font-size:24px; }
+  // .h3{ font-size:20px; }
+  // .lead{ font-size:16px; }
+  // .muted{ font-size:15px; }
 
-  .intro{ grid-template-columns:0.95fr 1.05fr; gap:28px; }
+  // .intro{ grid-template-columns:0.95fr 1.05fr; gap:28px; }
 
-  .slogan{ margin:28px 0; }
-  .slogan__title{ font-size:20px; gap:16px; }
+  // .slogan{ margin:28px 0; }
+  // .slogan__title{ font-size:20px; gap:16px; }
 
-  .duo{ grid-template-columns:1.05fr 0.9fr; gap:28px; }
-  .duo__left img{ aspect-ratio:3 / 2; }
+  // .duo{ grid-template-columns:1.05fr 0.9fr; gap:28px; }
+  // .duo__left img{ aspect-ratio:3 / 2; }
 
-  .wide__frame img{ aspect-ratio:16 / 5; }
+  // .wide__frame img{ aspect-ratio:16 / 5; }
 
-  .workshop__photo img{ aspect-ratio:3 / 2; }
+  // .workshop__photo img{ aspect-ratio:3 / 2; }
+}
+
+@media (min-width: 1920px) {
+  
+  .breadcrumbs {
+    padding-left: 200px;
+    margin: 40px 100px 40px 100px;
+  }
+
+  .intro__text {
+    margin-left: 80px;
+  }
+
+
+  .intro__text .h1 {
+    font-size: 34px;
+  }
+
+  .lead {
+    font-size: 20px;
+  }
+
+  .intro__img {
+    margin-right: 50px
+  }
+
+  .slogan__title {
+    font-size: 28px
+  }
+
+  .duo.container {
+    gap: 40px
+  }
+
+  .duo__left {
+    margin-left: 50px
+  }
+
+  .duo__right .duo__text { 
+    font-size: 20px;
+    margin-left: 60px;
+  }
+  
+  .name__history {
+    font-size: 20px;
+  }
+
+  .center-note p{
+    font-size: 28px;
+  }
+
+  .about_style {
+    margin: 0 50px 0 50px;
+  }
+
+  .about_style h2{
+    font-size: 30px;
+  }
+
+  .mission {
+    font-size: 28px;
+  }
+
+  .workshop-duo__left {
+    margin-left: 50px
+  }
+
+  .workshop-duo__left h3 {
+    font-size: 26px
+  }
+
+  .workshop-duo__left p {
+    font-size: 20px
+  }
+
+
+  .workshop-duo__left img {
+    width: clamp(400px, 50vw, 700px)
+  }
+
+  .workshop-duo__right p {
+    font-size: 20px
+  }
+
+  .workshop-duo__right img {
+    width: clamp(400px, 50vw, 700px)
+  }
 }
