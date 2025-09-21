@@ -1,69 +1,261 @@
-.bout__container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(243, 241, 226, 1);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+
+.boutiques {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f1e2; /* фон согласно макетам */
+  font-family: 'Montserrat', sans-serif;
 }
 
-.page-content {
-    flex: 1 0 auto;
+.page {
+  /* Контейнер для контента между хедером и футером */
+  flex: 1 0 auto;
+  display: block;
+//   padding-inline: 16px; /* базовые внутренние отступы на мобильном */
+  color: #39213d;
 }
 
-.bout__wrapper {
+/* ---------------------------------------------------------------------------
+  HERO (верхнее широкое изображение)
+--------------------------------------------------------------------------- */
+.hero {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  &__img {
+    display: block;
     width: 100%;
+    height: auto;
+    object-fit: cover; /* повторяет поведение макета при разных пропорциях */
+  }
 }
 
-.boutique {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+/* ---------------------------------------------------------------------------
+  ХЛЕБНЫЕ КРОШКИ
+  В макете тонкая линия/подчеркивание и простой текст.
+--------------------------------------------------------------------------- */
+.breadcrumbs {
+//   max-width: 1168px;
+  margin: 20px 20px 24px;
+  padding-left: 20px;
+  border-bottom: 1px solid #39213D; /* лёгкая линия */
+  padding-bottom: 8px;
 
-.bout__info {
+  &--bottom {
+    margin-top: 40px;
+  }
+
+  &__list {
+    color: #39213D;
     display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.8;
+  }
 
-.soon {
-    margin-top: 50px;
-    font-family: 'PT Serif', serif;
-    font-size: 26px;
-    font-style: italic;
-    text-align: center;
-    color: rgba(57, 33, 61, 1);
+  &__link {
+    text-decoration: none;
+    color: inherit;
 
-}
-
-.bout__img {
-    margin: 30px 20px 0 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.bout__img img {
-    height: 134px;
-    width: 335px;
- }
-
- .info {
-    font-size: 20px;
-}
-
-.adress.soon {
-    margin-top: 20px;
-} 
-
-
-.footer {
-    flex-shrink: 0;
-}
-
-
-@media (min-width : 1024px) {
-    .soon {
-        font-size: 30px;
+    &:hover {
+      text-decoration: underline;
     }
+  }
+
+  &__sep {
+    opacity: 0.6;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+  ОБЩИЕ БЛОКИ БУТИКОВ
+--------------------------------------------------------------------------- */
+.block {
+  max-width: 1168px;       /* общая ширина контейнера на больших экранах */
+  margin-inline: auto;     /* выравнивание по центру */
+}
+
+/* Один бутик: заголовок, описание, фото, адрес */
+.bout {
+  text-align: center;  /* в макете всё по центру */
+  margin-bottom: 40px; /* базовый вертикальный ритм на мобилке */
+
+  &__title {
+    /* Заголовок раздела (BAZAAR (CS), Бутик в Radisson Zavidovo) */
+    margin: 12px 0 16px;
+    // font-weight: 600;
+    font-size: 22px;       /* mobile */
+    letter-spacing: 0.02em;
+  }
+
+  &__lead {
+    /* Подзаголовок/описание — узкая, легко читаемая колонка текста */
+    margin: 0 auto 20px;
+    max-width: 640px;
+    font-size: 14px;        /* mobile */
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  &__photo {
+    margin: 0 20px 16px;
+  }
+
+  &__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    // object-fit: cover;
+  }
+
+  &__subtitle {
+    /* "Адрес" */
+    margin: 12px 0 8px;
+    font-family: 'PT Serif', serif; /* как на макете у надписи "Адрес" */
+    font-style: italic;
+    font-size: 22px;       /* mobile */
+    color: #39213d;
+  }
+}
+
+/* Адресный блок */
+.address {
+  margin: 0 auto 8px;
+  max-width: 640px;
+
+  &__line {
+    margin: 0 0 10px 0;
+    font-size: 14px;     /* mobile */
+    line-height: 1.6;
+  }
+
+  &__time {
+    margin: 0;
+    font-size: 14px;     /* mobile */
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+}
+
+/* Разделительная линия между блоками (видна на планшете/десктопе) */
+.divider {
+  border: none;
+  height: 1px;
+  background: rgba(57, 33, 61, 0.15);
+  max-width: 1168px;
+  margin: 28px auto; /* промежуток, как на макетах */
+  display: none;     /* на мобильном не показываем */
+}
+
+/* ---------------------------------------------------------------------------
+  ПЛАНШЕТ
+--------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  .page {
+    // padding-inline: 24px; /* немного шире поля */
+  }
+
+  .breadcrumbs {
+    margin: 24px 30px 28px;
+
+    &__list {
+      font-size: 15px;
+    }
+  }
+
+  .bout {
+    margin-bottom: 56px;
+
+    &__title {
+      font-size: 26px;
+      margin: 16px 0 18px;
+    }
+
+    &__lead {
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    &__subtitle {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    &__photo {
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+  }
+
+  .address {
+    &__line {
+      font-size: 16px;
+    }
+    &__time {
+      font-size: 16px;
+    }
+  }
+
+  .divider {
+    display: block; /* на планшете включаем */
+  }
+}
+
+/* ---------------------------------------------------------------------------
+  ДЕСКТОП
+--------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .page {
+    // padding-inline: 32px;
+  }
+
+  .breadcrumbs {
+    margin: 28px 70px 36px;
+
+    &__list {
+      font-size: 18px;
+    }
+  }
+
+  .bout {
+    margin-bottom: 72px;
+
+    &__title {
+      font-size: 28px; /* визуально как на десктоп-макете */
+      letter-spacing: 0.03em;
+    }
+
+    &__lead {
+      font-size: 20px;
+      margin-bottom: 28px;
+    }
+
+    &__subtitle {
+      font-size: 26px;
+    }
+
+    &__photo {
+      margin-bottom: 24px;
+    }
+  }
+
+  .address {
+    &__line {
+      font-size: 17px;
+    }
+    &__time {
+      font-size: 17px;
+    }
+  }
+
+  /* Тонкая горизонтальная линия перед заголовком второго блока,
+     как визуальный разделитель в макете — решается общим .divider */
 }
