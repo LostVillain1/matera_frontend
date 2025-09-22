@@ -9,7 +9,7 @@
       <!-- Крупный верхний баннер (как на макете) -->
       <section class="hero" aria-label="Фоновое изображение бутика">
         <!-- Временно используем один и тот же файл; позже можно заменить на отдельные -->
-        <img src="@/assets/boutiques/first.png" class="hero__img" alt="" />
+        <img src="@/assets/boutiques/first.webp" class="hero__img" alt="" />
       </section>
 
       <!-- Хлебные крошки (верх) -->
@@ -34,7 +34,7 @@
         </p>
 
         <figure class="bout__photo">
-          <img src="@/assets/boutiques/first_bout.png" class="bout__img" alt="Интерьер магазина BAZAAR (CS)" />
+          <img src="@/assets/boutiques/first_bout.webp" class="bout__img" alt="Интерьер магазина BAZAAR (CS)" />
         </figure>
 
         <h2 class="bout__subtitle">Адрес</h2>
@@ -59,7 +59,7 @@
         </p>
 
         <figure class="bout__photo">
-          <img src="@/assets/boutiques/sec_bout.png" class="bout__img" alt="Интерьер бутика в Radisson Zavidovo" />
+          <img src="@/assets/boutiques/sec_bout.webp" class="bout__img" alt="Интерьер бутика в Radisson Zavidovo" />
         </figure>
 
         <h3 class="bout__subtitle">Адрес</h3>
@@ -94,6 +94,20 @@
 // Компоненты шапки/футера уже реализованы ранее в проекте
 import AppHeader from '@/components/AppHeader/AppHeader.vue'
 import AppFooter from '@/components/AppFooter/AppFooter.vue'
+import { useHead } from '@vueuse/head'
+
+// Прелоадим РОВНО те картинки, которые хотим подтянуть заранее.
+// Совет: high — только для главного hero.
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: new URL('@/assets/boutiques/first.png', import.meta.url).href,
+      fetchpriority: 'high'
+    }
+  ]  
+})
 
 </script>
 

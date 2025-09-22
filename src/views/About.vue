@@ -4,7 +4,7 @@
 
     <!-- ГЕРОЙ (самое первое фото страницы) -->
     <figure class="hero" aria-label="Обложка раздела">
-      <img src="@/assets/about/about_1.png" alt="" />
+      <img src="@/assets/about/about_1.webp" alt="" />
     </figure>
 
     <!-- Хлебные крошки -->
@@ -24,7 +24,7 @@
         </p>
       </div>
       <figure class="intro__img">
-        <img src="@/assets/about/about_2.png" alt="" />
+        <img src="@/assets/about/about_2.webp" alt="" />
       </figure>
     </header>
 
@@ -41,7 +41,7 @@
     <section class="duo container">
       <div class="duo__left">
         <figure>
-          <img src="@/assets/about/about_3.png" alt="" />
+          <img src="@/assets/about/about_3.webp" alt="" />
         </figure>
         <div class="name__history" v-if="!isMobile">
            Эти контрасты вдохновляют нас на создание образов, в основе которых лежит идея бесконечных сочетаний каноничной классики и актуальных уличных трендов.
@@ -58,7 +58,7 @@
           городу, где наследие древней культуры гармонично соседствует с современной эстетикой.
         </p>
         <figure class="duo__thumb">
-          <img src="@/assets/about/about_4.png" alt="" />
+          <img src="@/assets/about/about_4.webp" alt="" />
         </figure>
       </div>
     </section>
@@ -72,7 +72,7 @@
     <!-- ШИРОКИЙ КАДР (как в макете — один общий кадр) -->
     <section class="wide container">
       <figure class="wide__frame">
-        <img src="@/assets/about/about_5.png" alt="" />
+        <img src="@/assets/about/about_5.webp" alt="" />
       </figure>
     </section>
 
@@ -93,8 +93,8 @@
       </div>   
 
       <div class="style__pair">
-        <figure><img src="@/assets/about/about_6.png" alt="" /></figure>
-        <figure><img src="@/assets/about/about_7.png" alt="" /></figure>
+        <figure><img src="@/assets/about/about_6.webp" alt="" /></figure>
+        <figure><img src="@/assets/about/about_7.webp" alt="" /></figure>
       </div>
 
       <p class="mission">
@@ -114,7 +114,7 @@
             </p>
           </div>
           <figure class="workshop__photo work_first">
-            <img src="@/assets/about/about_8.png" alt="" />
+            <img src="@/assets/about/about_8.webp" alt="" />
           </figure>
         </div>
         <div class="workshop__text">
@@ -125,7 +125,7 @@
         </div>
         <div class="workshop__row workshop__row--swap">
           <figure class="workshop__photo work_second">
-            <img src="@/assets/about/about_9.png" alt="" />
+            <img src="@/assets/about/about_9.webp" alt="" />
           </figure>
         </div>
       </div>
@@ -139,13 +139,13 @@
             </p>
         </div>
         <figure>
-          <img src="@/assets/about/about_9.png" alt="" />
+          <img src="@/assets/about/about_9.webp" alt="" />
         </figure>          
       </div>
       <div class="workshop-duo__right">
         <div class="workshop__row workshop__row--swap">
           <figure class="workshop__photo work_second">
-            <img src="@/assets/about/about_8.png" alt="" />
+            <img src="@/assets/about/about_8.webp" alt="" />
           </figure>
         </div>
         <div class="workshop__text">
@@ -163,8 +163,8 @@
       </div>    
 
       <div class="workshop__final">
-        <figure><img src="@/assets/about/about_10.png" alt="" /></figure>
-        <figure><img src="@/assets/about/about_11.png" alt="" /></figure>
+        <figure><img src="@/assets/about/about_10.webp" alt="" /></figure>
+        <figure><img src="@/assets/about/about_11.webp" alt="" /></figure>
       </div>
     </section>
   </section>

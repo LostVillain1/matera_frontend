@@ -18,6 +18,33 @@ import AppFooter from '@/components/AppFooter/AppFooter.vue'
 import Slider from '@/components/AppHeader/Slider.vue'
 import IntroVideo from '@/components/IntroVideo.vue' 
 
+import { useHead } from '@vueuse/head'
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: new URL('/images/first_desc.png', import.meta.url).href,
+      fetchpriority: 'high'
+    },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: new URL('/images/first_tb.png', import.meta.url).href,
+      fetchpriority: 'high'
+    },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: new URL('/images/first_mob.png', import.meta.url).href,
+      fetchpriority: 'high'
+    }
+  ]  
+})
+
+
+
 // Если хочешь “один раз за сессию” — используем sessionStorage
 const INTRO_FLAG = 'introPlayed'
 const showIntro = ref(false)
