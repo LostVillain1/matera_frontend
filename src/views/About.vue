@@ -15,7 +15,7 @@
     </nav>
 
     <!-- Блок О БРЕНДЕ: текст слева, фото справа -->
-    <header class="intro container">
+    <div class="intro container">
       <div class="intro__text">
         <h1 class="h1">О бренде</h1>
         <p class="lead">
@@ -26,7 +26,7 @@
       <figure class="intro__img">
         <img src="@/assets/about/about_2.webp" alt="" />
       </figure>
-    </header>
+    </div>
 
     <!-- СЛОГАН -->
     <section class="slogan container">

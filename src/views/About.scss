@@ -152,6 +152,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 
 .duo__right {
   display: grid;
+  margin-bottom: 30px
 }
 
 .duo__text{
@@ -177,18 +178,19 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 }
 
 .name__history {
-  margin: 20px 20px 20px;
+  margin: 20px 20px 40px;
   text-align: left
 }
 
 /* ======= Центрический абзац ======= */
-.center-note{ text-align:center; margin:16px 20px 22px; text-align: center;}
+.center-note{ text-align:center; margin:16px 20px 30px; text-align: center;}
 .center-note p{ font-size:14px; }
 
 /* ======= Широкий кадр ======= */
 .wide {
   margin-left: 20px;
-  margin-right: 20px
+  margin-right: 20px;
+  margin-bottom: 30px
 }
 
 .wide__frame img{
@@ -234,11 +236,11 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 
 .work_first {
   justify-self: end;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .work_second {
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .workshop__note{ text-align:center; margin:30px 20px 30px; }
@@ -397,28 +399,92 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   // .workshop__final{ grid-template-columns:1fr 1fr; gap:16px; }
 }
 
+@media (min-width: 1024px) {
+  .workshop-duo__left {
+    margin-left: 60px;
+  }
+
+  .workshop-duo__left .workshop__text {
+    margin-left: 0px;
+  }
+  
+  .workshop-duo__right {
+    margin-right: 60px;
+  }
+}
+
+
 /* ======= DESKTOP ≥ 1200px ======= */
 @media (min-width: 1200px){
-  // .hero img{ aspect-ratio:16 / 4; }
+ .lead {
+  font-size: 20px
+ }
 
-  // .about .intro .intro__text .h1,
-  // .about .intro .intro__text > h1{ font-size:32px; }
-  // .h2{ font-size:24px; }
-  // .h3{ font-size:20px; }
-  // .lead{ font-size:16px; }
-  // .muted{ font-size:15px; }
+ .intro.container {
+  margin-bottom: 50px
+ }
 
-  // .intro{ grid-template-columns:0.95fr 1.05fr; gap:28px; }
+ .slogan {
+  margin-bottom: 50px
+ }
 
-  // .slogan{ margin:28px 0; }
-  // .slogan__title{ font-size:20px; gap:16px; }
+ .duo__text {
+  font-size: 20px;
+ }
 
-  // .duo{ grid-template-columns:1.05fr 0.9fr; gap:28px; }
-  // .duo__left img{ aspect-ratio:3 / 2; }
+ .name__history {
+  font-size: 20px;
+  margin-top: 40px;
+ }
 
-  // .wide__frame img{ aspect-ratio:16 / 5; }
+ .duo.container {
+  margin-bottom: 70px;
+ }
 
-  // .workshop__photo img{ aspect-ratio:3 / 2; }
+ .wide.container {
+  margin-bottom: 60px;
+ }
+
+ .about_style {
+  margin-bottom: 50px;
+ }
+
+ .style__pair {
+  margin: 30px 30px
+ }
+
+ .mission {
+  margin-bottom: 70px;
+ }
+
+ .workshop__text p{
+  font-size: 20px;
+ }
+
+ .workshop-duo__left {
+  margin-left: 80px
+ }
+ 
+ .workshop-duo__right {
+  margin-right: 60px
+ }
+
+ .workshop-duo__left img {
+  width: clamp(300px, 30vw, 500px);
+}
+
+.workshop-duo__right img {
+  width: clamp(300px, 30vw, 500px);
+}
+
+.workshop__note {
+  margin-bottom: 70px
+}
+
+.workshop__final {
+  margin: 40px 40px 40px
+}
+
 }
 
 @media (min-width: 1920px) {
@@ -428,21 +494,30 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
     margin: 40px 100px 40px 100px;
   }
 
+  .intro.container {
+    margin: 50px 70px 50px 70px;
+    gap: 50px;
+  }
+
   .intro__text {
     margin-left: 80px;
   }
 
 
-  .intro__text .h1 {
-    font-size: 34px;
+  .intro__text > h1 {
+    font-size: 36px !important  
   }
 
   .lead {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .intro__img {
     margin-right: 50px
+  }
+
+  .slogan {
+    margin: 70px
   }
 
   .slogan__title {
@@ -450,7 +525,8 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .duo.container {
-    gap: 40px
+    gap: 50px;
+    margin-bottom: 100px;
   }
 
   .duo__left {
@@ -476,25 +552,32 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 
   .about_style h2{
     font-size: 30px;
+    margin-bottom: 30px
+  }
+
+  .about_style p {
+    margin-bottom: 30px
   }
 
   .style__pair {
-    margin-left: 30px;
-    margin-right: 30px;
-    gap: 30px
+    margin-left: 50px;
+    margin-right: 50px;
+    gap: 50px
   }
 
   .mission {
     font-size: 28px;
+    margin-bottom: 90px;
   }
 
+
   .workshop__final {
-    gap: 30px;
-    margin: 40px 30px 40px 30px;
+    gap: 50px;
+    margin: 40px 50px 40px 50px;
   }
 
   .workshop-duo__left {
-    margin-left: 50px
+    margin-left: 70px
   }
 
   .workshop-duo__left h3 {
@@ -510,11 +593,15 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
     width: clamp(400px, 50vw, 700px)
   }
 
+  .workshop-duo__right {
+    margin-right: 70px;
+  }
+
   .workshop-duo__right p {
     font-size: 20px
   }
 
   .workshop-duo__right img {
-    width: clamp(400px, 50vw, 700px)
+    width: clamp(400px, 50vw, 600px)
   }
 }
