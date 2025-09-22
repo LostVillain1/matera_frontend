@@ -14,7 +14,24 @@
 }
 
 /* ======= ОСНОВА ======= */
-.about{ background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif;}
+.about {
+  background-color: #F3F1E2 !important;
+  color: #39213D;
+  font-family: "Montserrat", sans-serif !important;
+  display: block;
+  min-height: 100vh;                    /* чтобы не «просвечивал» body */
+  min-height: 100dvh; 
+}
+
+/* Если система в тёмной теме — всё равно оставляем светлый фон раздела */
+@media (prefers-color-scheme: dark){
+  .about{
+    background-color: #F3F1E2 !important;
+    color-scheme: light;                /* попросим рендерить как светлую */
+  }
+}
+
+
 figure{ margin: 0; }
 img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗДЕ */
 
@@ -131,6 +148,10 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 }
 .duo__left img{
   width:100%; display:block; object-fit:cover;
+}
+
+.duo__right {
+  display: grid;
 }
 
 .duo__text{
