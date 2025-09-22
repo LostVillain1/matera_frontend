@@ -119,8 +119,6 @@
   &__subtitle {
     /* "Адрес" */
     margin: 12px 0 8px;
-    font-family: 'PT Serif', serif; /* как на макете у надписи "Адрес" */
-    font-style: italic;
     font-size: 22px;       /* mobile */
     color: #39213d;
   }
@@ -130,6 +128,7 @@
 .address {
   margin: 0 auto 8px;
   max-width: 640px;
+  font-style: normal;
 
   &__line {
     margin: 0 0 10px 0;

@@ -5,6 +5,7 @@
     class="intro-video"
     autoplay
     muted
+    preload="metadata"
     playsinline
     @ended="handleFinish"
     @error="handleFinish"

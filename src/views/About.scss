@@ -145,7 +145,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 
 .duo__thumb {
   width: clamp(200px, 62vw, 240px);
-  justify-self: end;                        /* прижали вправо */
+  justify-self: end !important;                 /* прижали вправо */
   margin-right: 30px;
 
 }
@@ -192,7 +192,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 }
 
 .style__pair img{
-  width:100%; display:block; object-fit:cover; aspect-ratio:4 / 3;
+  width:100%; display:block; object-fit:cover; aspect-ratio: 3/4;
   margin-inline: var(--edge-gap);            /* зазор от краёв */
 }
 .mission{ text-align:center; margin: 0 20px 0 20px}
