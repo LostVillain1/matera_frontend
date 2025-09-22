@@ -37,7 +37,7 @@ useHead({
     {
       rel: 'preload',
       as: 'image',
-      href: new URL('/images/first_mob.png', import.meta.url).href,
+      href: new URL('/images/first_mob.pngffg', import.meta.url).href,
       fetchpriority: 'high'
     }
   ]  

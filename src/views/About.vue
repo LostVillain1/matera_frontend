@@ -176,6 +176,19 @@ import AppHeader from '@/components/AppHeader/AppHeader.vue';
 import AppFooter from '@/components/AppFooter/AppFooter.vue';
 import { ref } from 'vue'
 
+import { useHead } from '@vueuse/head'
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: new URL('@/assets/about/about_1.webp', import.meta.url).href,
+      fetchpriority: 'high'
+    },
+  ]  
+})
+
 const isMobile = ref(window.innerWidth < 768)
 // console.log(isMobile)
 
