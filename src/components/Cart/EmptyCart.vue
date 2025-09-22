@@ -9,14 +9,15 @@
 
 <style scoped>
 .empty { 
-    background:#fff; 
+    background:#F3F1E2; 
     padding:40px; 
-    text-align:center; 
+    text-align:center;
+    font-size: 20px;
     border-radius:8px; 
     color:#666 }
 .link { 
     display:inline-block; 
-    margin-top:12px; 
+    margin-top:16px; 
     padding:10px 14px; 
     background:rgb(57, 33, 61); 
     color:#fff; 
