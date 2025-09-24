@@ -285,7 +285,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
     grid-template-columns: 1.05fr 1fr;        /* текст слева, фото справа */
     gap: 22px;
   }
-  .intro__text{ max-width:none; }
+  .intro__text{ max-width:none; margin-right:20px}
   .intro__img{
     width:100%; margin-right:20px;
   }
