@@ -155,6 +155,10 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   margin-bottom: 30px
 }
 
+.duo__right .duo__text {
+  margin-bottom: 40px
+}
+
 .duo__text{
   margin: 10px 20px 10px;
   margin-left: 20px;
@@ -298,11 +302,11 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   .duo{
     grid-template-columns: 1fr 1fr;    /* одинаковая ширина колонок */
     grid-template-rows: auto auto;
-    gap: 22px;
+    gap: 40px;
     align-items: start;
   }
 
-  .duo__left{ width:100%; justify-self:stretch; margin-left:10px; }
+  .duo__left{ width:100%; justify-self:stretch; }
 
   .duo__right{ display:grid; grid-template-rows:auto auto; gap:16px}
 
@@ -517,7 +521,10 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .slogan {
-    margin: 70px
+    margin: 70px;
+    margin-top: 120px;
+    margin-bottom: 120px
+
   }
 
   .slogan__title {
@@ -525,8 +532,10 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .duo.container {
-    gap: 50px;
+    gap: 100px;
     margin-bottom: 100px;
+    margin-left: 60px;
+    margin-right: 60px;
   }
 
   .duo__left {
@@ -535,11 +544,22 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
 
   .duo__right .duo__text { 
     font-size: 20px;
-    margin-left: 60px;
+    // margin-left: 60px;
+    margin-bottom: 60px;
   }
   
   .name__history {
     font-size: 20px;
+  }
+
+  .center-note {
+    margin-bottom: 120px;
+  }
+
+  .wide.container {
+    margin-left: 90px;
+    margin-right: 90px;
+    margin-bottom: 120px
   }
 
   .center-note p{
@@ -547,7 +567,7 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .about_style {
-    margin: 0 50px 0 50px;
+    margin: 0 50px 60px 90px;
   }
 
   .about_style h2{
@@ -560,14 +580,29 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .style__pair {
-    margin-left: 50px;
-    margin-right: 50px;
-    gap: 50px
+    margin-left: 90px;
+    margin-right: 90px;
+    margin-bottom: 100px;
+    gap: 70px
   }
 
   .mission {
     font-size: 28px;
-    margin-bottom: 90px;
+    margin-bottom: 120px;
+  }
+
+  .workshop__container {
+    margin-bottom: 100px;
+  }
+
+  .workshop__text h3 {
+    font-size: 28px;
+    margin-bottom: 50px;
+  }
+
+  .workshop__text p {
+    margin-bottom: 40px;
+    max-width: 700px;
   }
 
 
@@ -577,11 +612,11 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
   }
 
   .workshop-duo__left {
-    margin-left: 70px
+    margin-left: 90px
   }
 
   .workshop-duo__left h3 {
-    font-size: 26px
+    font-size: 28px
   }
 
   .workshop-duo__left p {
@@ -601,7 +636,20 @@ img{ border-radius: 0; }            /* УБРАЛИ СКРУГЛЕНИЯ ВЕЗ�
     font-size: 20px
   }
 
+  .work_second {
+    margin-left: 20px
+  }
+
   .workshop-duo__right img {
-    width: clamp(400px, 50vw, 600px)
+    width: clamp(400px, 50vw, 700px)
+  }
+
+  .workshop__note {
+    margin-bottom: 100px;
+  }
+
+  .workshop__final {
+    margin-left: 90px;
+    margin-right: 90px;
   }
 }
